@@ -28,7 +28,7 @@ export const CreateWorkspaceButton: FC<CreateWorkspaceButtonProps> = ({
   const handleCreateWorkspace = async () => {
     try {
       const workspace = await createWorkspace({
-        name: workspaceName || "My Workspace"
+        name: workspaceName || "Ephemyral Workspace"
       })
       router.push(`/${workspace.id}`)
       setOpen(false)

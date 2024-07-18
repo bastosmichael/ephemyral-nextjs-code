@@ -15,7 +15,7 @@ export async function generatePR(
   // Create a new branch
   const baseBranch = project.githubTargetBranch || "main"
   const timestamp = Date.now()
-  let newBranch = `ephemyral-ai/${branchName}/${timestamp}`
+  let newBranch = `${owner}/${branchName}/${timestamp}`
   let baseRef: any
 
   try {
@@ -33,7 +33,7 @@ export async function generatePR(
     })
   } catch (error: any) {
     if (error.status === 422) {
-      const retryBranch = `ephemyral-ai/${branchName}/${timestamp}-retry`
+      const retryBranch = `${owner}/${branchName}/${timestamp}-retry`
       try {
         await octokit.git.createRef({
           owner,
@@ -114,7 +114,7 @@ export async function generatePR(
   const { data: commit } = await octokit.git.createCommit({
     owner,
     repo,
-    message: `AI: Update multiple files`,
+    message: `Update multiple files`,
     tree: tree.sha,
     parents: [baseRef.data.object.sha]
   })
@@ -137,10 +137,10 @@ export async function generatePR(
     const pr = await octokit.pulls.create({
       owner,
       repo,
-      title: parsedResponse.prTitle || `AI: Update for ${branchName}`,
+      title: parsedResponse.prTitle || `Update for ${branchName}`,
       head: newBranch,
       base: baseBranch,
-      body: `AI: Update for ${branchName}`
+      body: parsedResponse.prDescription || `Update for ${branchName}`
     })
 
     return { prLink: pr.data.html_url, branchName: newBranch }

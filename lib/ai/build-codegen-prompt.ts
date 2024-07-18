@@ -158,10 +158,15 @@ export const buildCodeGenPrompt = async ({
     - Pseudocode is translated into actual code.
     - You complete all necessary work.
   
-    Also provide a PR title:
+    Provide a PR title:
     <pr_title>
     __PR_TITLE__
     </pr_title>
+
+    Provide a PR description:
+    <pr_description>
+    __PR_DESCRIPTION__
+    </pr_description>
   
     </format>
     `
