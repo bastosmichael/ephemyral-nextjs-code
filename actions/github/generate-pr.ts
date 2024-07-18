@@ -15,7 +15,7 @@ export async function generatePR(
   // Create a new branch
   const baseBranch = project.githubTargetBranch || "main"
   const timestamp = Date.now()
-  let newBranch = `buildware-ai/${branchName}/${timestamp}`
+  let newBranch = `ephemyral-ai/${branchName}/${timestamp}`
   let baseRef: any
 
   try {
@@ -33,7 +33,7 @@ export async function generatePR(
     })
   } catch (error: any) {
     if (error.status === 422) {
-      const retryBranch = `buildware-ai/${branchName}/${timestamp}-retry`
+      const retryBranch = `ephemyral-ai/${branchName}/${timestamp}-retry`
       try {
         await octokit.git.createRef({
           owner,

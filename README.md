@@ -1,6 +1,6 @@
-# Buildware
+# Ephemyral
 
-Buildware helps you ship code faster with AI.
+Ephemyral helps you ship code faster with AI.
 
 Build a code instruction system, give it an issue, and get an AI-generated PR!
 
@@ -12,7 +12,7 @@ See the latest demo [here](https://x.com/mckaywrigley/status/1813695460600844362
 
 ## Sponsor
 
-If you find Buildware useful, please consider [sponsoring](https://github.com/sponsors/mckaywrigley) us to support our open-source work :)
+If you find Ephemyral useful, please consider [sponsoring](https://github.com/sponsors/mckaywrigley) us to support our open-source work :)
 
 ## Updates
 
@@ -24,12 +24,12 @@ Coming soon:
 
 ## Simple Setup
 
-Follow these steps to get the simple version of Buildware running.
+Follow these steps to get the simple version of Ephemyral running.
 
 ### 1. Clone the Repo
 
 ```bash
-git clone https://github.com/mckaywrigley/buildware.git
+git clone https://github.com/mckaywrigley/ephemyral.git
 ```
 
 ### 2. Install Dependencies
@@ -67,7 +67,7 @@ GitHub:
 
 ### 4. Setup Database
 
-You will need a Postgres database to use Buildware.
+You will need a Postgres database to use Ephemyral.
 
 We recommend using [Supabase](https://supabase.com/) or [Neon](https://neon.tech/).
 
@@ -83,7 +83,7 @@ Now your database is ready to use.
 
 ### 5. Setup GitHub PAT
 
-You will need a GitHub PAT (Personal Access Token) to use Buildware.
+You will need a GitHub PAT (Personal Access Token) to use Ephemyral.
 
 Follow these steps:
 
@@ -111,7 +111,7 @@ npm run dev
 
 Deploy the simple version to Vercel in 1 click:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmckaywrigley%2Fbuildware-ai&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmckaywrigley%2Fephemyral-ai&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
 
 ## Advanced Setup
 

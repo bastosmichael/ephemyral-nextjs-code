@@ -1,7 +1,7 @@
 "use server"
 
 import { calculateLLMCost } from "@/lib/ai/calculate-llm-cost"
-import { BUILDWARE_MAX_OUTPUT_TOKENS } from "@/lib/constants/buildware-config"
+import { EPHEMYRAL_MAX_OUTPUT_TOKENS } from "@/lib/constants/ephemyral-config"
 import Anthropic from "@anthropic-ai/sdk"
 
 const anthropic = new Anthropic()
@@ -15,7 +15,7 @@ export const generateAIResponse = async (
       system:
         "You are a helpful assistant that can answer questions and help with tasks.",
       messages,
-      max_tokens: BUILDWARE_MAX_OUTPUT_TOKENS
+      max_tokens: EPHEMYRAL_MAX_OUTPUT_TOKENS
     },
     {
       headers: {

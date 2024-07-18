@@ -10,7 +10,7 @@ export default function MainSection() {
     <section>
       <h1 className="text-primary text-balance bg-gradient-to-br bg-clip-text py-6 text-5xl font-medium leading-none tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl">
         Ship faster
-        <br className="hidden md:block" /> with Buildware
+        <br className="hidden md:block" /> with Ephemyral
       </h1>
 
       <p className="text-primary/80 mb-12 text-lg tracking-tight md:text-xl">

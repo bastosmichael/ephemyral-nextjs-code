@@ -1,4 +1,4 @@
-import { BUILDWARE_MAX_INPUT_TOKENS } from "../constants/buildware-config"
+import { EPHEMYRAL_MAX_INPUT_TOKENS } from "../constants/ephemyral-config"
 import { estimateClaudeSonnet3_5TokenCount } from "./estimate-claude-tokens"
 
 export function limitTokens(
@@ -12,7 +12,7 @@ export function limitTokens(
     const fileContent = `# File Path: ${file.path}\n${file.content}`
     const fileTokens = estimateClaudeSonnet3_5TokenCount(fileContent)
 
-    if (totalTokens + fileTokens <= BUILDWARE_MAX_INPUT_TOKENS) {
+    if (totalTokens + fileTokens <= EPHEMYRAL_MAX_INPUT_TOKENS) {
       includedFiles.push(file)
       totalTokens += fileTokens
     } else {

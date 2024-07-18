@@ -85,7 +85,7 @@ export function SiteHeader() {
 
   // useEffect(() => {
   //   const getGitHubRepoStars = async () => {
-  //     const url = `https://api.github.com/repos/mckaywrigley/buildware-ai`
+  //     const url = `https://api.github.com/repos/mckaywrigley/ephemyral-ai`
   //     try {
   //       const response = await fetch(url, {
   //         headers: {
@@ -109,7 +109,7 @@ export function SiteHeader() {
       <header className="fixed left-0 top-0 z-50 w-full border-b backdrop-blur">
         <div className="container flex h-14 items-center justify-between">
           <Link className="text-md flex items-center" href="/">
-            Buildware
+            Ephemyral
           </Link>
 
           <nav className="absolute right-1/2 hidden translate-x-1/2 justify-center space-x-8 md:flex">
@@ -133,7 +133,7 @@ export function SiteHeader() {
           <div className="ml-auto flex h-full items-center md:ml-0">
             <div className="ml-auto flex h-full items-center md:ml-0">
               <Link
-                href="https://github.com/mckaywrigley/buildware-ai"
+                href="https://github.com/mckaywrigley/ephemyral-ai"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="mr-4"
@@ -197,7 +197,7 @@ export function SiteHeader() {
         >
           <div className="container flex h-14 items-center justify-between">
             <Link className="text-md flex items-center" href="/">
-              Buildware
+              Ephemyral
             </Link>
 
             <button

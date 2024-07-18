@@ -20,7 +20,7 @@ export const InstructionsList: FC<InstructionsListProps> = ({
     <DataList
       title="Instructions"
       subtitle="Manage instructions"
-      readMoreLink="https://docs.buildware.ai/core-components/instructions"
+      readMoreLink="https://docs.ephemyral.ai/core-components/instructions"
       readMoreText="Read more"
       createLink={`./instructions/create`}
       createText="Create instruction"

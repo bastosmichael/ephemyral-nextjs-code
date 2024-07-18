@@ -5,7 +5,7 @@ import { db } from "@/db/db"
 import { getProjectById } from "@/db/queries"
 import { embeddedBranchesTable } from "@/db/schema"
 import { embeddedFilesTable } from "@/db/schema/embedded-files-schema"
-import { BUILDWARE_MAX_INPUT_TOKENS } from "@/lib/constants/buildware-config"
+import { EPHEMYRAL_MAX_INPUT_TOKENS } from "@/lib/constants/ephemyral-config"
 import { and, cosineDistance, desc, eq, gt, sql } from "drizzle-orm"
 
 export const getMostSimilarEmbeddedFiles = async (
@@ -55,7 +55,7 @@ export const getMostSimilarEmbeddedFiles = async (
 
   const filteredFiles = mostSimilarEmbeddedFiles.reduce(
     (acc: { files: typeof mostSimilarEmbeddedFiles; tokens: number }, file) => {
-      if (acc.tokens + file.tokenCount <= BUILDWARE_MAX_INPUT_TOKENS) {
+      if (acc.tokens + file.tokenCount <= EPHEMYRAL_MAX_INPUT_TOKENS) {
         acc.files.push(file)
         acc.tokens += file.tokenCount
       }

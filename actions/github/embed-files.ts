@@ -2,9 +2,9 @@
 
 import { InsertEmbeddedFile } from "@/db/schema"
 import {
-  BUILDWARE_EMBEDDING_DIMENSIONS,
-  BUILDWARE_EMBEDDING_MODEL
-} from "@/lib/constants/buildware-config"
+  EPHEMYRAL_EMBEDDING_DIMENSIONS,
+  EPHEMYRAL_EMBEDDING_MODEL
+} from "@/lib/constants/ephemyral-config"
 import { GitHubFileContent } from "@/types/github"
 import { encode } from "gpt-tokenizer"
 import OpenAI from "openai"
@@ -16,8 +16,8 @@ export async function embedFiles(filesContent: GitHubFileContent[]) {
 
   try {
     const response = await openai.embeddings.create({
-      model: BUILDWARE_EMBEDDING_MODEL,
-      dimensions: BUILDWARE_EMBEDDING_DIMENSIONS,
+      model: EPHEMYRAL_EMBEDDING_MODEL,
+      dimensions: EPHEMYRAL_EMBEDDING_DIMENSIONS,
       // embed path + content
       input: filesContent.map(file => `${file.path}\n${file.content}`)
     })
