@@ -91,7 +91,7 @@ export const buildCodeGenPrompt = async ({
   
     <format>
   
-    Generate the full content for each new or modified file.
+    Generate the full content for each new or modified file, do not get lazy and send a response that excludes code.
     
     Only provide the full path for each deleted file.
   
