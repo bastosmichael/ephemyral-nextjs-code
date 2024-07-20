@@ -102,7 +102,7 @@
     "eslint-config-next": "14.2.3",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-tailwindcss": "^3.17.0",
-    "gpt-tokenizer": "^2.1.2",
+    "gpt-tokenizer": "^2.2.1",
     "husky": "^9.0.11",
     "openai": "^4.52.0",
     "postcss": "^8",
