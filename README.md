@@ -1,8 +1,8 @@
 # Ephemyral
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub stars](https://img.shields.io/github/stars/mckaywrigley/ephemyral-ai.svg)](https://github.com/mckaywrigley/ephemyral-ai/stargazers)
-[![GitHub issues](https://img.shields.io/github/issues/mckaywrigley/ephemyral-ai.svg)](https://github.com/mckaywrigley/ephemyral-ai/issues)
+[![GitHub stars](https://img.shields.io/github/stars/bastosmichael/ephemyral-ai.svg)](https://github.com/bastosmichael/ephemyral-ai/stargazers)
+[![GitHub issues](https://img.shields.io/github/issues/bastosmichael/ephemyral-ai.svg)](https://github.com/bastosmichael/ephemyral-ai/issues)
 
 Ephemyral is an AI-powered code generation tool designed to help developers ship code faster. It leverages artificial intelligence to generate pull requests based on project issues, streamlining the development process and boosting productivity.
 
@@ -34,7 +34,7 @@ Ephemyral is an AI-powered code generation tool designed to help developers ship
 
 Check out the latest demo of Ephemyral in action:
 
-[![Ephemyral Demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://x.com/mckaywrigley/status/1813695460600844362)
+[![Ephemyral Demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://x.com/bastosmichael/status/1813695460600844362)
 
 ## Setup
 
@@ -43,22 +43,27 @@ Ephemyral offers two setup modes: Simple and Advanced. Choose the one that best 
 ### Simple Mode Setup
 
 1. **Clone the Repository**
+
    ```bash
-   git clone https://github.com/mckaywrigley/ephemyral.git
+   git clone https://github.com/bastosmichael/ephemyral.git
    cd ephemyral
    ```
 
 2. **Install Dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Set Up Environment Variables**
    Copy the `.env.example` file to `.env.local` and fill in the required variables:
+
    ```bash
    cp .env.example .env.local
    ```
+
    Required variables for Simple Mode:
+
    - `NEXT_PUBLIC_APP_MODE=simple`
    - `ANTHROPIC_API_KEY=`
    - `OPENAI_API_KEY=`
@@ -68,6 +73,7 @@ Ephemyral offers two setup modes: Simple and Advanced. Choose the one that best 
 4. **Set Up the Database**
    We recommend using [Supabase](https://supabase.com/) or [Neon](https://neon.tech/) for your Postgres database.
    After setting up your database, run the migrations:
+
    ```bash
    npm run migrate
    ```
@@ -120,7 +126,7 @@ To deploy Ephemyral to Vercel:
 2. Sign up for a [Vercel account](https://vercel.com/signup) if you haven't already.
 3. Click the button below to start the deployment process:
 
-   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fmckaywrigley%2Fephemyral-ai&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbastosmichael%2Fephemyral-ai&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
 
 4. Follow the prompts to configure your deployment, ensuring all required environment variables are set.
 5. Once deployed, configure your database by running the migrations:
@@ -178,11 +184,11 @@ And all the other dependencies that make this project possible.
 
 For support, feature requests, or general inquiries:
 
-- Create an [issue](https://github.com/mckaywrigley/ephemyral-ai/issues) on GitHub
-- Follow [@mckaywrigley](https://twitter.com/mckaywrigley) on Twitter for updates
+- Create an [issue](https://github.com/bastosmichael/ephemyral-ai/issues) on GitHub
+- Follow [@bastosmichael](https://twitter.com/bastosmichael) on Twitter for updates
 - Join our [Discord community](https://discord.gg/ephemyral) for discussions and support
 
-Built with ❤️ by [Mckay Wrigley](https://twitter.com/mckaywrigley) and [Tyler Bruno](https://twitter.com/tylerbruno05) at Takeoff AI.
+Built with ❤️ by [Mckay Wrigley](https://twitter.com/bastosmichael) and [Tyler Bruno](https://twitter.com/tylerbruno05) at Takeoff AI.
 
 ---
 
