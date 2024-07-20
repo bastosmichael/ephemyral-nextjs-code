@@ -3,7 +3,7 @@
 import { cn } from "@/lib/utils"
 import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import { AnimatePresence, motion } from "framer-motion"
-import { AlignJustify, Star, XIcon } from "lucide-react"
+import { AlignJustify, XIcon } from "lucide-react"
 import Link from "next/link"
 import { useEffect, useState } from "react"
 import { Button, buttonVariants } from "../ui/button"

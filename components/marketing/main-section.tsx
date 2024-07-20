@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRightIcon } from "@radix-ui/react-icons"
 import Link from "next/link"
-import ShineBorder from "../magicui/shine-border"
 
 export default function MainSection() {
   return (
