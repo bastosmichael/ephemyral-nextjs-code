@@ -99,21 +99,17 @@ jobs:
 
   dependabot:
     name: 'Dependabot'
-    needs: build
+    needs: [build, lint]
     runs-on: ubuntu-latest
-    if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request' }}
+    if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'}}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
       - name: Dependabot metadata
         id: metadata
         uses: dependabot/fetch-metadata@v2.2.0
         with:
           github-token: '${{ secrets.GITHUB_TOKEN }}'
-
       - name: Enable auto-merge for Dependabot PRs
         run: gh pr merge --auto --merge "$PR_URL"
         env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_URL: ${{github.event.pull_request.html_url}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
