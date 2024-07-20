@@ -59,9 +59,21 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Set up environment variables
+      - name: Wait for PostgreSQL to be ready
         run: |
-          echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/testdb" >> $GITHUB_ENV
+          until pg_isready -h localhost -p 5432; do
+            echo "Waiting for PostgreSQL to be ready..."
+            sleep 1
+          done
+
+      - name: Install vector extension
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-12-postgis-3 postgresql-12-postgis-3-scripts postgresql-12-plpython3 postgresql-12-plperl
+          psql -U postgres -c "CREATE EXTENSION vector;"
+
+      - name: Set up environment variables
+        run: echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/testdb" >> $GITHUB_ENV
 
       - name: Run database migrations
         run: npm run migrate
