@@ -14,9 +14,9 @@ export default function MainSection() {
       </h1>
 
       <p className="text-primary/80 mb-12 text-lg tracking-tight md:text-xl">
-        Build a code instruction system, <br className="hidden md:block" />
-        give it an issue, <br className="hidden md:block" />
-        and get an AI-generated PR!
+        Connect to your GitHub, <br className="hidden md:block" />
+        fetch your repositories and issues, <br className="hidden md:block" />
+        and generate LLM-created PRs!
       </p>
 
       <Link href="/onboarding">
@@ -25,14 +25,6 @@ export default function MainSection() {
           <ArrowRightIcon className="ml-1 size-4" />
         </Button>
       </Link>
-
-      <ShineBorder
-        className="bg-background relative mt-20 flex w-full flex-col items-center justify-center overflow-hidden rounded-lg border p-0 md:shadow-xl"
-        color={["#A07CFE", "#FE8FB5", "#FFBE7B"]}
-      >
-        <img src="/dashboard-dark.png" className="hidden dark:block" />
-        <img src="/dashboard-light.png" className="dark:hidden" />
-      </ShineBorder>
     </section>
   )
 }

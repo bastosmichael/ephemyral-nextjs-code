@@ -132,20 +132,6 @@ export function SiteHeader() {
 
           <div className="ml-auto flex h-full items-center md:ml-0">
             <div className="ml-auto flex h-full items-center md:ml-0">
-              <Link
-                href="https://github.com/mckaywrigley/ephemyral-ai"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mr-4"
-              >
-                <Button
-                  className="flex items-center space-x-2"
-                  variant="outline"
-                >
-                  <Star className="size-4" />
-                  <div>Star us on GitHub</div>
-                </Button>
-              </Link>
 
               {process.env.NEXT_PUBLIC_APP_MODE === "simple" ? (
                 <>

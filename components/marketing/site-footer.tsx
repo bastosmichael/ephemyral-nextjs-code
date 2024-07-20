@@ -3,7 +3,7 @@ import Link from "next/link"
 
 const footerSocials = [
   {
-    href: "https://twitter.com/ephemyralai",
+    href: "https://twitter.com/bastosventures",
     name: "Twitter",
     icon: <TwitterLogoIcon className="size-4" />
   }
@@ -30,7 +30,7 @@ export function SiteFooter() {
           <span className="text-sm text-gray-500 sm:text-center dark:text-gray-400">
             Copyright © {new Date().getFullYear()}{" "}
             <Link href="/" className="cursor-pointer">
-              Takeoff AI
+              Ephemyral
             </Link>
             . All Rights Reserved.
           </span>
