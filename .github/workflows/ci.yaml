@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:latest
+        image: timescale/timescaledb-ha:pg14.4-ts2.7.2-p0
         ports:
           - 5432:5432
         env:
@@ -81,14 +81,19 @@ jobs:
             sleep 1
           done
 
+      - name: Check PostgreSQL version
+        run: |
+          psql -h localhost -U postgres -d testdb -c "SELECT version();"
+
+      - name: Set PostgreSQL password environment variable
+        run: echo "PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Install required packages for building extensions
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential
 
-      - name: Clone and install vector extension
-        env:
-          PGPASSWORD: postgres
+      - name: Install vector extension
         run: |
           psql -h localhost -U postgres -d testdb -c "CREATE EXTENSION vector;"
 
