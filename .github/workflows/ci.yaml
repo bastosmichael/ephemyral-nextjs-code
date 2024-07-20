@@ -89,10 +89,6 @@ jobs:
 
       - name: Clone and install vector extension
         run: |
-          git clone https://github.com/pgvector/pgvector.git
-          cd pgvector
-          make
-          sudo make install
           psql -h localhost -U postgres -d testdb -c "CREATE EXTENSION vector;"
 
       - name: Set up environment variables
