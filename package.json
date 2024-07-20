@@ -59,7 +59,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@tabler/icons-react": "^3.10.0",
     "@types/react-syntax-highlighter": "^15.5.13",
-    "ai": "^3.2.1",
+    "ai": "^3.2.32",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^1.0.0",
