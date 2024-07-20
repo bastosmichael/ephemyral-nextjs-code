@@ -87,12 +87,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y build-essential postgresql-server-dev-13
 
-      - name: Clone and install vector extension
+      - name: Install vector extension
         run: |
-          git clone https://github.com/pgvector/pgvector.git
-          cd pgvector
-          make
-          sudo make install
           psql -U postgres -c "CREATE EXTENSION vector;"
 
       - name: Set up environment variables
