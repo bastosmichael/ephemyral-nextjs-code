@@ -14,7 +14,7 @@ export const ProfileCreator = async () => {
         await createProfile({})
         const workspace = await createWorkspace({ name: "Ephemyral Workspace" })
         const project = await createProject({
-          name: "Ephemyral Project",
+          name: "Sample Project",
           workspaceId: workspace.id
         })
         router.push(`/${workspace.id}/${project.id}/issues`)

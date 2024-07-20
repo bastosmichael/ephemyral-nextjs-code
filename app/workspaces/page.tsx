@@ -16,7 +16,7 @@ export default async function WorkspacesPage() {
     "use server"
     const workspace = await createWorkspace({ name: "Ephemyral Workspace" })
     await createProject({
-      name: "Ephemyral Project",
+      name: "Sample Project",
       workspaceId: workspace.id
     })
     return redirect(`/${workspace.id}`)
