@@ -87,19 +87,19 @@ jobs:
         run: |
           psql -h localhost -U postgres -d testdb -c "SELECT version();"
 
-      - name: Set PostgreSQL password environment variable
-        run: echo "PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
-
-      - name: Install required packages for building extensions
+      - name: Install required packages for PostgreSQL extensions
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential
+          sudo apt-get install -y postgresql-14-vector
 
       - name: Install vector extension
         env:
           PGPASSWORD: postgres
         run: |
           psql -h localhost -U postgres -d testdb -c "CREATE EXTENSION vector;"
+
+      - name: Set PostgreSQL password environment variable
+        run: echo "PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Set up environment variables
         run: echo "DATABASE_URL=postgres://postgres:postgres@localhost:5432/testdb" >> $GITHUB_ENV
