@@ -19,6 +19,7 @@ import { MultiSelect } from "../ui/multi-select"
 
 interface NewIssueFormProps {
   templates: SelectTemplate[]
+  defaultTemplate: SelectTemplate
 }
 
 interface Instruction {
@@ -26,15 +27,13 @@ interface Instruction {
   name: string
 }
 
-export function NewIssueForm({ templates }: NewIssueFormProps) {
+export function NewIssueForm({ templates, defaultTemplate }: NewIssueFormProps) {
   const params = useParams()
   const router = useRouter()
 
-  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(
-    null
-  )
-  const [name, setName] = useState("")
-  const [content, setContent] = useState("")
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string | null>(null)
+  const [name, setName] = useState(defaultTemplate.name)
+  const [content, setContent] = useState(defaultTemplate.content)
   const [selectedInstructions, setSelectedInstructions] = useState<string[]>([])
   const [allInstructions, setAllInstructions] = useState<Instruction[]>([])
 
@@ -49,11 +48,11 @@ export function NewIssueForm({ templates }: NewIssueFormProps) {
         handleInstructionsForTemplate(selectedTemplateId)
       }
     } else {
-      setName("")
-      setContent("")
+      setName(defaultTemplate.name)
+      setContent(defaultTemplate.content)
       setSelectedInstructions([])
     }
-  }, [selectedTemplateId])
+  }, [selectedTemplateId, defaultTemplate])
 
   useEffect(() => {
     handleAllInstructionsByProject(projectId)
@@ -64,7 +63,7 @@ export function NewIssueForm({ templates }: NewIssueFormProps) {
       name: formData.get("name") as string,
       content: formData.get("content") as string,
       projectId,
-      templateId: selectedTemplateId || undefined
+      templateId: selectedTemplateId !== "NULL" ? selectedTemplateId : undefined
     }
     const issue = await createIssue(newIssue)
 

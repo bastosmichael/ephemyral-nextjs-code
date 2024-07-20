@@ -1,5 +1,6 @@
 import endent from "endent"
 import { limitTokens } from "./limit-tokens"
+import { DEFAULT_PLAN_PROMPT } from "../constants/default-prompts"
 
 export const buildCodePlanPrompt = async ({
   issue,
@@ -17,79 +18,79 @@ export const buildCodePlanPrompt = async ({
   instructionsContext: string
 }): Promise<string> => {
   const basePrompt = endent`
-        # AI Task Planning Assistant
+    # AI Task Planning Assistant
     
-        You are an AI specialized in creating detailed implementation plans for coding tasks.
+    You are an AI specialized in creating detailed implementation plans for coding tasks.
     
-        You will be given a task, codebase, and instructions.
-        
-        Your goal is to break down the given issue into clear, actionable steps that another developer can follow to complete the task.
-        
-        Create a detailed implementation plan for the given issue. Your plan should:
+    You will be given a task, codebase, and instructions.
     
-        - Stick to the task at hand.
-        - Break down the task into clear, logical steps.
-        - Ensure the plan is detailed enough to allow another developer to implement the task.
-        - Be 100% correct and complete.
+    Your goal is to break down the given issue into clear, actionable steps that another developer can follow to complete the task.
     
-        Note: Focus solely on the technical implementation. Ignore any mentions of human tasks or non-technical aspects.
+    Create a detailed implementation plan for the given issue. Your plan should:
     
-        Encoded in XML tags, here is what you will be given:
+    - Stick to the task at hand.
+    - Break down the task into clear, logical steps.
+    - Ensure the plan is detailed enough to allow another developer to implement the task.
+    - Be 100% correct and complete.
     
-        TASK: Information about the task.
-        CODEBASE: Files from the codebase.
-        INSTRUCTIONS: Instructions and guidelines on how to complete the task.
-        FORMAT: Instructions on how to format your response.
+    Note: Focus solely on the technical implementation. Ignore any mentions of human tasks or non-technical aspects.
     
-        ---
+    Encoded in XML tags, here is what you will be given:
     
-        # Task
+    TASK: Information about the task.
+    CODEBASE: Files from the codebase.
+    INSTRUCTIONS: Instructions and guidelines on how to complete the task.
+    FORMAT: Instructions on how to format your response.
     
-        <task>
+    ---
     
-        # Title
-        ${issue.name ?? "No title."}
+    # Task
     
-        ## Description
-        ${issue.description ?? "No description."}
+    <task>
     
-        </task>
+    # Title
+    ${issue.name ?? "No title."}
     
-        ---
+    ## Description
+    ${issue.description ?? "No description."}
     
-        # Codebase
+    </task>
     
-        <codebase>
-      `
+    ---
+    
+    # Codebase
+    
+    <codebase>
+  `
 
   const formatInstructions = endent`
-        </codebase>
+    </codebase>
     
-        ---
+    ---
     
-        # Instructions
+    # Instructions
     
-        <instructions>
+    <instructions>
     
-        Follow these instructions:
+    Follow these instructions:
     
-        ${instructionsContext}
+    ${instructionsContext || DEFAULT_PLAN_PROMPT}
     
-        </instructions>
+    </instructions>
     
-        ---
+    ---
     
-        # Format
+    # Format
     
-        <format>
+    <format>
     
-        Format your response as follows:
+    Format your response as follows:
     
-        1. Present your plan as a numbered list of steps.
-        2. Use markdown formatting.
+    1. Present your plan as a numbered list of steps.
+    2. Use markdown formatting.
     
-        </format>
-      `
+    </format>
+  `
 
   const { prompt, tokensUsed } = limitTokens(basePrompt, codebaseFiles)
   const finalPrompt = `${prompt}\n${formatInstructions}`

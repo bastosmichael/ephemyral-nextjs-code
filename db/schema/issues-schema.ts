@@ -3,6 +3,7 @@ import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
 import { issueMessagesTable } from "./issue-messages-schema"
 import { issuesToInstructionsTable } from "./issues-to-instructions-schema"
 import { projectsTable } from "./projects-schema"
+import { templatesTable } from "./templates-schema"
 
 export const issuesTable = pgTable("issues", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -10,6 +11,7 @@ export const issuesTable = pgTable("issues", {
   projectId: uuid("project_id")
     .notNull()
     .references(() => projectsTable.id, { onDelete: "cascade" }),
+  templateId: uuid("template_id").references(() => templatesTable.id),
   name: text("name").notNull(),
   content: text("content").notNull(),
   status: text("status").notNull().default("ready"),
@@ -26,6 +28,10 @@ export const issuesRelations = relations(issuesTable, ({ one, many }) => ({
   project: one(projectsTable, {
     fields: [issuesTable.projectId],
     references: [projectsTable.id]
+  }),
+  template: one(templatesTable, {
+    fields: [issuesTable.templateId],
+    references: [templatesTable.id]
   }),
   issueToInstructions: many(issuesToInstructionsTable),
   issueMessages: many(issueMessagesTable)
