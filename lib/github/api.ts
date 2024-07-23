@@ -16,6 +16,20 @@ export async function fetchGitHubOrganizations(): Promise<any[]> {
   }
 }
 
+export async function fetchUserGitHubAccount(): Promise<any> {
+  try {
+    // Fetch the authenticated user's account details
+    const { data: user } = await octokit.users.getAuthenticated()
+    return {
+      id: user.id,
+      login: user.login
+    }
+  } catch (error) {
+    console.error("Error fetching GitHub user account:", error)
+    throw new Error("Failed to fetch GitHub user account")
+  }
+}
+
 export async function getGitHubAccessToken(code: string) {
   const response = await fetch('https://github.com/login/oauth/access_token', {
     method: 'POST',

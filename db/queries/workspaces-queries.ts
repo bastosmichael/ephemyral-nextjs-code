@@ -9,7 +9,7 @@ import {
   SelectWorkspace,
   workspacesTable
 } from "../schema/workspaces-schema"
-import { fetchGitHubOrganizations} from "@/lib/github/api"
+import { fetchGitHubOrganizations, fetchUserGitHubAccount} from "@/lib/github/api"
 
 export async function createWorkspaces(
   data: Omit<
@@ -20,17 +20,24 @@ export async function createWorkspaces(
   const userId = await getUserId()
 
   try {
-    const organizations = await fetchGitHubOrganizations()
+    // Fetch organizations and user account
+    const [organizations, userAccount] = await Promise.all([
+      fetchGitHubOrganizations(),
+      fetchUserGitHubAccount() // You need to implement this function
+    ])
+
+    // Combine the user's account with the organizations list
+    const allEntities = [...organizations, userAccount]
 
     // Create an array to hold all workspace insertions
-    const workspaceInsertions = organizations.map(async org => {
+    const workspaceInsertions = allEntities.map(async entity => {
       return db
         .insert(workspacesTable)
         .values({
           ...data,
           userId,
-          githubOrganizationId: org.id,
-          githubOrganizationName: org.login
+          githubOrganizationId: entity.id,
+          githubOrganizationName: entity.login
         })
         .returning()
     })

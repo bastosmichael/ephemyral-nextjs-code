@@ -1,5 +1,4 @@
 import {
-  getGitHubAccessToken,
   fetchGitHubOrganizations
 } from "@/lib/github/api"
 
@@ -12,11 +11,10 @@ export async function GET(req: Request) {
   }
 
   try {
-    const accessToken = await getGitHubAccessToken(code)
-    const organizations = await fetchGitHubOrganizations(accessToken)
+    const organizations = await fetchGitHubOrganizations()
 
     // Store the access token and organizations in the session
-    const session = { accessToken, organizations }
+    const session = { organizations }
 
     // Create a session cookie (for demonstration, consider using a more secure approach in production)
     const sessionCookie = Buffer.from(JSON.stringify(session)).toString(
