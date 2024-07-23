@@ -21,7 +21,7 @@ interface WorkspaceSelectProps extends HTMLAttributes<HTMLDivElement> {
 export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
   const workspaceValues = workspaces.map(workspace => ({
     value: workspace.id,
-    label: `${workspace.name} (${workspace.githubOrganizationName})`
+    label: `${workspace.githubOrganizationName}`
   }))
 
   const [open, setOpen] = useState(false)

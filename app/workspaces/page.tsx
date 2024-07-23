@@ -14,7 +14,7 @@ export default async function WorkspacesPage() {
 
   const handleCreateWorkspace = async () => {
     "use server"
-    const workspace = await createWorkspace({ name: "Ephemyral Workspace" })
+    const workspace = await createWorkspaces({})
     await createProject({
       name: "Sample Project",
       workspaceId: workspace.id
@@ -40,7 +40,7 @@ export default async function WorkspacesPage() {
               href={`/${workspace.id}`}
               className="bg-secondary border-primary/20 group relative flex w-full items-center gap-2 rounded border p-4 hover:opacity-80"
             >
-              <div>{workspace.name}</div>
+              <div>{workspace.githubOrganizationName}</div>
             </Link>
           ))}
         </div>

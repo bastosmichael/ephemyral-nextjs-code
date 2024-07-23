@@ -1,6 +1,6 @@
 "use client"
 
-import { createProject, createWorkspace } from "@/db/queries"
+import { createProject, createWorkspaces } from "@/db/queries"
 import { createProfile } from "@/db/queries/profiles-queries"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
@@ -12,7 +12,7 @@ export const ProfileCreator = async () => {
     const handleCreateProfile = async () => {
       try {
         await createProfile({})
-        const workspace = await createWorkspace({ name: "Ephemyral Workspace" })
+        const workspace = await createWorkspaces({name: "Sample Workspace"})
         const project = await createProject({
           name: "Sample Project",
           workspaceId: workspace.id

@@ -10,7 +10,7 @@ import {
   DialogTrigger
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
-import { createWorkspace } from "@/db/queries/workspaces-queries"
+import { createWorkspaces } from "@/db/queries/workspaces-queries"
 import { cn } from "@/lib/utils"
 import { PlusIcon } from "lucide-react"
 import { useRouter } from "next/navigation"
@@ -27,7 +27,7 @@ export const CreateWorkspaceButton: FC<CreateWorkspaceButtonProps> = ({
 
   const handleCreateWorkspace = async () => {
     try {
-      const workspace = await createWorkspace({
+      const workspace = await createWorkspaces({
         name: workspaceName || "Ephemyral Workspace"
       })
       router.push(`/${workspace.id}`)

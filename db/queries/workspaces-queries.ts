@@ -9,32 +9,41 @@ import {
   SelectWorkspace,
   workspacesTable
 } from "../schema/workspaces-schema"
-import { fetchGitHubOrganizations, getGitHubAccessToken } from "@/lib/github/api"
+import { fetchGitHubOrganizations} from "@/lib/github/api"
 
-export async function createWorkspace(
-  data: Omit<InsertWorkspace, "userId" | "githubOrganizationId" | "githubOrganizationName">
-): Promise<SelectWorkspace> {
+export async function createWorkspaces(
+  data: Omit<
+    InsertWorkspace,
+    "userId" | "githubOrganizationId" | "githubOrganizationName"
+  >
+): Promise<SelectWorkspace[]> {
   const userId = await getUserId()
 
   try {
-    const organizations = await fetchGitHubOrganizations();
-    
-    // For simplicity, we're using the first organization. In a real app, you'd want to let the user choose.
-    const selectedOrg = organizations[0];
+    const organizations = await fetchGitHubOrganizations()
 
-    const [result] = await db
-      .insert(workspacesTable)
-      .values({
-        ...data,
-        userId,
-        githubOrganizationId: selectedOrg.id,
-        githubOrganizationName: selectedOrg.login,
-      })
-      .returning()
+    // Create an array to hold all workspace insertions
+    const workspaceInsertions = organizations.map(async org => {
+      return db
+        .insert(workspacesTable)
+        .values({
+          ...data,
+          userId,
+          githubOrganizationId: org.id,
+          githubOrganizationName: org.login
+        })
+        .returning()
+    })
+
+    // Execute all insertions in parallel and get results
+    const results = await Promise.all(workspaceInsertions)
+
     revalidatePath("/")
-    return result
+
+    // Flatten the array of results
+    return results.flat()
   } catch (error) {
-    console.error("Error creating workspace record:", error)
+    console.error("Error creating workspace records:", error)
     throw error
   }
 }
