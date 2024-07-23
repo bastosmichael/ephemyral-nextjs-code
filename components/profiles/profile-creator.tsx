@@ -12,7 +12,7 @@ export const ProfileCreator = async () => {
     const handleCreateProfile = async () => {
       try {
         await createProfile({})
-        const workspace = await createWorkspaces({name: "Sample Workspace"})
+        const workspace = await createWorkspaces({name: "Workspace"})
         const project = await createProject({
           name: "Sample Project",
           workspaceId: workspace.id

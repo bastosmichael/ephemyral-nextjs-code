@@ -34,7 +34,7 @@ export async function createWorkspaces(
       return db
         .insert(workspacesTable)
         .values({
-          ...data,
+          name: `${entity.login}'s ${data.name}`,
           userId,
           githubOrganizationId: entity.id,
           githubOrganizationName: entity.login
