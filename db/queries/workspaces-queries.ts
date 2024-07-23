@@ -9,6 +9,51 @@ import {
   SelectWorkspace,
   workspacesTable
 } from "../schema/workspaces-schema"
+import { fetchGitHubOrganizations, fetchUserGitHubAccount } from "@/app/api/auth/callback/github/api"
+
+export async function createWorkspaces(
+  data: Omit<
+    InsertWorkspace,
+    "userId" | "githubOrganizationId" | "githubOrganizationName"
+  >
+): Promise<InsertWorkspace[]> {
+  const userId = await getUserId()
+
+  try {
+    // Fetch organizations and user account
+    const [organizations, userAccount] = await Promise.all([
+      fetchGitHubOrganizations(),
+      fetchUserGitHubAccount() // You need to implement this function
+    ])
+
+    // Combine the user's account with the organizations list
+    const allEntities = [...organizations, userAccount]
+
+    // Create an array to hold all workspace insertions
+    const workspaceInsertions = allEntities.map(async entity => {
+      return db
+        .insert(workspacesTable)
+        .values({
+          name: `${entity.login}`,
+          userId,
+          githubOrganizationId: entity.id,
+          githubOrganizationName: entity.login
+        })
+        .returning()
+    })
+
+    // Execute all insertions in parallel and get results
+    const results = await Promise.all(workspaceInsertions)
+
+    revalidatePath("/")
+
+    // Flatten the array of results
+    return results.flat()
+  } catch (error) {
+    console.error("Error creating workspace records:", error)
+    throw error
+  }
+}
 
 export async function createWorkspace(
   data: Omit<InsertWorkspace, "userId">

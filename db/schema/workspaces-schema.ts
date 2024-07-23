@@ -8,6 +8,8 @@ export const workspacesTable = pgTable("workspaces", {
   name: text("name").notNull(),
   linearAccessToken: text("linear_access_token"),
   linearOrganizationId: text("linear_organization_id"),
+  githubOrganizationId: text("github_organization_id"),
+  githubOrganizationName: text("github_organization_name"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
     .notNull()
