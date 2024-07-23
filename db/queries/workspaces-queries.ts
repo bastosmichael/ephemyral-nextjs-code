@@ -16,7 +16,7 @@ export async function createWorkspaces(
     InsertWorkspace,
     "userId" | "githubOrganizationId" | "githubOrganizationName"
   >
-): Promise<SelectWorkspace[]> {
+): Promise<InsertWorkspace[]> {
   const userId = await getUserId()
 
   try {

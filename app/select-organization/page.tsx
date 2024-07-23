@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { createWorkspace } from '@/db/queries/workspaces-queries'
+import { createWorkspaces } from '@/db/queries/workspaces-queries'
 import { Button } from '@/components/ui/button'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 
@@ -22,7 +22,7 @@ export default function SelectOrganizationPage() {
     if (!selectedOrg || !workspaceName) return
 
     try {
-      const workspace = await createWorkspace({
+      const workspace = await createWorkspaces({
         name: workspaceName,
         githubOrganizationId: selectedOrg,
         githubOrganizationName: organizations.find(org => org.id === selectedOrg).login
