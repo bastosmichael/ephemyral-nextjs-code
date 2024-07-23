@@ -133,8 +133,13 @@ export async function deleteProject(id: string): Promise<void> {
 }
 
 async function getGitHubAccessToken(userId: string): Promise<string> {
-  // Implement this function to retrieve the stored GitHub access token for the user
-  // This might involve querying a separate table in your database that stores user tokens
-  // For now, we'll just throw an error
-  throw new Error("getGitHubAccessToken not implemented")
+  // Ensure the environment variable is set
+  const token = process.env.GITHUB_PAT;
+  if (!token) {
+    throw new Error('GITHUB_PAT is not set in the environment variables');
+  }
+
+  // Here, you could add logic to check the userId and return the correct token if you have multiple tokens
+  // For now, we'll just return the PAT from the environment variable
+  return new Promise((resolve) => resolve(token));
 }
