@@ -1,32 +1,27 @@
 "use client"
 
-import { getMostRecentIssueWithinProjects } from "@/db/queries/projects-queries"
-import { SelectWorkspace } from "@/db/schema/workspaces-schema"
+import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Check, ChevronDown } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
 import { FC, HTMLAttributes, useEffect, useState } from "react"
-import { Button } from "../ui/button"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList
-} from "../ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
 import { CreateWorkspaceButton } from "./create-workspace-button"
 import { EditWorkspaceButton } from "./edit-workspace-button"
 
 interface WorkspaceSelectProps extends HTMLAttributes<HTMLDivElement> {
-  workspaces: SelectWorkspace[]
+  workspaces: {
+    id: string
+    name: string
+    githubOrganizationName: string
+  }[]
 }
 
 export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
   const workspaceValues = workspaces.map(workspace => ({
     value: workspace.id,
-    label: workspace.name
+    label: `${workspace.name} (${workspace.githubOrganizationName})`
   }))
 
   const [open, setOpen] = useState(false)
@@ -41,16 +36,10 @@ export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
     setValue(workspaceId)
   }, [workspaceId])
 
-  const handleWorkspaceSelect = async (currentValue: string) => {
+  const handleWorkspaceSelect = (currentValue: string) => {
     setValue(currentValue === value ? "" : currentValue)
     setOpen(false)
-
-    const recentData = await getMostRecentIssueWithinProjects(currentValue)
-    if (recentData) {
-      router.push(`/${currentValue}/${recentData.projectId}/issues`)
-    } else {
-      router.push(`/${currentValue}`)
-    }
+    router.push(`/${currentValue}`)
   }
 
   return (
@@ -64,15 +53,14 @@ export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
         >
           <div className="truncate font-bold">
             {value
-              ? workspaceValues.find(workspace => workspace.value === value)
-                  ?.label
+              ? workspaceValues.find(workspace => workspace.value === value)?.label
               : "Select workspace..."}
           </div>
           <ChevronDown className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[300px] p-0">
         <Command>
           <CommandInput placeholder="Search workspace..." />
 
