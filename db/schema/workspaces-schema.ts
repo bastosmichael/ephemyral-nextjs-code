@@ -5,9 +5,8 @@ import { projectsTable } from "./projects-schema"
 export const workspacesTable = pgTable("workspaces", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: text("user_id").notNull(),
-  name: text("name").notNull(),
-  linearAccessToken: text("linear_access_token"),
-  linearOrganizationId: text("linear_organization_id"),
+  githubOrgId: text("github_org_id").notNull(),
+  githubOrgName: text("github_org_name").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
     .notNull()

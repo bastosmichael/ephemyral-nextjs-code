@@ -1,7 +1,6 @@
 "use client"
 
-import { getMostRecentIssueWithinProjects } from "@/db/queries/projects-queries"
-import { SelectWorkspace } from "@/db/schema/workspaces-schema"
+import { getWorkspacesByUserId } from "@/db/queries/workspaces-queries"
 import { cn } from "@/lib/utils"
 import { Check, ChevronDown } from "lucide-react"
 import { useParams, useRouter } from "next/navigation"
@@ -20,15 +19,11 @@ import { CreateWorkspaceButton } from "./create-workspace-button"
 import { EditWorkspaceButton } from "./edit-workspace-button"
 
 interface WorkspaceSelectProps extends HTMLAttributes<HTMLDivElement> {
-  workspaces: SelectWorkspace[]
+  installationId: number | null
 }
 
-export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
-  const workspaceValues = workspaces.map(workspace => ({
-    value: workspace.id,
-    label: workspace.name
-  }))
-
+export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ installationId, ...props }) => {
+  const [workspaces, setWorkspaces] = useState<any[]>([])
   const [open, setOpen] = useState(false)
   const [value, setValue] = useState("")
 
@@ -41,16 +36,18 @@ export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
     setValue(workspaceId)
   }, [workspaceId])
 
+  useEffect(() => {
+    const fetchWorkspaces = async () => {
+      const fetchedWorkspaces = await getWorkspacesByUserId(installationId)
+      setWorkspaces(fetchedWorkspaces)
+    }
+    fetchWorkspaces()
+  }, [installationId])
+
   const handleWorkspaceSelect = async (currentValue: string) => {
     setValue(currentValue === value ? "" : currentValue)
     setOpen(false)
-
-    const recentData = await getMostRecentIssueWithinProjects(currentValue)
-    if (recentData) {
-      router.push(`/${currentValue}/${recentData.projectId}/issues`)
-    } else {
-      router.push(`/${currentValue}`)
-    }
+    router.push(`/${currentValue}`)
   }
 
   return (
@@ -64,8 +61,7 @@ export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
         >
           <div className="truncate font-bold">
             {value
-              ? workspaceValues.find(workspace => workspace.value === value)
-                  ?.label
+              ? workspaces.find(workspace => workspace.id === value)?.githubOrgName
               : "Select workspace..."}
           </div>
           <ChevronDown className="ml-2 size-4 shrink-0 opacity-50" />
@@ -80,19 +76,19 @@ export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
             <CommandEmpty>No workspaces found.</CommandEmpty>
 
             <CommandGroup>
-              {workspaceValues.map(workspace => (
+              {workspaces.map(workspace => (
                 <CommandItem
-                  key={workspace.value}
-                  value={workspace.value}
+                  key={workspace.id}
+                  value={workspace.id}
                   onSelect={handleWorkspaceSelect}
                 >
                   <Check
                     className={cn(
                       "mr-2 size-4",
-                      value === workspace.value ? "opacity-100" : "opacity-0"
+                      value === workspace.id ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  <div className="truncate">{workspace.label}</div>
+                  <div className="truncate">{workspace.githubOrgName}</div>
                 </CommandItem>
               ))}
             </CommandGroup>
@@ -107,7 +103,7 @@ export const WorkspaceSelect: FC<WorkspaceSelectProps> = ({ workspaces }) => {
 
           <hr className="my-1" />
 
-          <CreateWorkspaceButton className="mx-2 mb-2 mt-1" />
+          <CreateWorkspaceButton className="mx-2 mb-2 mt-1" installationId={installationId} />
         </Command>
       </PopoverContent>
     </Popover>

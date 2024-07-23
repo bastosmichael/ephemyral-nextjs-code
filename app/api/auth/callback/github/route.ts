@@ -1,4 +1,4 @@
-import { getProjectById, updateProject } from "@/db/queries/projects-queries"
+import { associateWorkspace } from "@/db/queries/workspaces-queries"
 import { revalidatePath } from "next/cache"
 import { redirect } from "next/navigation"
 
@@ -17,28 +17,23 @@ export async function GET(req: Request) {
     )
   }
 
-  const { projectId } = JSON.parse(decodeURIComponent(state))
+  const { workspaceId } = JSON.parse(decodeURIComponent(state))
 
-  let project = null
   try {
-    try {
-      project = await getProjectById(projectId)
-
-      if (!project) {
-        throw new Error("Project not found")
-      }
-
-      await updateProject(project.id, {
-        githubInstallationId: installationId
-      })
-
-      revalidatePath(`/`)
-    } catch (error) {
-      console.error("Error authenticating:", error)
+    const github = await getGitHubClient()
+    const installation = await github.apps.getInstallation({ installation_id: installationId })
+    
+    if (installation.data.account) {
+      await associateWorkspace(
+        installation.data.account.id.toString(),
+        installation.data.account.login
+      )
     }
+
+    revalidatePath(`/`)
   } catch (error: any) {
     console.error("Error in GitHub callback:", error)
   }
 
-  return redirect(`/${project?.workspaceId}/${project?.id}/settings`)
+  return redirect(`/${workspaceId}`)
 }

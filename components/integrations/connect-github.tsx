@@ -17,24 +17,24 @@ export const ConnectGitHub: FC<ConnectGitHubProps> = ({
 
   const [isConnecting, setIsConnecting] = useState(false)
 
-  const projectId = params.projectId as string
+  const workspaceId = params.workspaceId as string
 
   const handleConnect = async () => {
     try {
-      if (!projectId) {
-        throw new Error("Project ID not found")
+      if (!workspaceId) {
+        throw new Error("Workspace ID not found")
       }
 
       setIsConnecting(true)
 
-      const state = encodeURIComponent(JSON.stringify({ projectId }))
-      const baseUrl = `https://github.com/apps/${process.env.NEXT_PUBLIC_GITHUB_APP_NAME}/installations/select_target`
+      const state = encodeURIComponent(JSON.stringify({ workspaceId }))
+      const baseUrl = `https://github.com/apps/${process.env.NEXT_PUBLIC_GITHUB_APP_NAME}/installations/new`
       const githubUrl = `${baseUrl}?state=${state}`
 
       router.push(githubUrl)
     } catch (error) {
       console.error("GitHub connection error:", error)
-      router.push(`/projects`)
+      router.push(`/workspaces`)
     } finally {
       setIsConnecting(false)
     }

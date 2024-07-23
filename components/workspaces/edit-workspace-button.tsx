@@ -14,7 +14,7 @@ export function EditWorkspaceButton({
   const router = useRouter()
 
   const handleClick = () => {
-    router.push(`/${workspaceId}/edit`)
+    router.push(`https://github.com/organizations/${workspaceId}/settings/profile`)
   }
 
   return (
@@ -24,7 +24,7 @@ export function EditWorkspaceButton({
         className="hover:bg-muted flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm"
       >
         <Settings className="size-4" />
-        <div>Workspace Settings</div>
+        <div>Organization Settings</div>
       </div>
     </div>
   )

@@ -9,17 +9,34 @@ import {
   SelectProject,
   projectsTable
 } from "../schema/projects-schema"
-import { issuesTable } from "../schema/issues-schema"
+import { listOrganizationRepositories, createRepositoryInOrganization } from "@/services/github-api"
 
 export async function createProject(
-  data: Omit<InsertProject, "userId">
+  data: Omit<InsertProject, "userId" | "githubRepoId" | "githubRepoName" | "githubDefaultBranch">,
+  installationId: number | null
 ): Promise<SelectProject> {
   const userId = await getUserId()
 
   try {
+    const workspace = await db.query.workspaces.findFirst({
+      where: eq(workspacesTable.id, data.workspaceId)
+    })
+
+    if (!workspace) {
+      throw new Error("Workspace not found")
+    }
+
+    const repo = await createRepositoryInOrganization(workspace.githubOrgName, data.name, installationId)
+
     const [result] = await db
       .insert(projectsTable)
-      .values({ ...data, userId })
+      .values({
+        ...data,
+        userId,
+        githubRepoId: repo.id.toString(),
+        githubRepoName: repo.name,
+        githubDefaultBranch: repo.default_branch
+      })
       .returning()
     revalidatePath("/")
     return result
@@ -30,52 +47,75 @@ export async function createProject(
 }
 
 export async function getProjectById(
-  id: string
+  id: string,
+  installationId: number | null
 ): Promise<SelectProject | undefined> {
   try {
-    return await db.query.projects.findFirst({
+    const project = await db.query.projects.findFirst({
       where: eq(projectsTable.id, id)
     })
+
+    if (project) {
+      const workspace = await db.query.workspaces.findFirst({
+        where: eq(workspacesTable.id, project.workspaceId)
+      })
+
+      if (workspace) {
+        const repos = await listOrganizationRepositories(workspace.githubOrgName, installationId)
+        const repoDetails = repos.find(repo => repo.id.toString() === project.githubRepoId)
+        return { ...project, ...repoDetails }
+      }
+    }
+
+    return project
   } catch (error) {
     console.error(`Error getting project by id ${id}:`, error)
     throw error
   }
 }
 
-export async function getProjectsByUserId(): Promise<SelectProject[]> {
-  const userId = await getUserId()
-
+export async function getProjectsByWorkspaceId(
+  workspaceId: string,
+  installationId: number | null
+): Promise<SelectProject[]> {
   try {
-    return db.query.projects.findMany({
-      where: eq(projectsTable.userId, userId),
+    const projects = await db.query.projects.findMany({
+      where: eq(projectsTable.workspaceId, workspaceId),
       orderBy: desc(projectsTable.updatedAt)
     })
+
+    const workspace = await db.query.workspaces.findFirst({
+      where: eq(workspacesTable.id, workspaceId)
+    })
+
+    if (workspace) {
+      const repos = await listOrganizationRepositories(workspace.githubOrgName, installationId)
+      return projects.map(project => {
+        const repoDetails = repos.find(repo => repo.id.toString() === project.githubRepoId)
+        return { ...project, ...repoDetails }
+      })
+    }
+
+    return projects
   } catch (error) {
-    console.error("Error getting projects for user:", error)
+    console.error(`Error getting projects for workspace ${workspaceId}:`, error)
     throw error
   }
 }
 
-export async function getProjectsByWorkspaceId(
-  workspaceId: string
-): Promise<SelectProject[]> {
-  return db.query.projects.findMany({
-    where: eq(projectsTable.workspaceId, workspaceId),
-    orderBy: desc(projectsTable.updatedAt)
-  })
-}
-
-export async function getAllProjects(): Promise<SelectProject[]> {
-  return db.query.projects.findMany({
-    orderBy: desc(projectsTable.updatedAt)
-  })
-}
-
 export async function updateProject(
   id: string,
-  data: Partial<InsertProject>
+  data: Partial<InsertProject>,
+  installationId: number | null
 ): Promise<void> {
   try {
+    const project = await getProjectById(id, installationId)
+    if (!project) {
+      throw new Error("Project not found")
+    }
+
+    // Here you would update the GitHub repository if needed
+    // For now, we'll just update the local database
     await db
       .update(projectsTable)
       .set(data)
@@ -87,24 +127,15 @@ export async function updateProject(
   }
 }
 
-export async function getMostRecentIssueWithinProjects(
-  workspaceId: string
-): Promise<{ projectId: string } | undefined> {
-  const result = await db
-    .select({
-      projectId: projectsTable.id
-    })
-    .from(issuesTable)
-    .innerJoin(projectsTable, eq(issuesTable.projectId, projectsTable.id))
-    .where(eq(projectsTable.workspaceId, workspaceId))
-    .orderBy(desc(issuesTable.updatedAt))
-    .limit(1)
-
-  return result[0] ? { projectId: result[0].projectId } : undefined
-}
-
-export async function deleteProject(id: string): Promise<void> {
+export async function deleteProject(id: string, installationId: number | null): Promise<void> {
   try {
+    const project = await getProjectById(id, installationId)
+    if (!project) {
+      throw new Error("Project not found")
+    }
+
+    // Here you would delete the GitHub repository if needed
+    // For now, we'll just delete from the local database
     await db.delete(projectsTable).where(and(eq(projectsTable.id, id)))
     revalidatePath("/")
   } catch (error) {

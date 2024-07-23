@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { integer, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core"
 import { instructionsTable } from "./instructions-schema"
 import { templatesTable } from "./templates-schema"
 import { workspacesTable } from "./workspaces-schema"
@@ -14,9 +14,9 @@ export const projectsTable = pgTable("projects", {
       onDelete: "cascade"
     }),
   name: text("name").notNull(),
-  githubRepoFullName: text("github_repo_full_name"),
-  githubTargetBranch: text("github_target_branch"),
-  githubInstallationId: integer("github_installation_id"),
+  githubRepoId: text("github_repo_id").notNull(),
+  githubRepoName: text("github_repo_name").notNull(),
+  githubDefaultBranch: text("github_default_branch").notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
     .notNull()

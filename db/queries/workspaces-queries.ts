@@ -1,90 +1,67 @@
 "use server"
 
 import { getUserId } from "@/actions/auth/auth"
-import { and, desc, eq } from "drizzle-orm"
+import { fetchUserOrganizations, getOrganizationDetails } from "@/services/github-api"
 import { revalidatePath } from "next/cache"
 import { db } from "../db"
-import {
-  InsertWorkspace,
-  SelectWorkspace,
-  workspacesTable
-} from "../schema/workspaces-schema"
+import { InsertWorkspace, SelectWorkspace, workspacesTable } from "../schema/workspaces-schema"
+import { eq } from "drizzle-orm"
 
-export async function createWorkspace(
-  data: Omit<InsertWorkspace, "userId">
+export async function associateWorkspace(
+  githubOrgId: string,
+  githubOrgName: string
 ): Promise<SelectWorkspace> {
   const userId = await getUserId()
 
   try {
     const [result] = await db
       .insert(workspacesTable)
-      .values({ ...data, userId })
+      .values({ userId, githubOrgId, githubOrgName })
       .returning()
     revalidatePath("/")
     return result
   } catch (error) {
-    console.error("Error creating workspace record:", error)
+    console.error("Error associating workspace:", error)
     throw error
   }
 }
 
 export async function getWorkspaceById(
-  id: string
+  id: string,
+  installationId: number | null
 ): Promise<SelectWorkspace | undefined> {
   try {
-    return await db.query.workspaces.findFirst({
+    const workspace = await db.query.workspaces.findFirst({
       where: eq(workspacesTable.id, id)
     })
+
+    if (workspace) {
+      const orgDetails = await getOrganizationDetails(workspace.githubOrgName, installationId)
+      return { ...workspace, ...orgDetails }
+    }
+
+    return undefined
   } catch (error) {
     console.error(`Error getting workspace by id ${id}:`, error)
     throw error
   }
 }
 
-export async function getWorkspacesByUserId(): Promise<SelectWorkspace[]> {
+export async function getWorkspacesByUserId(installationId: number | null): Promise<SelectWorkspace[]> {
   const userId = await getUserId()
 
   try {
-    return await db.query.workspaces.findMany({
-      where: eq(workspacesTable.userId, userId),
-      orderBy: desc(workspacesTable.createdAt)
+    const userOrgs = await fetchUserOrganizations(installationId)
+    const workspaces = await db.query.workspaces.findMany({
+      where: eq(workspacesTable.userId, userId)
+    })
+
+    return workspaces.map(workspace => {
+      const matchingOrg = userOrgs.find(org => org.id.toString() === workspace.githubOrgId)
+      return { ...workspace, ...matchingOrg }
     })
   } catch (error) {
-    console.error("Error getting all workspaces:", error)
-    throw error
-  }
-}
-
-export async function getWorkspaceByLinearOrganizationId(
-  linearOrganizationId: string
-): Promise<SelectWorkspace | undefined> {
-  return db.query.workspaces.findFirst({
-    where: eq(workspacesTable.linearOrganizationId, linearOrganizationId)
-  })
-}
-
-export async function updateWorkspace(
-  id: string,
-  data: Partial<InsertWorkspace>
-): Promise<void> {
-  try {
-    await db
-      .update(workspacesTable)
-      .set(data)
-      .where(and(eq(workspacesTable.id, id)))
-    revalidatePath("/")
-  } catch (error) {
-    console.error(`Error updating workspace ${id}:`, error)
-    throw error
-  }
-}
-
-export async function deleteWorkspace(id: string): Promise<void> {
-  try {
-    await db.delete(workspacesTable).where(and(eq(workspacesTable.id, id)))
-    revalidatePath("/")
-  } catch (error) {
-    console.error(`Error deleting workspace ${id}:`, error)
+    console.error("Error getting workspaces for user:", error)
     throw error
   }
 }
