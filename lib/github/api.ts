@@ -1,11 +1,19 @@
 import { Octokit } from "@octokit/rest";
 
-const octokit = new Octokit();
+// Initialize Octokit with environment variable
+const octokit = new Octokit({
+  auth: process.env.GITHUB_PAT
+});
 
-export async function fetchGitHubOrganizations(accessToken: string) {
-  octokit.auth({ type: 'oauth', token: accessToken });
-  const { data: organizations } = await octokit.orgs.listForAuthenticatedUser();
-  return organizations;
+export async function fetchGitHubOrganizations(): Promise<any[]> {
+  try {
+    // Fetch organizations for the authenticated user
+    const { data: organizations } = await octokit.orgs.listForAuthenticatedUser();
+    return organizations;
+  } catch (error) {
+    console.error("Error fetching GitHub organizations:", error);
+    throw new Error("Failed to fetch GitHub organizations");
+  }
 }
 
 export async function getGitHubAccessToken(code: string) {

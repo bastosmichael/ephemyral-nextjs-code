@@ -1,6 +1,7 @@
-import { getGitHubAccessToken, fetchGitHubOrganizations } from "@/lib/github/api"
-import { revalidatePath } from "next/cache"
-import { redirect } from "next/navigation"
+import {
+  getGitHubAccessToken,
+  fetchGitHubOrganizations
+} from "@/lib/github/api"
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
@@ -15,16 +16,21 @@ export async function GET(req: Request) {
     const organizations = await fetchGitHubOrganizations(accessToken)
 
     // Store the access token and organizations in the session
-    // This is a simplified example. In a real app, you'd want to use a proper session management solution.
     const session = { accessToken, organizations }
-    
-    // In a real app, you'd set this session data securely, possibly using encrypted cookies or a server-side session store
-    const sessionCookie = Buffer.from(JSON.stringify(session)).toString('base64')
-    
-    const headers = new Headers()
-    headers.append('Set-Cookie', `session=${sessionCookie}; Path=/; HttpOnly; Secure; SameSite=Strict`)
 
-    return redirect("/select-organization", { headers })
+    // Create a session cookie (for demonstration, consider using a more secure approach in production)
+    const sessionCookie = Buffer.from(JSON.stringify(session)).toString(
+      "base64"
+    )
+
+    const headers = new Headers()
+    headers.append(
+      "Set-Cookie",
+      `session=${sessionCookie}; Path=/; HttpOnly; Secure; SameSite=Strict`
+    )
+    headers.append("Location", "/select-organization")
+
+    return new Response(null, { status: 302, headers })
   } catch (error: any) {
     console.error("Error in GitHub callback:", error)
     return new Response("Error during GitHub authentication", { status: 500 })

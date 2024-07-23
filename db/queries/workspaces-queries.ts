@@ -17,8 +17,7 @@ export async function createWorkspace(
   const userId = await getUserId()
 
   try {
-    const githubAccessToken = await getGitHubAccessToken(/* code from GitHub OAuth flow */);
-    const organizations = await fetchGitHubOrganizations(githubAccessToken);
+    const organizations = await fetchGitHubOrganizations();
     
     // For simplicity, we're using the first organization. In a real app, you'd want to let the user choose.
     const selectedOrg = organizations[0];
