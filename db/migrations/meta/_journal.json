@@ -6,7 +6,91 @@
       "idx": 0,
       "version": "7",
       "when": 1721203602599,
-      "tag": "0000_burly_ben_urich",
+      "tag": "0000_initialize_extensions",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1721203602600,
+      "tag": "0001_create_embedded_branches",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1721203602601,
+      "tag": "0002_create_embedded_files",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1721203602602,
+      "tag": "0003_create_instructions",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1721203602603,
+      "tag": "0004_create_issue_messages",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1721203602604,
+      "tag": "0005_create_issues",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1721203602605,
+      "tag": "0006_create_issues_to_instructions",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1721203602606,
+      "tag": "0007_create_profiles",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1721203602607,
+      "tag": "0008_create_projects",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1721203602608,
+      "tag": "0009_create_templates",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1721203602609,
+      "tag": "0010_create_templates_to_instructions",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1721203602610,
+      "tag": "0011_create_workspaces",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1721203602611,
+      "tag": "0012_add_foreign_keys_and_indexes",
       "breakpoints": true
     }
   ]

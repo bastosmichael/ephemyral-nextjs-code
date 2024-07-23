@@ -66,12 +66,8 @@
           "name": "embedded_branches_project_id_projects_id_fk",
           "tableFrom": "embedded_branches",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -176,12 +172,8 @@
           "name": "embedded_files_project_id_projects_id_fk",
           "tableFrom": "embedded_files",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -189,12 +181,8 @@
           "name": "embedded_files_embedded_branch_id_embedded_branches_id_fk",
           "tableFrom": "embedded_files",
           "tableTo": "embedded_branches",
-          "columnsFrom": [
-            "embedded_branch_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["embedded_branch_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -258,12 +246,8 @@
           "name": "instructions_project_id_projects_id_fk",
           "tableFrom": "instructions",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -321,12 +305,8 @@
           "name": "issue_messages_issue_id_issues_id_fk",
           "tableFrom": "issue_messages",
           "tableTo": "issues",
-          "columnsFrom": [
-            "issue_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["issue_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -409,12 +389,8 @@
           "name": "issues_project_id_projects_id_fk",
           "tableFrom": "issues",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -445,12 +421,8 @@
           "name": "issues_to_instructions_issue_id_issues_id_fk",
           "tableFrom": "issues_to_instructions",
           "tableTo": "issues",
-          "columnsFrom": [
-            "issue_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["issue_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -458,12 +430,8 @@
           "name": "issues_to_instructions_instruction_id_instructions_id_fk",
           "tableFrom": "issues_to_instructions",
           "tableTo": "instructions",
-          "columnsFrom": [
-            "instruction_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["instruction_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -471,10 +439,7 @@
       "compositePrimaryKeys": {
         "issues_to_instructions_issue_id_instruction_id_pk": {
           "name": "issues_to_instructions_issue_id_instruction_id_pk",
-          "columns": [
-            "issue_id",
-            "instruction_id"
-          ]
+          "columns": ["issue_id", "instruction_id"]
         }
       },
       "uniqueConstraints": {}
@@ -577,12 +542,8 @@
           "name": "projects_workspace_id_workspaces_id_fk",
           "tableFrom": "projects",
           "tableTo": "workspaces",
-          "columnsFrom": [
-            "workspace_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["workspace_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -646,12 +607,8 @@
           "name": "templates_project_id_projects_id_fk",
           "tableFrom": "templates",
           "tableTo": "projects",
-          "columnsFrom": [
-            "project_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["project_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -682,12 +639,8 @@
           "name": "templates_to_instructions_template_id_templates_id_fk",
           "tableFrom": "templates_to_instructions",
           "tableTo": "templates",
-          "columnsFrom": [
-            "template_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["template_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         },
@@ -695,12 +648,8 @@
           "name": "templates_to_instructions_instruction_id_instructions_id_fk",
           "tableFrom": "templates_to_instructions",
           "tableTo": "instructions",
-          "columnsFrom": [
-            "instruction_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["instruction_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -708,10 +657,7 @@
       "compositePrimaryKeys": {
         "templates_to_instructions_template_id_instruction_id_pk": {
           "name": "templates_to_instructions_template_id_instruction_id_pk",
-          "columns": [
-            "template_id",
-            "instruction_id"
-          ]
+          "columns": ["template_id", "instruction_id"]
         }
       },
       "uniqueConstraints": {}
