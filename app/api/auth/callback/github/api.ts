@@ -31,6 +31,18 @@ export async function fetchUserGitHubAccount(): Promise<any> {
   }
 }
 
+export async function fetchGitHubRepositories(orgId: string): Promise<any[]> {
+  try {
+    const { data: repositories } = await octokit.repos.listForOrg({
+      org: orgId
+    })
+    return repositories
+  } catch (error) {
+    console.error("Error fetching GitHub repositories:", error)
+    throw new Error("Failed to fetch GitHub repositories")
+  }
+}
+
 export async function getGitHubAccessToken(code: string) {
   const response = await fetch("https://github.com/login/oauth/access_token", {
     method: "POST",

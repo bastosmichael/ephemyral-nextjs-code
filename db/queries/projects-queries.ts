@@ -10,6 +10,47 @@ import {
   projectsTable
 } from "../schema/projects-schema"
 import { issuesTable } from "../schema/issues-schema"
+import { fetchGitHubRepositories } from "@/app/api/auth/callback/github/api"
+
+export async function createProjects(workspaces: any[]): Promise<any[]> {
+  try {
+    const projectCreationPromises = workspaces.map(async workspace => {
+      if (workspace.githubOrganizationId) {
+        const repositories = await fetchGitHubRepositories(
+          workspace.githubOrganizationId
+        )
+
+        // Log the repositories
+        console.log("Repositories for workspace", workspace.id, repositories)
+
+        const projects = await Promise.all(
+          repositories.map(repo => {
+            return createProject({
+              name: repo.name,
+              workspaceId: workspace.id,
+              repositoryId: repo.id // Passing repository ID
+            })
+          })
+        )
+
+        // Log the created projects
+        console.log("Created projects for workspace", workspace.id, projects)
+
+        return projects
+      } else {
+        throw new Error("Workspace GitHub organization ID is undefined")
+      }
+    })
+
+    const projects = await Promise.all(projectCreationPromises)
+
+    // Flatten the array of projects
+    return projects.flat()
+  } catch (error) {
+    console.error("Error creating projects:", error)
+    throw error
+  }
+}
 
 export async function createProject(
   data: Omit<InsertProject, "userId">

@@ -4,7 +4,8 @@ import { GitHubRepository } from "@/types/github"
 import { getAuthenticatedOctokit } from "./auth"
 
 export const listRepos = async (
-  installationId: number | null
+  installationId: number | null,
+  organizationId: string | null
 ): Promise<GitHubRepository[]> => {
   try {
     const octokit = await getAuthenticatedOctokit(installationId)
@@ -31,6 +32,13 @@ export const listRepos = async (
 
       if (response.data.length < per_page) break
       page++
+    }
+
+    // Filter repositories by organization ID
+    if (organizationId) {
+      repositories = repositories.filter(
+        repo => repo.owner && repo.owner.login === organizationId
+      )
     }
 
     return repositories
