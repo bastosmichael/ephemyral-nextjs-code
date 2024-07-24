@@ -75,7 +75,7 @@ Ephemyral offers two setup modes: Simple and Advanced. Choose the one that best 
    After setting up your database, run the migrations:
 
    ```bash
-   npm run migrate
+   npm run db:migrate
    ```
 
 5. **Set Up GitHub PAT**
@@ -132,7 +132,7 @@ To deploy Ephemyral to Vercel:
 5. Once deployed, configure your database by running the migrations:
    ```bash
    npx vercel env pull .env.local
-   npm run migrate
+   npm run db:migrate
    ```
 
 For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.ephemyral.ai/deployment).
