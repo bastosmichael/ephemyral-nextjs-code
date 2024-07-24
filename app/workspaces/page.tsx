@@ -33,11 +33,11 @@ export default async function WorkspacesPage() {
         </div>
       ) : (
         <div className="flex w-full max-w-[300px] flex-col items-center justify-center gap-4">
-          <div className="text-2xl font-bold">Select a workspace.</div>
+          <div className="text-2xl font-bold">Select an Organization</div>
           {workspaces.map(workspace => (
             <Link
               key={workspace.id}
-              href={`/${workspace.id}`}
+              href={`/${workspace.id}/edit`}
               className="bg-secondary border-primary/20 group relative flex w-full items-center gap-2 rounded border p-4 hover:opacity-80"
             >
               <div>{`${workspace.name}`}</div>

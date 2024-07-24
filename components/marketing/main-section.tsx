@@ -14,13 +14,13 @@ export default function MainSection() {
 
       <p className="text-primary/80 mb-12 text-lg tracking-tight md:text-xl">
         Integrate with GitHub, <br className="hidden md:block" />
-        access your repositories and issues, <br className="hidden md:block" />
+        access your repositories with issues, <br className="hidden md:block" />
         and create ML-driven PRs effortlessly!
       </p>
 
       <Link href="/onboarding">
         <Button>
-          <span>Get started </span>
+          <span>Connect GitHub </span>
           <ArrowRightIcon className="ml-1 size-4" />
         </Button>
       </Link>
