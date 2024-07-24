@@ -10,15 +10,14 @@ import {
   projectsTable
 } from "../schema/projects-schema"
 import { issuesTable } from "../schema/issues-schema"
-import { fetchGitHubRepositories } from "@/app/api/auth/callback/github/api"
+import { listRepos } from "@/actions/github/list-repos"
 
 export async function createProjects(workspaces: any[]): Promise<any[]> {
   try {
     const projectCreationPromises = workspaces.map(async workspace => {
       if (workspace.githubOrganizationId) {
-        const repositories = await fetchGitHubRepositories(
-          workspace.githubOrganizationId
-        )
+        const organizationId = workspace.githubOrganizationName
+        const repositories = await listRepos(null, organizationId) // Assuming no installation ID for simplicity
 
         // Log the repositories
         console.log("Repositories for workspace", workspace.id, repositories)
@@ -28,7 +27,8 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
             return createProject({
               name: repo.name,
               workspaceId: workspace.id,
-              repositoryId: repo.id // Passing repository ID
+              githubRepoId: repo.id,
+              githubRepoFullName: repo.full_name
             })
           })
         )
