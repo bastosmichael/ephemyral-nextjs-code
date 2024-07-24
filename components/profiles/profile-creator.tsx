@@ -18,7 +18,7 @@ export const ProfileCreator = () => {
 
         // Assuming you want to navigate to the first project's issues page
         if (projects.length > 0) {
-          router.push(`/${projects[0].workspaceId}/${projects[0].id}/issues`)
+          router.push(`/workspaces`)
         }
       } catch (error) {
         console.error(error)

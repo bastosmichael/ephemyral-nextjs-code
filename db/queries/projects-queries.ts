@@ -11,6 +11,7 @@ import {
 } from "../schema/projects-schema"
 import { issuesTable } from "../schema/issues-schema"
 import { listRepos } from "@/actions/github/list-repos"
+import { listBranches } from "@/actions/github/list-branches"
 
 export async function createProjects(workspaces: any[]): Promise<any[]> {
   try {
@@ -23,12 +24,21 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
         console.log("Repositories for workspace", workspace.id, repositories)
 
         const projects = await Promise.all(
-          repositories.map(repo => {
+          repositories.map(async repo => {
+            let githubTargetBranch = null
+            const branches = await listBranches(null, repo.full_name)
+            if (branches.includes("main")) {
+              githubTargetBranch = "main"
+            } else if (branches.includes("master")) {
+              githubTargetBranch = "master"
+            }
+
             return createProject({
               name: repo.name,
               workspaceId: workspace.id,
-              githubRepoId: repo.id,
-              githubRepoFullName: repo.full_name
+              githubRepoId: repo.id, // Passing repository ID as INTEGER
+              githubRepoFullName: repo.full_name, // Assigning repo.full_name to githubRepoFullName
+              githubTargetBranch: githubTargetBranch // Assigning target branch if exists
             })
           })
         )
