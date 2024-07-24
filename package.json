@@ -19,7 +19,7 @@
     "proxy": "tsx scripts/webhook-proxy/proxy.ts"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^0.0.30",
+    "@ai-sdk/anthropic": "^0.0.31",
     "@ai-sdk/google": "^0.0.27",
     "@ai-sdk/openai": "^0.0.37",
     "@anthropic-ai/sdk": "^0.24.3",
