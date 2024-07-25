@@ -74,7 +74,9 @@ export const IssueView: React.FC<IssueViewProps> = ({
     content: string
     name: string
   } | null>(null)
-  const [isRunning, setIsRunning] = React.useState(false)
+  const [isRunningAI, setIsRunningAI] = React.useState(false)
+  const [isRunningAnthropic, setIsRunningAnthropic] = React.useState(false)
+  const [isRunningLlama, setIsRunningLlama] = React.useState(false)
   const [messages, setMessages] = useState<SelectIssueMessage[]>([])
 
   const sequenceRef = useRef(globalSequence)
@@ -121,10 +123,16 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
-  const handleRun = async (issue: SelectIssue) => {
+  const handleRun = async (issue: SelectIssue, runner: string) => {
     if (!project.githubRepoFullName || !project.githubTargetBranch) {
       alert("Please connect your project to a GitHub repository first.")
       return
+    }
+
+    const setIsRunning = (state: boolean) => {
+      if (runner === 'AI') setIsRunningAI(state)
+      else if (runner === 'Anthropic') setIsRunningAnthropic(state)
+      else if (runner === 'Llama') setIsRunningLlama(state)
     }
 
     setIsRunning(true)
@@ -203,7 +211,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       )
 
       await updateIssue(issue.id, {
-        status: "completed",
+        status: `completed_${runner.toLowerCase()}`,
         prLink: prLink || undefined,
         prBranch: branchName
       })
@@ -222,7 +230,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
-  const handleRerun = async (issue: SelectIssue) => {
+  const handleRerun = async (issue: SelectIssue, runner: string) => {
     if (issue.prLink && issue.prBranch) {
       await deleteGitHubPR(project, issue.prLink, issue.prBranch)
     }
@@ -231,7 +239,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       prBranch: null,
       status: "ready"
     })
-    await handleRun(issue)
+    await handleRun(issue, runner)
   }
 
   return (
@@ -244,25 +252,80 @@ export const IssueView: React.FC<IssueViewProps> = ({
         <Button
           variant="create"
           size="sm"
+          className="bg-blue-600 hover:bg-blue-700"
           onClick={() =>
-            item.status === "completed" ? handleRerun(item) : handleRun(item)
+            item.status === "completed_ai" ? handleRerun(item, 'AI') : handleRun(item, 'AI')
           }
-          disabled={isRunning}
+          disabled={isRunningAI || isRunningAnthropic || isRunningLlama}
         >
-          {isRunning ? (
+          {isRunningAI ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />
-              Running...
+              Running OpenAI...
             </>
-          ) : item.status === "completed" ? (
+          ) : item.status === "completed_ai" ? (
             <>
               <RefreshCw className="mr-2 size-4" />
-              Run Again
+              Run OpenAI Again
             </>
           ) : (
             <>
               <Play className="mr-2 size-4" />
-              Run
+              Run OpenAI
+            </>
+          )}
+        </Button>
+
+        <Button
+          variant="create"
+          size="sm"
+          className="bg-green-600 hover:bg-green-700"
+          onClick={() =>
+            item.status === "completed_anthropic" ? handleRerun(item, 'Anthropic') : handleRun(item, 'Anthropic')
+          }
+          disabled={isRunningAI || isRunningAnthropic || isRunningLlama}
+        >
+          {isRunningAnthropic ? (
+            <>
+              <Loader2 className="mr-2 size-4 animate-spin" />
+              Running Anthropic...
+            </>
+          ) : item.status === "completed_anthropic" ? (
+            <>
+              <RefreshCw className="mr-2 size-4" />
+              Run Anthropic Again
+            </>
+          ) : (
+            <>
+              <Play className="mr-2 size-4" />
+              Run Anthropic
+            </>
+          )}
+        </Button>
+
+        <Button
+          variant="create"
+          size="sm"
+          className="bg-purple-600 hover:bg-purple-700"
+          onClick={() =>
+            item.status === "completed_llama" ? handleRerun(item, 'Llama') : handleRun(item, 'Llama')
+          }
+          disabled={isRunningAI || isRunningAnthropic || isRunningLlama}
+        >
+          {isRunningLlama ? (
+            <>
+              <Loader2 className="mr-2 size-4 animate-spin" />
+              Running Llama...
+            </>
+          ) : item.status === "completed_llama" ? (
+            <>
+              <RefreshCw className="mr-2 size-4" />
+              Run Llama Again
+            </>
+          ) : (
+            <>
+              <Play className="mr-2 size-4" />
+              Run Llama
             </>
           )}
         </Button>
