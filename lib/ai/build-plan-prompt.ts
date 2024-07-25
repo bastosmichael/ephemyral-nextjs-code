@@ -25,12 +25,7 @@ export const buildCodePlanPrompt = async ({
         
         Your goal is to break down the given issue into clear, actionable steps that another developer can follow to complete the task.
         
-        Create a detailed implementation plan for the given issue. Your plan should:
-    
-        - Stick to the task at hand.
-        - Break down the task into clear, logical steps.
-        - Ensure the plan is detailed enough to allow another developer to implement the task.
-        - Be 100% correct and complete.
+        Create a condensed implementation plan for the given issue. Stick to the task at hand and be short to the point.
     
         Note: Focus solely on the technical implementation. Ignore any mentions of human tasks or non-technical aspects.
     

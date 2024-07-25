@@ -123,6 +123,15 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
+  const handlePRCreation = async (prLink: string, prMessageId: string) => {
+    if (prLink) {
+      window.open(prLink, '_blank'); // Open the PR link in a new tab
+      await updateMessage(prMessageId, `Generated GitHub PR: [${prLink}](${prLink})`);
+    } else {
+      await updateMessage(prMessageId, "Failed to create PR");
+    }
+  };
+
   const handleRun = async (issue: SelectIssue, runner: string) => {
     if (!project.githubRepoFullName || !project.githubTargetBranch) {
       alert("Please connect your project to a GitHub repository first.")
@@ -153,7 +162,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       })
 
       await updateIssue(issue.id, { status: "in_progress" })
-      
+
       let planMessageContent = ""
       if (runner === 'AI') {
         planMessageContent = "Generating plan using OpenAI..."
@@ -196,7 +205,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       ])
 
       await updateMessage(planMessage.id, aiCodePlanResponse)
-      const prMessage = await addMessage("Generating PR...")
+      const prMessage = await addMessage("Generating GitHub PR...")
 
       const codegenPrompt = await buildCodeGenPrompt({
         issue: { title: issue.name, description: issue.content },
@@ -226,11 +235,8 @@ export const IssueView: React.FC<IssueViewProps> = ({
         prBranch: branchName
       })
 
-      if (prLink) {
-        await updateMessage(prMessage.id, `GitHub PR: ${prLink}`)
-      } else {
-        await updateMessage(prMessage.id, "Failed to create PR")
-      }
+      await handlePRCreation(prLink, prMessage.id);
+
     } catch (error) {
       console.error("Failed to run issue:", error)
       await addMessage(`Error: Failed to run issue: ${error}`)
