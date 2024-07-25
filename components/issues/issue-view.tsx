@@ -153,7 +153,17 @@ export const IssueView: React.FC<IssueViewProps> = ({
       })
 
       await updateIssue(issue.id, { status: "in_progress" })
-      const planMessage = await addMessage("Generating plan...")
+      
+      let planMessageContent = ""
+      if (runner === 'AI') {
+        planMessageContent = "Generating plan using OpenAI..."
+      } else if (runner === 'Anthropic') {
+        planMessageContent = "Generating plan using Anthropic..."
+      } else if (runner === 'Llama') {
+        planMessageContent = "Generating plan using Llama..."
+      }
+
+      const planMessage = await addMessage(planMessageContent)
 
       const embeddingsQueryText = `${issue.name} ${issue.content}`
 
