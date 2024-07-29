@@ -235,7 +235,11 @@ export const IssueView: React.FC<IssueViewProps> = ({
         prBranch: branchName
       })
 
-      await handlePRCreation(prLink, prMessage.id);
+      if (prLink) {
+        await handlePRCreation(prLink, prMessage.id);
+      } else {
+        await updateMessage(prMessage.id, "Failed to create PR");
+      }
 
     } catch (error) {
       console.error("Failed to run issue:", error)
