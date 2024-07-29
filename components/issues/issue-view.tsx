@@ -81,10 +81,15 @@ export const IssueView: React.FC<IssueViewProps> = ({
   const [messages, setMessages] = useState<SelectIssueMessage[]>([])
 
   const sequenceRef = useRef(globalSequence)
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     fetchMessages()
   }, [item.id])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages, isCreatingPR, isRunningAI, isRunningAnthropic, isRunningLlama])
 
   const addMessage = async (content: string) => {
     const newMessage = await createIssueMessageRecord({
@@ -259,6 +264,10 @@ export const IssueView: React.FC<IssueViewProps> = ({
         instructionsContext
       })
 
+      if (issue.prLink && issue.prBranch) {
+        await deleteGitHubPR(project, issue.prLink, issue.prBranch)
+      }
+
       await updateIssue(issue.id, {
         status: `completed`,
         prLink: null,
@@ -292,6 +301,12 @@ export const IssueView: React.FC<IssueViewProps> = ({
       codeGenResponse: null
     })
     await handleRun(issue, runner)
+  }
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
+    }
   }
 
   return (
@@ -382,49 +397,6 @@ export const IssueView: React.FC<IssueViewProps> = ({
           )}
         </Button>
 
-        {(item.status === "completed" || item.status === "failed") && !item.prLink && (
-          <Button
-            variant="create"
-            size="sm"
-            className="bg-teal-600 hover:bg-teal-700"
-            onClick={() => handlePRCreation(item)}
-            disabled={isCreatingPR}
-          >
-            {isCreatingPR ? (
-              <>
-                <Loader2 className="mr-2 size-4 animate-spin" />
-                Creating PR...
-              </>
-            ) : (
-              <>
-                <Play className="mr-2 size-4" />
-                Create PR
-              </>
-            )}
-          </Button>
-        )}
-
-        {item.prLink && (
-          <Button
-            variant="create"
-            size="sm"
-            className="bg-teal-600 hover:bg-teal-700"
-            onClick={() => handlePRCreation(item)}
-          >
-            {isCreatingPR ? (
-              <>
-                <Loader2 className="mr-2 size-4 animate-spin" />
-                Regenerating PR...
-              </>
-            ) : (
-              <>
-                <RefreshCw className="mr-2 size-4" />
-                Regenerate PR
-              </>
-            )}
-          </Button>
-        )}
-
         <Button
           variant="outline"
           size="sm"
@@ -504,6 +476,64 @@ export const IssueView: React.FC<IssueViewProps> = ({
             </Card>
           </React.Fragment>
         ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <div className="my-6"></div>
+
+      <div className="mb-4 flex justify-start gap-2">
+        {(item.status === "completed" || item.status === "failed") && !item.prLink && (
+          <>
+            <Button
+              variant="create"
+              size="sm"
+              className="bg-teal-600 hover:bg-teal-700"
+              onClick={() => handlePRCreation(item)}
+              disabled={isCreatingPR}
+            >
+              {(isCreatingPR && !item.codeGenResponse) ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  Creating PR...
+                </>
+              ) : (
+                <>
+                  <Play className="mr-2 size-4" />
+                  Create PR
+                </>
+              )}
+            </Button>
+            <Button
+              variant="destructive"
+              size="sm"
+              onClick={handleDelete}
+            >
+              <Trash2 className="mr-2 size-4" />
+              Delete
+            </Button>
+          </>
+        )}
+
+        {item.prLink && (
+          <Button
+            variant="create"
+            size="sm"
+            className="bg-teal-600 hover:bg-teal-700"
+            onClick={() => handlePRCreation(item)}
+          >
+            {isCreatingPR ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" />
+                Regenerating PR...
+              </>
+            ) : (
+              <>
+                <RefreshCw className="mr-2 size-4" />
+                Regenerate PR
+              </>
+            )}
+          </Button>
+        )}
       </div>
 
       <Dialog
