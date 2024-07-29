@@ -92,13 +92,6 @@
       "when": 1721203602611,
       "tag": "0012_add_foreign_keys_and_indexes",
       "breakpoints": true
-    },
-    {
-      "idx": 13,
-      "version": "7",
-      "when": 1721203602612,
-      "tag": "0013_add_github_organization_columns",
-      "breakpoints": true
     }
   ]
 }
