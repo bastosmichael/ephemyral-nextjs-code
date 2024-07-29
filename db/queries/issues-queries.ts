@@ -40,11 +40,16 @@ export async function updateIssue(
   id: string,
   data: Partial<InsertIssue>
 ): Promise<SelectIssue> {
-  const [updatedIssue] = await db
+  const updateQuery = db
     .update(issuesTable)
     .set(data)
     .where(eq(issuesTable.id, id))
-    .returning()
+
+  if (Object.keys(data).length === 0) {
+    throw new Error("No fields provided to update")
+  }
+
+  const [updatedIssue] = await updateQuery.returning()
   revalidatePath("/")
   return updatedIssue
 }

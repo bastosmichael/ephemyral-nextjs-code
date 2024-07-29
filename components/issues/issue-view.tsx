@@ -77,6 +77,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
   const [isRunningAI, setIsRunningAI] = React.useState(false)
   const [isRunningAnthropic, setIsRunningAnthropic] = React.useState(false)
   const [isRunningLlama, setIsRunningLlama] = React.useState(false)
+  const [isCreatingPR, setIsCreatingPR] = React.useState(false)
   const [messages, setMessages] = useState<SelectIssueMessage[]>([])
 
   const sequenceRef = useRef(globalSequence)
@@ -123,14 +124,56 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
-  const handlePRCreation = async (prLink: string, prMessageId: string) => {
-    if (prLink) {
-      window.open(prLink, '_blank'); // Open the PR link in a new tab
-      await updateMessage(prMessageId, `Generated GitHub PR: [${prLink}](${prLink})`);
-    } else {
-      await updateMessage(prMessageId, "Failed to create PR");
+  const handlePRCreation = async (issue: SelectIssue) => {
+    try {
+      setIsCreatingPR(true);
+      let aiCodeGenResponse = null
+      if (issue.planResponse !== null) {
+        aiCodeGenResponse = await generateAIResponse([
+          { role: "user", content: issue.planResponse }
+        ])
+
+        await updateIssue(issue.id, {
+        codeGenResponse: aiCodeGenResponse
+        })      
+      } else {
+        aiCodeGenResponse = issue.codeGenResponse
+      }
+
+      let parsedAIResponse = null
+      if (aiCodeGenResponse !== null) {
+        parsedAIResponse = parseAIResponse(aiCodeGenResponse)
+      } else {
+        throw new Error("No code generation response found.")
+      }
+
+      const prMessage = await addMessage("Generating GitHub PR...")
+
+      const { prLink, branchName } = await generatePR(
+        issue.name.replace(/\s+/g, "-"),
+        project,
+        parsedAIResponse
+      )
+
+      if (issue.runner !== null) {
+        await updateIssue(issue.id, {
+          status: `completed`,
+          prLink: prLink || undefined,
+          prBranch: branchName
+        })
+
+        await updateMessage(prMessage.id, `Generated GitHub PR: [${prLink}](${prLink})`);
+        setIsCreatingPR(false);
+      } else {
+        throw new Error("No runner found.")
+      }
+    } catch (error) {
+      console.error("Failed to create PR:", error)
+      await addMessage(`Error: Failed to create PR: ${error}`)
+      await updateIssue(issue.id, { status: "failed" })
+      setIsCreatingPR(false);
     }
-  };
+  }
 
   const handleRun = async (issue: SelectIssue, runner: string) => {
     if (!project.githubRepoFullName || !project.githubTargetBranch) {
@@ -161,7 +204,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
         installationId: project.githubInstallationId
       })
 
-      await updateIssue(issue.id, { status: "in_progress" })
+      await updateIssue(issue.id, { status: "in_progress", runner })
 
       let planMessageContent = ""
       if (runner === 'AI') {
@@ -205,7 +248,6 @@ export const IssueView: React.FC<IssueViewProps> = ({
       ])
 
       await updateMessage(planMessage.id, aiCodePlanResponse)
-      const prMessage = await addMessage("Generating GitHub PR...")
 
       const codegenPrompt = await buildCodeGenPrompt({
         issue: { title: issue.name, description: issue.content },
@@ -217,29 +259,16 @@ export const IssueView: React.FC<IssueViewProps> = ({
         instructionsContext
       })
 
-      const aiCodeGenResponse = await generateAIResponse([
-        { role: "user", content: codegenPrompt }
-      ])
-
-      const parsedAIResponse = parseAIResponse(aiCodeGenResponse)
-
-      const { prLink, branchName } = await generatePR(
-        issue.name.replace(/\s+/g, "-"),
-        project,
-        parsedAIResponse
-      )
-
       await updateIssue(issue.id, {
-        status: `completed_${runner.toLowerCase()}`,
-        prLink: prLink || undefined,
-        prBranch: branchName
+        status: `completed`,
+        prLink: null,
+        prBranch: null,
+        runner,
+        planResponse: codegenPrompt,
+        codeGenResponse: null
       })
 
-      if (prLink) {
-        await handlePRCreation(prLink, prMessage.id);
-      } else {
-        await updateMessage(prMessage.id, "Failed to create PR");
-      }
+      await addMessage(`Completed ${runner}. Ready for PR creation.`);
 
     } catch (error) {
       console.error("Failed to run issue:", error)
@@ -257,7 +286,10 @@ export const IssueView: React.FC<IssueViewProps> = ({
     await updateIssue(issue.id, {
       prLink: null,
       prBranch: null,
-      status: "ready"
+      status: "ready",
+      runner: runner,
+      planResponse: null,
+      codeGenResponse: null
     })
     await handleRun(issue, runner)
   }
@@ -274,16 +306,16 @@ export const IssueView: React.FC<IssueViewProps> = ({
           size="sm"
           className="bg-blue-600 hover:bg-blue-700"
           onClick={() =>
-            item.status === "completed_ai" ? handleRerun(item, 'AI') : handleRun(item, 'AI')
+            item.runner === 'AI' && item.status === "completed" ? handleRerun(item, 'AI') : handleRun(item, 'AI')
           }
-          disabled={isRunningAI || isRunningAnthropic || isRunningLlama}
+          disabled={isRunningAI || isRunningAnthropic || isRunningLlama || isCreatingPR}
         >
           {isRunningAI ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />
               Running OpenAI...
             </>
-          ) : item.status === "completed_ai" ? (
+          ) : item.runner === 'AI' && item.status === "completed" ? (
             <>
               <RefreshCw className="mr-2 size-4" />
               Run OpenAI Again
@@ -301,16 +333,16 @@ export const IssueView: React.FC<IssueViewProps> = ({
           size="sm"
           className="bg-green-600 hover:bg-green-700"
           onClick={() =>
-            item.status === "completed_anthropic" ? handleRerun(item, 'Anthropic') : handleRun(item, 'Anthropic')
+            item.runner === 'Anthropic' && item.status === "completed" ? handleRerun(item, 'Anthropic') : handleRun(item, 'Anthropic')
           }
-          disabled={isRunningAI || isRunningAnthropic || isRunningLlama}
+          disabled={isRunningAI || isRunningAnthropic || isRunningLlama || isCreatingPR}
         >
           {isRunningAnthropic ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />
               Running Anthropic...
             </>
-          ) : item.status === "completed_anthropic" ? (
+          ) : item.runner === 'Anthropic' && item.status === "completed" ? (
             <>
               <RefreshCw className="mr-2 size-4" />
               Run Anthropic Again
@@ -328,16 +360,16 @@ export const IssueView: React.FC<IssueViewProps> = ({
           size="sm"
           className="bg-purple-600 hover:bg-purple-700"
           onClick={() =>
-            item.status === "completed_llama" ? handleRerun(item, 'Llama') : handleRun(item, 'Llama')
+            item.runner === 'Llama' && item.status === "completed" ? handleRerun(item, 'Llama') : handleRun(item, 'Llama')
           }
-          disabled={isRunningAI || isRunningAnthropic || isRunningLlama}
+          disabled={isRunningAI || isRunningAnthropic || isRunningLlama || isCreatingPR}
         >
           {isRunningLlama ? (
             <>
               <Loader2 className="mr-2 size-4 animate-spin" />
               Running Llama...
             </>
-          ) : item.status === "completed_llama" ? (
+          ) : item.runner === 'Llama' && item.status === "completed" ? (
             <>
               <RefreshCw className="mr-2 size-4" />
               Run Llama Again
@@ -349,6 +381,49 @@ export const IssueView: React.FC<IssueViewProps> = ({
             </>
           )}
         </Button>
+
+        {(item.status === "completed" || item.status === "failed") && !item.prLink && (
+          <Button
+            variant="create"
+            size="sm"
+            className="bg-teal-600 hover:bg-teal-700"
+            onClick={() => handlePRCreation(item)}
+            disabled={isCreatingPR}
+          >
+            {isCreatingPR ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" />
+                Creating PR...
+              </>
+            ) : (
+              <>
+                <Play className="mr-2 size-4" />
+                Create PR
+              </>
+            )}
+          </Button>
+        )}
+
+        {item.prLink && (
+          <Button
+            variant="create"
+            size="sm"
+            className="bg-teal-600 hover:bg-teal-700"
+            onClick={() => handlePRCreation(item)}
+          >
+            {isCreatingPR ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" />
+                Regenerating PR...
+              </>
+            ) : (
+              <>
+                <RefreshCw className="mr-2 size-4" />
+                Regenerate PR
+              </>
+            )}
+          </Button>
+        )}
 
         <Button
           variant="outline"
