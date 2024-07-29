@@ -4,7 +4,12 @@ import { getUserId } from "@/actions/auth/auth"
 import { and, desc, eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { db } from "../db"
-import { InsertIssue, SelectIssue, issuesTable } from "../schema/issues-schema"
+import {
+  InsertIssue,
+  SelectIssue,
+  issuesTable,
+  projectsTable
+} from "../schema/issues-schema"
 
 export async function createIssue(
   data: Omit<InsertIssue, "userId">
@@ -16,6 +21,7 @@ export async function createIssue(
     .values({ ...data, userId })
     .returning()
   revalidatePath("/")
+  await updateProjectUpdatedAt(data.projectId)
   return issue
 }
 
@@ -51,10 +57,30 @@ export async function updateIssue(
 
   const [updatedIssue] = await updateQuery.returning()
   revalidatePath("/")
+  if (updatedIssue) {
+    await updateProjectUpdatedAt(updatedIssue.projectId)
+  }
   return updatedIssue
 }
 
 export async function deleteIssue(id: string): Promise<void> {
+  const issue = await getIssueById(id)
+  if (!issue) {
+    throw new Error(`Issue with id ${id} not found`)
+  }
   await db.delete(issuesTable).where(eq(issuesTable.id, id))
   revalidatePath("/")
+  await updateProjectUpdatedAt(issue.projectId)
+}
+
+async function updateProjectUpdatedAt(projectId: string): Promise<void> {
+  try {
+    await db
+      .update(projectsTable)
+      .set({ updatedAt: new Date() })
+      .where(eq(projectsTable.id, projectId))
+  } catch (error) {
+    console.error(`Error updating project ${projectId}:`, error)
+    throw error
+  }
 }

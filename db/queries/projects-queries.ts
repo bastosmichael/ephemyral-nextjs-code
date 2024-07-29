@@ -7,7 +7,8 @@ import { db } from "../db"
 import {
   InsertProject,
   SelectProject,
-  projectsTable
+  projectsTable,
+  workspacesTable
 } from "../schema/projects-schema"
 import { issuesTable } from "../schema/issues-schema"
 import { listRepos } from "@/actions/github/list-repos"
@@ -18,7 +19,11 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
     const projectCreationPromises = workspaces.map(async workspace => {
       if (workspace.githubOrganizationId) {
         const organizationId = workspace.githubOrganizationName
-        const repositories = await listRepos(null, organizationId) // Assuming no installation ID for simplicity
+        const repositories = await listRepos(null, organizationId, {
+          per_page: 10,
+          sort: "updated",
+          direction: "desc"
+        }) // Fetching the 10 most recently updated repositories
 
         // Log the repositories
         console.log("Repositories for workspace", workspace.id, repositories)
@@ -73,6 +78,7 @@ export async function createProject(
       .values({ ...data, userId })
       .returning()
     revalidatePath("/")
+    await updateWorkspaceUpdatedAt(data.workspaceId)
     return result
   } catch (error) {
     console.error("Error creating project record:", error)
@@ -127,11 +133,16 @@ export async function updateProject(
   data: Partial<InsertProject>
 ): Promise<void> {
   try {
+    const project = await getProjectById(id)
+    if (!project) {
+      throw new Error(`Project with id ${id} not found`)
+    }
     await db
       .update(projectsTable)
       .set(data)
       .where(and(eq(projectsTable.id, id)))
     revalidatePath("/")
+    await updateWorkspaceUpdatedAt(project.workspaceId)
   } catch (error) {
     console.error(`Error updating project ${id}:`, error)
     throw error
@@ -156,10 +167,27 @@ export async function getMostRecentIssueWithinProjects(
 
 export async function deleteProject(id: string): Promise<void> {
   try {
+    const project = await getProjectById(id)
+    if (!project) {
+      throw new Error(`Project with id ${id} not found`)
+    }
     await db.delete(projectsTable).where(and(eq(projectsTable.id, id)))
     revalidatePath("/")
+    await updateWorkspaceUpdatedAt(project.workspaceId)
   } catch (error) {
     console.error(`Error deleting project ${id}:`, error)
+    throw error
+  }
+}
+
+async function updateWorkspaceUpdatedAt(workspaceId: string): Promise<void> {
+  try {
+    await db
+      .update(workspacesTable)
+      .set({ updatedAt: new Date() })
+      .where(eq(workspacesTable.id, workspaceId))
+  } catch (error) {
+    console.error(`Error updating workspace ${workspaceId}:`, error)
     throw error
   }
 }
