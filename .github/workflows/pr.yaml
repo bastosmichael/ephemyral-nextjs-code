@@ -7,6 +7,10 @@ permissions:
   pull-requests: write
   contents: write
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     name: Lint
@@ -99,7 +103,7 @@ jobs:
 
   dependabot:
     name: 'Dependabot'
-    needs: [build, lint]
+    needs: [lint, build]
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'}}
     steps:
