@@ -535,6 +535,24 @@ export const IssueView: React.FC<IssueViewProps> = ({
           </Button>
         )}
       </div>
+
+      <Dialog
+        open={!!selectedInstruction}
+        onOpenChange={() => setSelectedInstruction(null)}
+      >
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{selectedInstruction?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="mt-4">
+            <Card>
+              <CardContent className="bg-secondary/50 p-4">
+                <MessageMarkdown content={selectedInstruction?.content || ""} />
+              </CardContent>
+            </Card>
+          </div>
+        </DialogContent>
+      </Dialog>
     </CRUDPage>
   )
 }
