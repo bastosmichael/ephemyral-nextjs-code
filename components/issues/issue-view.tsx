@@ -264,7 +264,8 @@ export const IssueView: React.FC<IssueViewProps> = ({
         prLink: null,
         prBranch: null,
         runner: runner,
-        planResponse: codegenPrompt
+        planResponse: codegenPrompt,
+        codeGenResponse: null
       })
 
       await addMessage(`Completed ${runner}. Ready for PR creation.`);
@@ -285,7 +286,10 @@ export const IssueView: React.FC<IssueViewProps> = ({
     await updateIssue(issue.id, {
       prLink: null,
       prBranch: null,
-      status: "ready"
+      status: "ready",
+      runner: runner,
+      planResponse: null,
+      codeGenResponse: null
     })
     await handleRun(issue, runner)
   }
