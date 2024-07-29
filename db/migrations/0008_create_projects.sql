@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS "projects" (
 	"github_repo_full_name" text,
 	"github_target_branch" text,
 	"github_installation_id" integer,
+	"github_repo_id" integer,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
