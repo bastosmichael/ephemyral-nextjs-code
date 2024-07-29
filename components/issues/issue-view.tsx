@@ -157,7 +157,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
 
       if (issue.runner !== null) {
         await updateIssue(issue.id, {
-          status: `completed_${issue.runner.toLowerCase()}`,
+          status: `completed`,
           prLink: prLink || undefined,
           prBranch: branchName
         })
@@ -204,7 +204,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
         installationId: project.githubInstallationId
       })
 
-      await updateIssue(issue.id, { status: "in_progress" })
+      await updateIssue(issue.id, { status: "in_progress", runner })
 
       let planMessageContent = ""
       if (runner === 'AI') {
@@ -260,10 +260,10 @@ export const IssueView: React.FC<IssueViewProps> = ({
       })
 
       await updateIssue(issue.id, {
-        status: `completed_${runner.toLowerCase()}`,
+        status: `completed`,
         prLink: null,
         prBranch: null,
-        runner: runner,
+        runner,
         planResponse: codegenPrompt,
         codeGenResponse: null
       })
@@ -306,7 +306,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
           size="sm"
           className="bg-blue-600 hover:bg-blue-700"
           onClick={() =>
-            item.status === "completed_ai" ? handleRerun(item, 'AI') : handleRun(item, 'AI')
+            item.runner === 'AI' && item.status === "completed" ? handleRerun(item, 'AI') : handleRun(item, 'AI')
           }
           disabled={isRunningAI || isRunningAnthropic || isRunningLlama || isCreatingPR}
         >
@@ -315,7 +315,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
               <Loader2 className="mr-2 size-4 animate-spin" />
               Running OpenAI...
             </>
-          ) : item.status === "completed_ai" ? (
+          ) : item.runner === 'AI' && item.status === "completed" ? (
             <>
               <RefreshCw className="mr-2 size-4" />
               Run OpenAI Again
@@ -333,7 +333,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
           size="sm"
           className="bg-green-600 hover:bg-green-700"
           onClick={() =>
-            item.status === "completed_anthropic" ? handleRerun(item, 'Anthropic') : handleRun(item, 'Anthropic')
+            item.runner === 'Anthropic' && item.status === "completed" ? handleRerun(item, 'Anthropic') : handleRun(item, 'Anthropic')
           }
           disabled={isRunningAI || isRunningAnthropic || isRunningLlama || isCreatingPR}
         >
@@ -342,7 +342,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
               <Loader2 className="mr-2 size-4 animate-spin" />
               Running Anthropic...
             </>
-          ) : item.status === "completed_anthropic" ? (
+          ) : item.runner === 'Anthropic' && item.status === "completed" ? (
             <>
               <RefreshCw className="mr-2 size-4" />
               Run Anthropic Again
@@ -360,7 +360,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
           size="sm"
           className="bg-purple-600 hover:bg-purple-700"
           onClick={() =>
-            item.status === "completed_llama" ? handleRerun(item, 'Llama') : handleRun(item, 'Llama')
+            item.runner === 'Llama' && item.status === "completed" ? handleRerun(item, 'Llama') : handleRun(item, 'Llama')
           }
           disabled={isRunningAI || isRunningAnthropic || isRunningLlama || isCreatingPR}
         >
@@ -369,7 +369,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
               <Loader2 className="mr-2 size-4 animate-spin" />
               Running Llama...
             </>
-          ) : item.status === "completed_llama" ? (
+          ) : item.runner === 'Llama' && item.status === "completed" ? (
             <>
               <RefreshCw className="mr-2 size-4" />
               Run Llama Again
@@ -382,7 +382,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
           )}
         </Button>
 
-        {item.status.startsWith("completed_") && !item.prLink && (
+        {item.status === "completed" && !item.prLink && (
           <Button
             variant="create"
             size="sm"
@@ -408,14 +408,20 @@ export const IssueView: React.FC<IssueViewProps> = ({
           <Button
             variant="create"
             size="sm"
-            className="bg-blue-600 hover:bg-blue-700"
-            onClick={() => {
-              if (item.prLink) {
-                window.open(item.prLink, '_blank');
-              }
-            }}
+            className="bg-teal-600 hover:bg-teal-700"
+            onClick={() => handlePRCreation(item)}
           >
-            View PR
+            {isCreatingPR ? (
+              <>
+                <Loader2 className="mr-2 size-4 animate-spin" />
+                Regenerating PR...
+              </>
+            ) : (
+              <>
+                <RefreshCw className="mr-2 size-4" />
+                Regenerate PR
+              </>
+            )}
           </Button>
         )}
 
