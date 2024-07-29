@@ -126,6 +126,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
 
   const handlePRCreation = async (issue: SelectIssue) => {
     try {
+      setIsCreatingPR(true);
       let aiCodeGenResponse = null
       if (issue.planResponse !== null) {
         aiCodeGenResponse = await generateAIResponse([
@@ -146,7 +147,6 @@ export const IssueView: React.FC<IssueViewProps> = ({
         throw new Error("No code generation response found.")
       }
 
-      setIsCreatingPR(true);
       const prMessage = await addMessage("Generating GitHub PR...")
 
       const { prLink, branchName } = await generatePR(
