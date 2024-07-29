@@ -6,7 +6,7 @@ import { getAuthenticatedOctokit } from "./auth"
 export const listRepos = async (
   installationId: number | null,
   organizationId: string | null,
-  fetchCount: number = 10 // Default to fetching 10 repositories
+  fetchCount: number = 15 // Default to fetching 10 repositories
 ): Promise<GitHubRepository[]> => {
   try {
     const octokit = await getAuthenticatedOctokit(installationId)
