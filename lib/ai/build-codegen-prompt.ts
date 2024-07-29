@@ -33,6 +33,8 @@ export const buildCodeGenPrompt = async ({
 
     Ensure that no part of the code or content is left out, including markdown files and other documentation. Provide a complete solution for all file types.
 
+    Important: Do not use placeholders like "..." or "[remaining content stays the same]". Include the full and complete content for all sections, files, and documents.
+
     Encoded in XML tags, here is what you will be given:
 
     TASK: Context about the task to complete.
