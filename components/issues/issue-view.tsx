@@ -382,7 +382,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
           )}
         </Button>
 
-        {item.status === "completed" && !item.prLink && (
+        {(item.status === "completed" || item.status === "failed") && !item.prLink && (
           <Button
             variant="create"
             size="sm"
