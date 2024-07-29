@@ -212,3 +212,23 @@ To set up your GitHub Personal Access Token (PAT) for Ephemyral:
    ```
 
 Remember to keep your PAT secure and never share it publicly.
+
+## Running Tests
+
+To run tests, use the following command:
+
+```
+npm test
+```
+
+For watch mode:
+
+```
+npm run test:watch
+```
+
+To generate coverage report:
+
+```
+npm run test:coverage
+```
