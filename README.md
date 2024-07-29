@@ -3,6 +3,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![GitHub stars](https://img.shields.io/github/stars/bastosmichael/ephemyral-ai.svg)](https://github.com/bastosmichael/ephemyral-ai/stargazers)
 [![GitHub issues](https://img.shields.io/github/issues/bastosmichael/ephemyral-ai.svg)](https://github.com/bastosmichael/ephemyral-ai/issues)
+[![CI](https://github.com/bastosmichael/ephemyral-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/bastosmichael/ephemyral-ai/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/bastosmichael/ephemyral-ai/branch/main/graph/badge.svg)](https://codecov.io/gh/bastosmichael/ephemyral-ai)
 
 Ephemyral is an AI-powered code generation tool designed to help developers ship code faster. It leverages artificial intelligence to generate pull requests based on project issues, streamlining the development process and boosting productivity.
 
@@ -15,6 +17,7 @@ Ephemyral is an AI-powered code generation tool designed to help developers ship
   - [Advanced Mode Setup](#advanced-mode-setup)
 - [Usage](#usage)
 - [Deployment](#deployment)
+- [Testing](#testing)
 - [Contributing](#contributing)
 - [FAQ](#faq)
 - [License](#license)
@@ -29,6 +32,7 @@ Ephemyral is an AI-powered code generation tool designed to help developers ship
 - **Instruction System**: Define custom instructions to guide AI-generated code.
 - **Multi-Project Support**: Manage multiple projects within a single workspace.
 - **Simple and Advanced Modes**: Choose between a straightforward setup or a feature-rich environment.
+- **Comprehensive Testing**: Ensure reliability with our thorough testing suite.
 
 ## Demo
 
@@ -136,6 +140,16 @@ To deploy Ephemyral to Vercel:
    ```
 
 For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.ephemyral.ai/deployment).
+
+## Testing
+
+We use Jest and React Testing Library for unit and component testing. To run the tests:
+
+```bash
+npm test
+```
+
+For more details on our testing setup and conventions, see the [TESTING.md](TESTING.md) file.
 
 ## Contributing
 
