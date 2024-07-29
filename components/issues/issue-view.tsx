@@ -124,8 +124,28 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
-  const handlePRCreation = async (issue: SelectIssue, parsedAIResponse: any) => {
+  const handlePRCreation = async (issue: SelectIssue) => {
     try {
+      let aiCodeGenResponse = null
+      if (issue.planResponse !== null) {
+        aiCodeGenResponse = await generateAIResponse([
+          { role: "user", content: issue.planResponse }
+        ])
+
+        await updateIssue(issue.id, {
+        codeGenResponse: aiCodeGenResponse
+        })      
+      } else {
+        aiCodeGenResponse = issue.codeGenResponse
+      }
+
+      let parsedAIResponse = null
+      if (aiCodeGenResponse !== null) {
+        parsedAIResponse = parseAIResponse(aiCodeGenResponse)
+      } else {
+        throw new Error("No code generation response found.")
+      }
+
       setIsCreatingPR(true);
       const prMessage = await addMessage("Generating GitHub PR...")
 
@@ -135,14 +155,18 @@ export const IssueView: React.FC<IssueViewProps> = ({
         parsedAIResponse
       )
 
-      await updateIssue(issue.id, {
-        status: `completed_${parsedAIResponse.runner.toLowerCase()}`,
-        prLink: prLink || undefined,
-        prBranch: branchName
-      })
+      if (issue.runner !== null) {
+        await updateIssue(issue.id, {
+          status: `completed_${issue.runner.toLowerCase()}`,
+          prLink: prLink || undefined,
+          prBranch: branchName
+        })
 
-      await updateMessage(prMessage.id, `Generated GitHub PR: [${prLink}](${prLink})`);
-      setIsCreatingPR(false);
+        await updateMessage(prMessage.id, `Generated GitHub PR: [${prLink}](${prLink})`);
+        setIsCreatingPR(false);
+      } else {
+        throw new Error("No runner found.")
+      }
     } catch (error) {
       console.error("Failed to create PR:", error)
       await addMessage(`Error: Failed to create PR: ${error}`)
@@ -239,6 +263,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
         status: `completed_${runner.toLowerCase()}`,
         prLink: null,
         prBranch: null,
+        runner: runner,
         planResponse: codegenPrompt
       })
 
@@ -358,7 +383,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
             variant="create"
             size="sm"
             className="bg-teal-600 hover:bg-teal-700"
-            onClick={() => handlePRCreation(item, parseAIResponse(messages[messages.length - 1].content))}
+            onClick={() => handlePRCreation(item)}
             disabled={isCreatingPR}
           >
             {isCreatingPR ? (
