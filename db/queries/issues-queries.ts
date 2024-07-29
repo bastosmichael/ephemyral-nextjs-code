@@ -7,9 +7,9 @@ import { db } from "../db"
 import {
   InsertIssue,
   SelectIssue,
-  issuesTable,
-  projectsTable
+  issuesTable
 } from "../schema/issues-schema"
+import { projectsTable } from "../schema/projects-schema"
 
 export async function createIssue(
   data: Omit<InsertIssue, "userId">

@@ -7,29 +7,30 @@ import { db } from "../db"
 import {
   InsertProject,
   SelectProject,
-  projectsTable,
-  workspacesTable
+  projectsTable
 } from "../schema/projects-schema"
 import { issuesTable } from "../schema/issues-schema"
 import { listRepos } from "@/actions/github/list-repos"
 import { listBranches } from "@/actions/github/list-branches"
+import { workspacesTable } from "../schema/workspaces-schema"
 
 export async function createProjects(workspaces: any[]): Promise<any[]> {
   try {
     const projectCreationPromises = workspaces.map(async workspace => {
       if (workspace.githubOrganizationId) {
         const organizationId = workspace.githubOrganizationName
-        const repositories = await listRepos(null, organizationId, {
-          per_page: 10,
-          sort: "updated",
-          direction: "desc"
-        }) // Fetching the 10 most recently updated repositories
+        const repositories = await listRepos(null, organizationId)
+
 
         // Log the repositories
-        console.log("Repositories for workspace", workspace.id, repositories)
+        console.log(
+          "Repositories for workspace",
+          workspace.id,
+          repositories
+        )
 
         const projects = await Promise.all(
-          repositories.map(async repo => {
+          repositories.map(async (repo: any) => {
             let githubTargetBranch = null
             const branches = await listBranches(null, repo.full_name)
             if (branches.includes("main")) {
@@ -78,7 +79,7 @@ export async function createProject(
       .values({ ...data, userId })
       .returning()
     revalidatePath("/")
-    await updateWorkspaceUpdatedAt(data.workspaceId)
+    await updateWorkspaceUpdatedAt(data.workspaceId) // Update the workspace's updatedAt field
     return result
   } catch (error) {
     console.error("Error creating project record:", error)
@@ -142,7 +143,7 @@ export async function updateProject(
       .set(data)
       .where(and(eq(projectsTable.id, id)))
     revalidatePath("/")
-    await updateWorkspaceUpdatedAt(project.workspaceId)
+    await updateWorkspaceUpdatedAt(project.workspaceId) // Update the workspace's updatedAt field
   } catch (error) {
     console.error(`Error updating project ${id}:`, error)
     throw error
@@ -173,7 +174,7 @@ export async function deleteProject(id: string): Promise<void> {
     }
     await db.delete(projectsTable).where(and(eq(projectsTable.id, id)))
     revalidatePath("/")
-    await updateWorkspaceUpdatedAt(project.workspaceId)
+    await updateWorkspaceUpdatedAt(project.workspaceId) // Update the workspace's updatedAt field
   } catch (error) {
     console.error(`Error deleting project ${id}:`, error)
     throw error
