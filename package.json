@@ -15,7 +15,7 @@
     "analyze": "ANALYZE=true npm run build",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate && drizzle-kit migrate",
-    "db:refresh": "dropdb ephemyral-api && createdb ephemyral-api && drizzle-kit migrate && drizzle-kit migrate",
+    "db:refresh": "dropdb ephemyral-api && createdb ephemyral-api && npm run db:migrate",
     "proxy": "tsx scripts/webhook-proxy/proxy.ts"
   },
   "dependencies": {

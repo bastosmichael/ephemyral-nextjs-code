@@ -235,16 +235,11 @@ export const IssueView: React.FC<IssueViewProps> = ({
         instructionsContext
       })
 
-      const aiCodeGenResponse = await generateAIResponse([
-        { role: "user", content: codegenPrompt }
-      ])
-
-      const parsedAIResponse = parseAIResponse(aiCodeGenResponse)
-
       await updateIssue(issue.id, {
         status: `completed_${runner.toLowerCase()}`,
         prLink: null,
-        prBranch: null
+        prBranch: null,
+        planResponse: codegenPrompt
       })
 
       await addMessage(`Completed ${runner}. Ready for PR creation.`);

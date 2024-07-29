@@ -15,6 +15,8 @@ export const issuesTable = pgTable("issues", {
   status: text("status").notNull().default("ready"),
   prLink: text("pr_link"),
   prBranch: text("pr_branch"),
+  planResponse: text("plan_response"),
+  codeGenResponse: text("code_gen_response"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
     .notNull()
