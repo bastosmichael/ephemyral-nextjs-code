@@ -24,8 +24,6 @@ Ephemyral is an AI-powered code generation tool designed to help developers ship
 - [Acknowledgements](#acknowledgements)
 - [Contact](#contact)
 
-... [rest of the README content remains unchanged]
-
 ## Testing
 
 To run the test suite:
