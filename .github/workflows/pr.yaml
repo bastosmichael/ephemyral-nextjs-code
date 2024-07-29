@@ -99,7 +99,7 @@ jobs:
 
   dependabot:
     name: 'Dependabot'
-    needs: [build, lint]
+    needs: [lint, build]
     runs-on: ubuntu-latest
     if: ${{ github.actor == 'dependabot[bot]' && github.event_name == 'pull_request'}}
     steps:
