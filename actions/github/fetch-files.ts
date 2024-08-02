@@ -3,6 +3,7 @@
 import { GitHubFile, GitHubFileContent } from "@/types/github"
 import { getAuthenticatedOctokit } from "./auth"
 import { fetchWithRetry } from "./fetch-codebase"
+import { sanitizeFileContent } from "@/lib/utils"
 
 export async function fetchFiles(
   installationId: number | null,
@@ -10,17 +11,7 @@ export async function fetchFiles(
 ) {
   // List of file extensions to exclude
   const excludedExtensions = [
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".gif",
-    ".bmp",
-    ".svg",
-    ".tiff",
-    ".webp",
-    ".ico",
-    ".heic",
-    ".raw"
+    ".jpg", ".jpeg", ".png", ".gif", ".bmp", ".svg", ".tiff", ".webp", ".ico", ".heic", ".raw"
   ]
 
   // List of files to exclude
@@ -53,19 +44,24 @@ export async function fetchFiles(
         throw new Error(`Unexpected response for ${file.path}`)
       }
 
+      const content = Buffer.from(data.content, "base64").toString("utf-8")
+      const sanitizedContent = sanitizeFileContent(content)
+
       return {
         name: file.name,
         path: file.path,
-        content: Buffer.from(data.content, "base64").toString("utf-8")
+        content: sanitizedContent
       }
     } catch (error) {
       console.error("Error fetching file:", file, error)
-      throw error
+      // Return null for failed files instead of throwing
+      return null
     }
   })
 
   // Wait for all fetch promises to resolve
   const filesContent = await Promise.all(fetchPromises)
 
-  return filesContent as GitHubFileContent[]
+  // Filter out null results (failed fetches)
+  return filesContent.filter((file): file is GitHubFileContent => file !== null)
 }
