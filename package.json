@@ -68,7 +68,7 @@
     "drizzle-orm": "^0.33.0",
     "embla-carousel-react": "^8.1.8",
     "endent": "^2.1.0",
-    "framer-motion": "^11.3.24",
+    "framer-motion": "^11.3.28",
     "input-otp": "^1.2.4",
     "lucide-react": "^0.427.0",
     "next": "14.2.5",
