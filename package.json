@@ -29,7 +29,7 @@
     "@linear/sdk": "^27.0.0",
     "@neondatabase/serverless": "^0.9.3",
     "@octokit/auth-app": "^7.1.0",
-    "@octokit/rest": "^21.0.1",
+    "@octokit/rest": "^21.0.2",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-aspect-ratio": "^1.0.3",
