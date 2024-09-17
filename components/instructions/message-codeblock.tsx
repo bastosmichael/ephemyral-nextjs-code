@@ -56,26 +56,26 @@ export const MessageCodeBlock: FC<MessageCodeBlockProps> = memo(
 
     const downloadAsFile = () => {
       if (typeof window === "undefined") {
-        return
+        return;
       }
-      const fileExtension = programmingLanguages[language] || ".file"
-      const suggestedFileName = `file-${generateRandomString(3, true)}${fileExtension}`
-      const fileName = window.prompt("Enter file name" || "", suggestedFileName)
+      const fileExtension = programmingLanguages[language] || ".file";
+      const suggestedFileName = `file-${generateRandomString(3, true)}${fileExtension}`;
+      const fileName = window.prompt("Enter file name", suggestedFileName);
 
       if (!fileName) {
-        return
+        return;
       }
 
-      const blob = new Blob([value], { type: "text/plain" })
-      const url = URL.createObjectURL(blob)
-      const link = document.createElement("a")
-      link.download = fileName
-      link.href = url
-      link.style.display = "none"
-      document.body.appendChild(link)
-      link.click()
-      document.body.removeChild(link)
-      URL.revokeObjectURL(url)
+      const blob = new Blob([value], { type: "text/plain" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.download = fileName;
+      link.href = url;
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
     }
 
     const onCopy = () => {
