@@ -10,6 +10,18 @@ const customJestConfig = {
   collectCoverage: true,
   coverageReporters: ["json", "lcov", "text", "clover"],
   coverageDirectory: "coverage",
+  collectCoverageFrom: [
+    "**/*.{js,jsx,ts,tsx}",
+    "!**/*.d.ts",
+    "!**/node_modules/**",
+    "!**/.next/**",
+    "!**/coverage/**",
+    "!**/db/**",
+    "!**/actions/**",
+    "!**/lib/**",
+    "!**/types/**",
+    "!**/components/**"
+  ],
 }
 
 module.exports = createJestConfig(customJestConfig)
