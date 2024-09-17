@@ -1,19 +1,16 @@
-"use client"
+"use client";
 
-import { Moon, Sun } from "lucide-react"
-import { useTheme } from "next-themes"
-import { FC } from "react"
-import { Button } from "../ui/button"
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
+import { Button } from "../ui/button";
 
-interface ThemeSwitcherProps {}
-
-export const ThemeSwitcher: FC<ThemeSwitcherProps> = () => {
-  const { setTheme, theme } = useTheme()
+export const ThemeSwitcher = () => {
+  const { setTheme, theme } = useTheme();
 
   const handleChange = (theme: "dark" | "light") => {
-    localStorage.setItem("theme", theme)
-    setTheme(theme)
-  }
+    localStorage.setItem("theme", theme);
+    setTheme(theme);
+  };
 
   return (
     <Button
@@ -28,5 +25,5 @@ export const ThemeSwitcher: FC<ThemeSwitcherProps> = () => {
         <Sun className="size-4" />
       )}
     </Button>
-  )
-}
+  );
+};
