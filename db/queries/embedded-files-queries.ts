@@ -15,13 +15,22 @@ export async function createEmbeddedFiles(
   const userId = await getUserId()
 
   try {
-    await db.insert(embeddedFilesTable).values(
-      data.map(file => ({
-        ...file,
-        userId
-      }))
-    )
+    const batchSize = 100 // Adjust this value based on your database limits
+    const results = []
+
+    for (let i = 0; i < data.length; i += batchSize) {
+      const batch = data.slice(i, i + batchSize)
+      const result = await db.insert(embeddedFilesTable).values(
+        batch.map(file => ({
+          ...file,
+          userId
+        }))
+      )
+      results.push(result)
+    }
+
     revalidatePath("/")
+    return results.flat()
   } catch (error) {
     console.error("Error inserting records into embedded_files:", error)
     throw error

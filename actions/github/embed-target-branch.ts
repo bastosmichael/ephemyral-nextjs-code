@@ -7,6 +7,7 @@ import {
   updateEmbeddedBranchById
 } from "@/db/queries/embedded-branches-queries"
 import { getAuthenticatedOctokit } from "./auth"
+import { MAX_RETRY_ATTEMPTS, RETRY_DELAY } from "@/lib/constants/ephemyral-config"
 
 interface EmbedTargetBranchParams {
   projectId: string
@@ -51,13 +52,28 @@ export async function embedTargetBranch({
     // Check if the branch needs updating
     if (embeddedBranch.lastEmbeddedCommitHash !== latestCommitHash) {
       console.warn("Branch needs updating")
-      await embedBranch({
-        projectId,
-        githubRepoFullName,
-        branchName,
-        embeddedBranchId: embeddedBranch.id,
-        installationId
-      })
+      
+      let retryCount = 0
+      while (retryCount < MAX_RETRY_ATTEMPTS) {
+        try {
+          await embedBranch({
+            projectId,
+            githubRepoFullName,
+            branchName,
+            embeddedBranchId: embeddedBranch.id,
+            installationId
+          })
+          break
+        } catch (error) {
+          console.error(`Error embedding branch (attempt ${retryCount + 1}):`, error)
+          retryCount++
+          if (retryCount < MAX_RETRY_ATTEMPTS) {
+            await new Promise(resolve => setTimeout(resolve, RETRY_DELAY))
+          } else {
+            throw error
+          }
+        }
+      }
 
       await updateEmbeddedBranchById(embeddedBranch.id, {
         lastEmbeddedCommitHash: latestCommitHash
