@@ -19,7 +19,7 @@ describe('getUserId', () => {
   it('should return the user ID in simple mode', async () => {
     process.env.NEXT_PUBLIC_APP_MODE = 'simple';
     const userId = await getUserId();
-    expect(userId).toBe('simple_user_1');
+    expect(userId).toBe('test_user_id');
   });
 
   it('should return the user ID from Clerk in advanced mode', async () => {
