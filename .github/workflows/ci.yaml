@@ -18,14 +18,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js and cache dependencies
+      - name: Use Node.js cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Run lint
         run: npm run lint
@@ -51,14 +58,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js and cache dependencies
+      - name: Use Node.js cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Wait for PostgreSQL to be ready
         run: |
@@ -68,11 +82,14 @@ jobs:
           done
 
       - name: Check PostgreSQL version
-        run: psql -h localhost -U postgres -c "SELECT version();"
+        run: |
+          psql -h localhost -U postgres -c "SELECT version();"
+
+      - name: Set PostgreSQL password environment variable
+        run: echo "PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
 
       - name: Set up environment variables
-        run: |
-          echo "DATABASE_URL=postgres://postgres@localhost:5432/postgres" >> $GITHUB_ENV
+        run: echo "DATABASE_URL=postgres://postgres@localhost:5432/postgres" >> $GITHUB_ENV
 
       - name: Run database migrations
         run: npm run db:migrate
@@ -104,14 +121,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up Node.js and cache dependencies
+      - name: Use Node.js cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
-          cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Wait for PostgreSQL to be ready
         run: |
@@ -120,9 +144,15 @@ jobs:
             sleep 1
           done
 
-      - name: Set up environment variables
+      - name: Check PostgreSQL version
         run: |
-          echo "DATABASE_URL=postgres://postgres@localhost:5432/postgres" >> $GITHUB_ENV
+          psql -h localhost -U postgres -c "SELECT version();"
+
+      - name: Set PostgreSQL password environment variable
+        run: echo "PGPASSWORD=${{ secrets.POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Set up environment variables
+        run: echo "DATABASE_URL=postgres://postgres@localhost:5432/postgres" >> $GITHUB_ENV
 
       - name: Run database migrations
         run: npm run db:migrate
