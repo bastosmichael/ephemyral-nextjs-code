@@ -3,7 +3,7 @@
 import {
   EPHEMYRAL_EMBEDDING_DIMENSIONS,
   EPHEMYRAL_EMBEDDING_MODEL
-} from "@/lib/constants/ephemyral-config"
+} from "@/lib/constants/ephemyral-code-config"
 import OpenAI from "openai"
 
 const openai = new OpenAI()

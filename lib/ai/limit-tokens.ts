@@ -1,4 +1,4 @@
-import { EPHEMYRAL_MAX_INPUT_TOKENS } from "../constants/ephemyral-config"
+import { EPHEMYRAL_MAX_INPUT_TOKENS } from "../constants/ephemyral-code-config"
 import { estimateClaudeSonnet3_5TokenCount } from "./estimate-claude-tokens"
 
 export function limitTokens(

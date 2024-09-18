@@ -1,5 +1,5 @@
 {
-  "name": "ephemyral",
+  "name": "ephemyral-code",
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
@@ -15,7 +15,7 @@
     "analyze": "ANALYZE=true npm run build",
     "db:generate": "npx drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate && drizzle-kit migrate",
-    "db:refresh": "dropdb ephemyral-api && createdb ephemyral-api && npm run db:migrate",
+    "db:refresh": "dropdb ephemyral-code-api && createdb ephemyral-code-api && npm run db:migrate",
     "proxy": "tsx scripts/webhook-proxy/proxy.ts",
     "test": "jest",
     "test:watch": "jest --watch",

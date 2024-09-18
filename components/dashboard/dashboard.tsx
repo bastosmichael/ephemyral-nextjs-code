@@ -161,11 +161,11 @@ export const Dashboard: FC<DashboardProps> = ({
             <div className="flex items-center justify-between truncate">
               <div className="flex items-center gap-2">
                 {process.env.NEXT_PUBLIC_APP_MODE === "simple" ? (
-                  <div className="truncate font-light">Ephemyral</div>
+                  <div className="truncate font-light">Ephemyral Code</div>
                 ) : (
                   <>
                     <UserButton />
-                    <div className="truncate font-light">Ephemyral Pro</div>
+                    <div className="truncate font-light">Ephemyral Code Pro</div>
                   </>
                 )}
               </div>
