@@ -85,7 +85,7 @@ export function SiteHeader() {
 
   // useEffect(() => {
   //   const getGitHubRepoStars = async () => {
-  //     const url = `https://api.github.com/repos/bastosmichael/ephemyral-code-code`
+  //     const url = `https://api.github.com/repos/bastosmichael/ephemyral-code`
   //     try {
   //       const response = await fetch(url, {
   //         headers: {
