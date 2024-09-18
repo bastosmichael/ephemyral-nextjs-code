@@ -5,7 +5,7 @@ import { db } from "@/db/db"
 import { getProjectById } from "@/db/queries"
 import { embeddedBranchesTable } from "@/db/schema"
 import { embeddedFilesTable } from "@/db/schema/embedded-files-schema"
-import { EPHEMYRAL_MAX_INPUT_TOKENS } from "@/lib/constants/ephemyral-config"
+import { EPHEMYRAL_MAX_INPUT_TOKENS } from "@/lib/constants/ephemyral-code-config"
 import { and, cosineDistance, desc, eq, gt, sql } from "drizzle-orm"
 
 export const getMostSimilarEmbeddedFiles = async (

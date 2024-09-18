@@ -4,7 +4,7 @@ import { InsertEmbeddedFile } from "@/db/schema"
 import {
   EPHEMYRAL_EMBEDDING_DIMENSIONS,
   EPHEMYRAL_EMBEDDING_MODEL
-} from "@/lib/constants/ephemyral-config"
+} from "@/lib/constants/ephemyral-code-config"
 import { GitHubFileContent } from "@/types/github"
 import { encode } from "gpt-tokenizer"
 import OpenAI from "openai"

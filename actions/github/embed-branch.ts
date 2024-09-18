@@ -9,7 +9,10 @@ import { embedFiles } from "./embed-files"
 import { fetchCodebaseForBranch } from "./fetch-codebase"
 import { tokenizeFiles } from "./tokenize-files"
 import { sanitizeFileContent } from "@/lib/utils"
-import { MAX_RETRY_ATTEMPTS, RETRY_DELAY } from "@/lib/constants/ephemyral-config"
+import {
+  MAX_RETRY_ATTEMPTS,
+  RETRY_DELAY
+} from "@/lib/constants/ephemyral-code-config"
 
 export async function embedBranch(data: {
   projectId: string
@@ -66,7 +69,10 @@ export async function embedBranch(data: {
         )
         break
       } catch (error) {
-        console.error(`Error inserting embedded files (attempt ${retryCount + 1}):`, error)
+        console.error(
+          `Error inserting embedded files (attempt ${retryCount + 1}):`,
+          error
+        )
         retryCount++
         if (retryCount < MAX_RETRY_ATTEMPTS) {
           await new Promise(resolve => setTimeout(resolve, RETRY_DELAY))

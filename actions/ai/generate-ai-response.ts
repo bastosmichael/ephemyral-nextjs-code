@@ -1,7 +1,7 @@
 "use server"
 
 import { calculateLLMCost } from "@/lib/ai/calculate-llm-cost"
-import { EPHEMYRAL_MAX_OUTPUT_TOKENS } from "@/lib/constants/ephemyral-config"
+import { EPHEMYRAL_MAX_OUTPUT_TOKENS } from "@/lib/constants/ephemyral-code-config"
 import Anthropic from "@anthropic-ai/sdk"
 
 const anthropic = new Anthropic()

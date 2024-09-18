@@ -1,8 +1,8 @@
-# Ephemyral
+# Ephemyral Code
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Ephemyral is an AI-powered code generation tool designed to help developers ship code faster. It leverages artificial intelligence to generate pull requests based on project issues, streamlining the development process and boosting productivity.
+Ephemyral Code is an AI-powered code generation tool designed to help developers ship code faster. It leverages artificial intelligence to generate pull requests based on project issues, streamlining the development process and boosting productivity.
 
 ## Table of Contents
 
@@ -43,8 +43,8 @@ Ephemyral offers two setup modes: Simple and Advanced. Choose the one that best 
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/bastosmichael/ephemyral.git
-   cd ephemyral
+   git clone https://github.com/bastosmichael/ephemyral-code.git
+   cd ephemyral-code
    ```
 
 2. **Install Dependencies**
@@ -114,7 +114,7 @@ Additional setup steps for Advanced Mode will be provided in a future update.
 
 5. **Review and Merge**: Review the generated code, make any necessary adjustments, and merge the PR.
 
-For more detailed usage instructions, please refer to our [documentation](https://docs.ephemyral.ai).
+For more detailed usage instructions, please refer to our [documentation](https://docs.ephemyral-code.ai).
 
 ## Deployment
 
@@ -123,15 +123,17 @@ To deploy Ephemyral to Vercel:
 1. Fork the Ephemyral repository to your GitHub account.
 2. Sign up for a [Vercel account](https://vercel.com/signup) if you haven't already.
 3. Click the button below to start the deployment process:
-   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbastosmichael%2Fephemyral-ai&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
+   [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbastosmichael%2Fephemyral-code-code&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
 4. Follow the prompts to configure your deployment, ensuring all required environment variables are set.
 5. Once deployed, configure your database by running the migrations:
    ```bash
    npx vercel env pull .env.local
    npm run db:migrate
    ```
-For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.ephemyral.ai/deployment).
+   For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.ephemyral-code.ai/deployment).
+
 ## Contributing
+
 We welcome contributions to Ephemyral! Here's how you can help:
 
 1. Fork the repository.
@@ -153,7 +155,7 @@ A: Yes, Ephemyral takes security seriously. We do not store your code, and all p
 **Q: Can I use Ephemyral with private repositories?**
 A: Yes, Ephemyral supports both public and private GitHub repositories.
 
-For more frequently asked questions, visit our [FAQ page](https://docs.ephemyral.ai/faq).
+For more frequently asked questions, visit our [FAQ page](https://docs.ephemyral-code.ai/faq).
 
 ## License
 
@@ -162,6 +164,7 @@ Ephemyral is open-source software licensed under the [MIT license](LICENSE).
 ## Acknowledgements
 
 Ephemyral is built using various open-source libraries and tools. We'd like to thank the contributors and maintainers of:
+
 - [Next.js](https://nextjs.org/)
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
@@ -169,16 +172,23 @@ Ephemyral is built using various open-source libraries and tools. We'd like to t
 - [Clerk](https://clerk.dev/)
 - [Anthropic](https://www.anthropic.com/)
 - [OpenAI](https://openai.com/)
-And all the other dependencies that make this project possible.
+  And all the other dependencies that make this project possible.
+
 ## Contact
+
 For support, feature requests, or general inquiries:
-- Create an [issue](https://github.com/bastosmichael/ephemyral-ai/issues) on GitHub
+
+- Create an [issue](https://github.com/bastosmichael/ephemyral-code-code/issues) on GitHub
 - Follow [@bastosmichael](https://twitter.com/bastosmichael) on Twitter for updates
-- Join our [Discord community](https://discord.gg/ephemyral) for discussions and support
-Built with ❤️ by [Mckay Wrigley](https://twitter.com/bastosmichael) and [Tyler Bruno](https://twitter.com/tylerbruno05) at Takeoff AI.
+- Join our [Discord community](https://discord.gg/ephemyral-code) for discussions and support
+  Built with ❤️ by [Mckay Wrigley](https://twitter.com/bastosmichael) and [Tyler Bruno](https://twitter.com/tylerbruno05) at Takeoff AI.
+
 ---
+
 ### GitHub PAT Setup Guide
+
 To set up your GitHub Personal Access Token (PAT) for Ephemyral:
+
 1. Go to [GitHub's Token Settings](https://github.com/settings/tokens?type=beta).
 2. Click "Generate new token" and choose "Fine-grained token".
 3. Set a name and expiration for your token.

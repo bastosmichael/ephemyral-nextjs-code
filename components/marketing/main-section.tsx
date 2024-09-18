@@ -9,7 +9,7 @@ export default function MainSection() {
     <section>
       <h1 className="text-primary text-balance bg-gradient-to-br bg-clip-text py-6 text-5xl font-medium leading-none tracking-tighter sm:text-6xl md:text-7xl lg:text-8xl">
         Accelerate Your Development
-        <br className="hidden md:block" /> with Ephemyral
+        <br className="hidden md:block" /> with Ephemyral Code
       </h1>
 
       <p className="text-primary/80 mb-12 text-lg tracking-tight md:text-xl">
