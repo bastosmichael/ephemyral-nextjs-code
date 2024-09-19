@@ -105,7 +105,7 @@
     "@typescript-eslint/eslint-plugin": "^8.6.0",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.24.2",
-    "eslint": "^8.57.1",
+    "eslint": "^9.10.0",
     "eslint-config-next": "14.2.12",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-tailwindcss": "^3.17.0",
