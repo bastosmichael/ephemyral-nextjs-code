@@ -9,7 +9,7 @@ const customJestConfig = {
   testEnvironment: 'jest-environment-jsdom',
   collectCoverage: true,
   coverageDirectory: 'coverage',
-  coverageReporters: ['text-summary', 'lcov'],  // Define multiple reporters here
+  coverageReporters: ['text', 'text-summary', 'lcov'], // Add 'text' and 'lcov' for detailed reports
   collectCoverageFrom: [
     'lib/**/*.{js,jsx,ts,tsx}',
     'scripts/**/*.{js,jsx,ts,tsx}',

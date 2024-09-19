@@ -160,8 +160,14 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
+      - name: Display detailed coverage report
+        run: cat ./coverage/lcov-report/index.html
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: ./coverage/lcov-report
 
   dependabot:
     name: Dependabot
