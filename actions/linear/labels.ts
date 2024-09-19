@@ -40,7 +40,7 @@ import { Issue } from "@linear/sdk"
 //   })),
 //   instructionsContext: "No additional instructions."
 // })
-// const aiCodePlanResponse = await generateAIResponse([
+// const aiCodePlanResponse = await generateAnthropicResponse([
 //   { role: "user", content: labelAssignmentCodePlanPrompt }
 // ])
 // // Update working comment with the plan
@@ -67,7 +67,7 @@ import { Issue } from "@linear/sdk"
 //   plan: aiCodePlanResponse,
 //   instructionsContext: "No additional instructions."
 // })
-// const aiCodeGenResponse = await generateAIResponse([
+// const aiCodeGenResponse = await generateAnthropicResponse([
 //   { role: "user", content: codegenPrompt }
 // ])
 // const parsedAIResponse = parseAIResponse(aiCodeGenResponse)
