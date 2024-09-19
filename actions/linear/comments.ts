@@ -5,7 +5,7 @@ import { LinearWebhookComment } from "@/types/linear/linear"
 import { Comment, Issue, LinearClient } from "@linear/sdk"
 import endent from "endent"
 import { IN_PROGRESS_EMOJI } from "../../lib/constants/linear-config"
-import { generateAIResponse } from "../ai/generate-ai-response"
+import { generateAIResponse } from "../ai/generate-anthropic-response"
 import { createReaction } from "./reactions"
 
 export async function handleCommentWebhook(

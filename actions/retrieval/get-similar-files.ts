@@ -1,6 +1,6 @@
 "use server"
 
-import { generateEmbedding } from "@/actions/ai/generate-embedding"
+import { generateEmbedding } from "@/actions/ai/generate-openai-embedding"
 import { db } from "@/db/db"
 import { getProjectById } from "@/db/queries"
 import { embeddedBranchesTable } from "@/db/schema"

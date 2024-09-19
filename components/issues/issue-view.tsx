@@ -1,6 +1,6 @@
 "use client"
 
-import { generateAIResponse } from "@/actions/ai/generate-ai-response"
+import { generateAIResponse } from "@/actions/ai/generate-anthropic-response"
 import { deleteGitHubPR } from "@/actions/github/delete-pr"
 import { embedTargetBranch } from "@/actions/github/embed-target-branch"
 import { generatePR } from "@/actions/github/generate-pr"
