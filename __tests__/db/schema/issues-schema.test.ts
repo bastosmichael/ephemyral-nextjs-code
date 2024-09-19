@@ -1,4 +1,4 @@
-import { issuesTable } from '../../db/schema/issues-schema';
+import { issuesTable } from '../../../db/schema/issues-schema';
     import { expect } from '@jest/globals';
 
     describe('Issues Schema', () => {

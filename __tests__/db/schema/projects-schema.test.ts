@@ -1,4 +1,4 @@
-import { projectsTable } from '../../db/schema/projects-schema';
+import { projectsTable } from '../../../db/schema/projects-schema';
     import { expect } from '@jest/globals';
 
     describe('Projects Schema', () => {

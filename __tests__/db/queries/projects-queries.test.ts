@@ -1,4 +1,4 @@
-import { createProject, getProjectById, getProjectsByUserId } from '../../queries/projects-queries';
+import { createProject, getProjectById, getProjectsByUserId } from '../../../db/queries/projects-queries';
     import { expect } from '@jest/globals';
 
     describe('Projects Queries', () => {

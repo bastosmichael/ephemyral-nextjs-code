@@ -1,4 +1,4 @@
-import { instructionsTable } from '../../db/schema/instructions-schema';
+import { instructionsTable } from '../../../db/schema/instructions-schema';
     import { expect } from '@jest/globals';
 
     describe('Instructions Schema', () => {

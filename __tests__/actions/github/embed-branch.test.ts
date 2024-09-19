@@ -1,4 +1,4 @@
-import { embedBranch } from '../../actions/github/embed-branch';
+import { embedBranch } from '../../../actions/github/embed-branch';
     import { expect } from '@jest/globals';
 
     describe('Embed Branch Function', () => {

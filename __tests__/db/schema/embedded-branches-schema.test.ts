@@ -1,4 +1,4 @@
-import { embeddedBranchesTable } from '../../db/schema/embedded-branches-schema';
+import { embeddedBranchesTable } from '../../../db/schema/embedded-branches-schema';
     import { expect } from '@jest/globals';
 
     describe('Embedded Branch Schema', () => {

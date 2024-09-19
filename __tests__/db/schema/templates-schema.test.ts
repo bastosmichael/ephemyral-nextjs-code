@@ -1,4 +1,4 @@
-import { templatesTable } from '../../db/schema/templates-schema';
+import { templatesTable } from '../../../db/schema/templates-schema';
     import { expect } from '@jest/globals';
 
     describe('Templates Schema', () => {

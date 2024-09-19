@@ -1,4 +1,4 @@
-import { createInstructionRecords, getInstructionsByProjectId } from '../../queries/instructions-queries';
+import { createInstructionRecords, getInstructionsByProjectId } from '../../../db/queries/instructions-queries';
     import { expect } from '@jest/globals';
 
     describe('Instructions Queries', () => {

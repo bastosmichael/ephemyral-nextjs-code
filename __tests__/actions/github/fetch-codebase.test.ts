@@ -1,4 +1,4 @@
-import { fetchCodebaseForBranch } from '../../actions/github/fetch-codebase';
+import { fetchCodebaseForBranch } from '../../../actions/github/fetch-codebase';
     import { expect } from '@jest/globals';
 
     describe('Fetch Codebase Function', () => {

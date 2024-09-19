@@ -1,4 +1,4 @@
-import { getAuthenticatedOctokit } from '../../actions/github/auth';
+import { getAuthenticatedOctokit } from '../../../actions/github/auth';
     import { expect } from '@jest/globals';
 
     describe('GitHub Authentication', () => {

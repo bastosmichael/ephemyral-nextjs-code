@@ -1,4 +1,4 @@
-import { workspacesTable } from '../../db/schema/workspaces-schema';
+import { workspacesTable } from '../../../db/schema/workspaces-schema';
     import { expect } from '@jest/globals';
 
     describe('Workspaces Schema', () => {
