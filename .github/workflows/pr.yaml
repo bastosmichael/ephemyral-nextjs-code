@@ -160,9 +160,6 @@ jobs:
       - name: Run tests with coverage
         run: npm run test:coverage
 
-      - name: Calculate and display overall coverage
-        run: npm run calculate-coverage
-
   dependabot:
     name: Dependabot
     needs: [lint, build, test]
