@@ -21,8 +21,17 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["jest", "@testing-library/jest-dom"]
+    "types": ["jest", "@testing-library/jest-dom"],
+    "outDir": "./dist", // Output directory for the scripts, doesn't affect `noEmit` mode
+    "rootDir": ".", // Set root directory to include all project files
+    "target": "ESNext" // Set the output to support the latest features for scripts
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "scripts/**/*.ts" // Include scripts directory
+  ],
   "exclude": ["node_modules"]
 }
