@@ -2,7 +2,7 @@ import { listRepos } from "@/actions/github/list-repos"
 import { ProjectSetup } from "@/components/projects/project-setup"
 import { getProjectById } from "@/db/queries/projects-queries"
 import { getWorkspaceById } from "@/db/queries/workspaces-queries"
-import { GitHubRepository } from "@/types/github"
+import { GitHubRepository } from "@/src/types/github"
 
 export const revalidate = 0
 

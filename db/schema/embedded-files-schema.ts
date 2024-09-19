@@ -1,4 +1,4 @@
-import { EPHEMYRAL_EMBEDDING_DIMENSIONS } from "@/lib/constants/ephemyral-code-config"
+import { EPHEMYRAL_EMBEDDING_DIMENSIONS } from "@/src/lib/constants/ephemyral-code-config"
 import { relations } from "drizzle-orm"
 import {
   index,

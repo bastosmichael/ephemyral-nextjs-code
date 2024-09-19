@@ -1,6 +1,6 @@
 import { handleWebhook } from "@/actions/linear/webhook"
 import { getWorkspaceByLinearOrganizationId } from "@/db/queries"
-import { LinearWebhookBody } from "@/types/linear/linear"
+import { LinearWebhookBody } from "@/src/types/linear/linear"
 import { LinearClient } from "@linear/sdk"
 import crypto from "crypto"
 

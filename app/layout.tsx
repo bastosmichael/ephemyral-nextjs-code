@@ -1,6 +1,6 @@
 import { Toaster } from "@/components/ui/sonner"
 import { ThemeProvider } from "@/components/utility/theme-provider"
-import { cn } from "@/lib/utils"
+import { cn } from "@/src/lib/utils"
 import { ClerkProvider } from "@clerk/nextjs"
 import { dark } from "@clerk/themes"
 import type { Metadata } from "next"

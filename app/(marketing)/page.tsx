@@ -1,6 +1,6 @@
 import { AnimatedGridPattern } from "@/components/magicui/animated-grid-pattern"
 import MainSection from "@/components/marketing/main-section"
-import { cn } from "@/lib/utils"
+import { cn } from "@/src/lib/utils"
 
 export default async function MarketingPage() {
   return (

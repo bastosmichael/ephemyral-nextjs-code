@@ -1,4 +1,4 @@
-import { GitHubRepository } from '../../types/github';
+import { GitHubRepository } from '../../src/types/github';
 
 describe('GitHubRepository type', () => {
   it('should have the correct properties', () => {
