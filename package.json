@@ -20,7 +20,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "calculate-coverage": "ts-node scripts/calculate-overall-coverage.ts"
+    "calculate-coverage": "npx ts-node scripts/calculate-overall-coverage.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^0.0.50",
