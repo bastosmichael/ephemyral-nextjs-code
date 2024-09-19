@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { AlertDialog } from '../../components/ui/alert-dialog';
+import { AlertDialog } from '../../../components/ui/alert-dialog';
 
 describe('Alert Dialog', () => {
   it('renders the alert dialog correctly', () => {

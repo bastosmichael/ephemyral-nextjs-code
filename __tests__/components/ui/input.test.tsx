@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react';
-import { Input } from '../../components/ui/input';
+import { Input } from '../../../components/ui/input';
 
 describe('Input component', () => {
   it('renders input with default props', () => {

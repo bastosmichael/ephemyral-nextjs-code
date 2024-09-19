@@ -1,10 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import EditInstructionForm from '../../components/instructions/edit-instruction-form';
+import EditInstructionForm from '../../../components/instructions/edit-instruction-form';
 
 describe('Edit Instruction Form', () => {
   it('renders edit form fields correctly', () => {
-    const { getByPlaceholderText } = render(<EditInstructionForm />);
+    const { getByPlaceholderText } = render(<EditInstructionForm instruction={undefined} />);
     expect(getByPlaceholderText('Edit instruction name')).toBeInTheDocument();
     expect(getByPlaceholderText('Edit instruction content')).toBeInTheDocument();
   });

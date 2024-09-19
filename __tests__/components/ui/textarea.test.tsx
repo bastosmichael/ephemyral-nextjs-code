@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { Textarea } from '../../components/ui/textarea';
+import { Textarea } from '../../../components/ui/textarea';
 
 describe('Textarea component', () => {
   it('renders the textarea correctly', () => {

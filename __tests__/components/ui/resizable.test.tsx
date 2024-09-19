@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { ResizablePanelGroup } from '../../components/ui/resizable';
+import { ResizablePanelGroup } from '../../../components/ui/resizable';
 
 describe('Resizable Panel Group', () => {
   it('renders correctly', () => {

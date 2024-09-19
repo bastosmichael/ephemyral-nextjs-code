@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { Progress } from '../../components/ui/progress';
+import { Progress } from '../../../components/ui/progress';
 
 describe('Progress component', () => {
   it('renders the progress component correctly', () => {

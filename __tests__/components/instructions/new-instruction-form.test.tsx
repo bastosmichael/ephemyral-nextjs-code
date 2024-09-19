@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import NewInstructionForm from '../../components/instructions/new-instruction-form';
+import NewInstructionForm from '../../../components/instructions/new-instruction-form';
 
 describe('New Instruction Form', () => {
   it('renders form fields correctly', () => {
