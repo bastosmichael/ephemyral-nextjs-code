@@ -6,7 +6,7 @@ import Anthropic from "@anthropic-ai/sdk"
 
 const anthropic = new Anthropic()
 
-export const generateAIResponse = async (
+export const generateAnthropicResponse = async (
   messages: Anthropic.Messages.MessageParam[]
 ) => {
   const message = await anthropic.messages.create(

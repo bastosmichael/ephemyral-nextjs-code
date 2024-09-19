@@ -1,6 +1,6 @@
 "use client"
 
-import { generateAIResponse } from "@/actions/ai/generate-anthropic-response"
+import { generateAnthropicResponse } from "@/actions/ai/generate-anthropic-response"
 import { deleteGitHubPR } from "@/actions/github/delete-pr"
 import { embedTargetBranch } from "@/actions/github/embed-target-branch"
 import { generatePR } from "@/actions/github/generate-pr"
@@ -134,7 +134,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       setIsCreatingPR(true);
       let aiCodeGenResponse = null
       if (issue.planResponse !== null) {
-        aiCodeGenResponse = await generateAIResponse([
+        aiCodeGenResponse = await generateAnthropicResponse([
           { role: "user", content: issue.planResponse }
         ])
 
@@ -248,7 +248,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
         instructionsContext
       })
 
-      const aiCodePlanResponse = await generateAIResponse([
+      const aiCodePlanResponse = await generateAnthropicResponse([
         { role: "user", content: codeplanPrompt }
       ])
 
