@@ -16,9 +16,9 @@ export const generateOpenAIResponse = async (
 ) => {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4-turbo",
+      model: "gpt-4o-mini",
       messages: messages, // Using the correctly typed messages array
-      max_tokens: 300 // Adjust as needed
+      max_tokens: 16000 // Adjust as needed
     })
 
     // Returning the text response from the assistant
