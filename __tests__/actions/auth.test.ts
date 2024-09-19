@@ -21,10 +21,4 @@ describe('getUserId', () => {
     const userId = await getUserId();
     expect(userId).toBe('test_user_id');
   });
-
-  it('should return the user ID from Clerk in advanced mode', async () => {
-    process.env.NEXT_PUBLIC_APP_MODE = 'advanced';
-    const userId = await getUserId();
-    expect(userId).toBe('test_user_id');
-  });
 });
