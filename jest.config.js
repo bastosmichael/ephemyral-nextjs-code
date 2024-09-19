@@ -8,24 +8,24 @@ const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   collectCoverage: true,
-  coverageReporters: ['json', 'lcov', 'text', 'clover'],
   coverageDirectory: 'coverage',
+  coverageReporters: ['text-summary', 'lcov'],  // Define multiple reporters here
   collectCoverageFrom: [
-    'lib/**/*.{js,jsx,ts,tsx}',          // Include all code in lib
-    'scripts/**/*.{js,jsx,ts,tsx}',      // Include all code in scripts
-    'db/**/*.{js,jsx,ts,tsx}',           // Include all code in db
-    'components/**/*.{js,jsx,ts,tsx}',   // Include all code in components
-    'app/**/*.{js,jsx,ts,tsx}',          // Include all code in app
-    'actions/**/*.{js,jsx,ts,tsx}',      // Include all code in actions
-    'types/**/*.{js,jsx,ts,tsx}',        // Include all code in types
-    '!**/*.d.ts',                        // Exclude all type definition files
-    '!**/__tests__/**/*',                // Exclude __tests__ directory
-    '!**/*.test.{js,jsx,ts,tsx}',        // Exclude test files based on naming
-    '!**/*.spec.{js,jsx,ts,tsx}',        // Exclude spec files based on naming
+    'lib/**/*.{js,jsx,ts,tsx}',
+    'scripts/**/*.{js,jsx,ts,tsx}',
+    'db/**/*.{js,jsx,ts,tsx}',
+    'components/**/*.{js,jsx,ts,tsx}',
+    'app/**/*.{js,jsx,ts,tsx}',
+    'actions/**/*.{js,jsx,ts,tsx}',
+    'types/**/*.{js,jsx,ts,tsx}',
+    '!**/*.d.ts',
+    '!**/__tests__/**/*',
+    '!**/*.test.{js,jsx,ts,tsx}',
+    '!**/*.spec.{js,jsx,ts,tsx}',
   ],
   coveragePathIgnorePatterns: [
-    '/node_modules/',                    // Exclude node_modules
-    '/public/',                          // Exclude public directory
+    '/node_modules/',
+    '/public/',
   ],
 };
 

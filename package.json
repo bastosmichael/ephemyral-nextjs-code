@@ -19,7 +19,7 @@
     "proxy": "tsx scripts/webhook-proxy/proxy.ts",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --coverageReporters=text-summary,lcov"
+    "test:coverage": "jest --coverage --coverageReporters=text-summary --coverageReporters=lcov"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^0.0.50",
