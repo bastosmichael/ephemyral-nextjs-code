@@ -1,4 +1,4 @@
-import { embeddedFilesTable } from '../../db/schema/embedded-files-schema';
+import { embeddedFilesTable } from '../../../db/schema/embedded-files-schema';
 import { expect } from '@jest/globals';
 
 describe('Embedded Files Schema', () => {
