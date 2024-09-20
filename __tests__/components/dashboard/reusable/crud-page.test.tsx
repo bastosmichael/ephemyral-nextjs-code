@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { CRUDPage } from '../../../components/dashboard/reusable/crud-page';
+import { CRUDPage } from '../../../../components/dashboard/reusable/crud-page';
 
 describe('CRUDPage component', () => {
     it('renders correctly', () => {

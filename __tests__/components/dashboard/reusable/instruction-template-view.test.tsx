@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { InstructionTemplateView } from '../../../components/dashboard/reusable/instruction-template-view';
+import { InstructionTemplateView } from '../../../../components/dashboard/reusable/instruction-template-view';
 
 describe('InstructionTemplateView component', () => {
     it('renders correctly', () => {

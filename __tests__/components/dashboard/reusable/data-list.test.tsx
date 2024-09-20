@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { DataList } from '../../../components/dashboard/reusable/data-list';
+import { DataList } from '../../../../components/dashboard/reusable/data-list';
 
 describe('DataList component', () => {
     it('renders correctly', () => {

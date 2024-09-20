@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { DataItem } from '../../../components/dashboard/reusable/data-item';
+import { DataItem } from '../../../../components/dashboard/reusable/data-item';
 
 describe('DataItem component', () => {
     it('renders correctly', () => {

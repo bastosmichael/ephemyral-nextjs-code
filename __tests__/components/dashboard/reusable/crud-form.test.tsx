@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { CRUDForm } from '../../../components/dashboard/reusable/crud-form';
+import { CRUDForm } from '../../../../components/dashboard/reusable/crud-form';
 
 describe('CRUDForm component', () => {
     it('renders correctly', () => {

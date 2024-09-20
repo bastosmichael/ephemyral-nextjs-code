@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { EditForm } from '../../../components/dashboard/reusable/edit-form';
+import { EditForm } from '../../../../components/dashboard/reusable/edit-form';
 
 describe('EditForm component', () => {
     it('renders correctly', () => {

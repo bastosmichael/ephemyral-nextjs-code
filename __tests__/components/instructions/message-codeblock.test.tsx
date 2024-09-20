@@ -1,3 +1,4 @@
+import React from 'react';
 import { MessageCodeBlock } from '../../../components/instructions/message-codeblock';
 import { render } from '@testing-library/react';
 
