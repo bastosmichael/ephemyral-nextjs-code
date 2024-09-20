@@ -1,7 +1,8 @@
+import React from 'react';
 import { render } from '@testing-library/react';
-import { Input } from '@/components/ui/input';
+import { Input } from '../../../components/ui/input';
 
-describe('Input Component', () => {
+describe('Input component', () => {
   it('renders correctly', () => {
     const { getByRole } = render(<Input />);
     expect(getByRole('textbox')).toBeInTheDocument();
