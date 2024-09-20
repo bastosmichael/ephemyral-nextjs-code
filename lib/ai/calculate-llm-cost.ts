@@ -26,42 +26,17 @@ export const ANTHROPIC_LLMS = [
   }
 ]
 
-// OpenAI Models (ordered by total cost: inputCost + outputCost)
 export const OPENAI_LLMS = [
   {
-    name: "GPT-4 Turbo",
-    id: "gpt-4-turbo",
-    inputCost: 10,
-    outputCost: 30,
+    name: "GPT-4 Omni Mini",
+    id: "gpt-4o-mini",
+    inputCost: 2.5,
+    outputCost: 7.5,
     tokenLimits: {
-      TPM: 30000,
+      TPM: 200000,
       RPM: 500,
       RPD: 10000,
-      TPD: 90000
-    }
-  },
-  {
-    name: "GPT-4 Omni",
-    id: "gpt-4o",
-    inputCost: 5,
-    outputCost: 15,
-    tokenLimits: {
-      TPM: 30000,
-      RPM: 500,
-      RPD: 10000,
-      TPD: 90000
-    }
-  },
-  {
-    name: "GPT-4",
-    id: "gpt-4",
-    inputCost: 5,
-    outputCost: 15,
-    tokenLimits: {
-      TPM: 10000,
-      RPM: 500,
-      RPD: 10000,
-      TPD: 100000
+      TPD: 2000000
     }
   },
   {
@@ -98,6 +73,42 @@ export const OPENAI_LLMS = [
       RPM: 3500,
       RPD: 10000,
       TPD: 200000
+    }
+  },
+  {
+    name: "GPT-4 Turbo",
+    id: "gpt-4-turbo",
+    inputCost: 10,
+    outputCost: 30,
+    tokenLimits: {
+      TPM: 30000,
+      RPM: 500,
+      RPD: 10000,
+      TPD: 90000
+    }
+  },
+  {
+    name: "GPT-4 Omni",
+    id: "gpt-4o",
+    inputCost: 5,
+    outputCost: 15,
+    tokenLimits: {
+      TPM: 30000,
+      RPM: 500,
+      RPD: 10000,
+      TPD: 90000
+    }
+  },
+  {
+    name: "GPT-4",
+    id: "gpt-4",
+    inputCost: 5,
+    outputCost: 15,
+    tokenLimits: {
+      TPM: 10000,
+      RPM: 500,
+      RPD: 10000,
+      TPD: 100000
     }
   }
 ]

@@ -60,13 +60,11 @@ export const generateAnthropicResponse = async (
       console.warn("usage", response.usage)
 
       // Calculate the cost using the model's input and output tokens
-      const cost = calculateLLMCost({
+      calculateLLMCost({
         llmId: modelId,
         inputTokens: response.usage.input_tokens,
         outputTokens: response.usage.output_tokens
       })
-
-      console.warn("cost", cost)
 
       // Return the response if successful
       return response.content[0].type === "text" ? response.content[0].text : ""
