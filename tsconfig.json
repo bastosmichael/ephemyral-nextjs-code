@@ -21,7 +21,7 @@
     "paths": {
       "@/*": ["./*"]
     },
-    "types": ["jest", "@testing-library/jest-dom", "node"], // Add "node" here
+    "types": ["jest", "@testing-library/jest-dom", "node"], // Ensure these types are included
     "outDir": "./dist",
     "rootDir": ".",
     "target": "ESNext"
@@ -31,7 +31,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "scripts/**/*.ts"
+    "scripts/**/*.ts",
+    "jest-setup.d.ts" // Add this if you created a custom type declaration file
   ],
   "exclude": ["node_modules"]
 }
