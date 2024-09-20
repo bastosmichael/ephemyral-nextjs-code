@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
-import { Tabs } from '../../../components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../../../components/ui/tabs';
+import React from 'react';
 
 describe('Tabs component', () => {
     it('renders correctly', () => {

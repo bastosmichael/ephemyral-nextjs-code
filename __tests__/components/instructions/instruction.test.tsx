@@ -1,5 +1,6 @@
 import { render } from '@testing-library/react';
 import { Instruction } from '../../../components/instructions/instruction';
+import React from 'react';
 
 describe('Instruction component', () => {
   it('renders correctly', () => {

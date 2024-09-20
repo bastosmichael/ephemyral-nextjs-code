@@ -1,6 +1,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { Select } from '../../../components/ui/select';
+import { Select, SelectContent, SelectItem, SelectTrigger } from '../../../components/ui/select';
 
 describe('Select component', () => {
     it('renders correctly', () => {
