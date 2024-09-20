@@ -21,12 +21,14 @@ Ephemyral Code is an AI-powered code generation tool designed to help developers
 
 ## Features
 
-- **AI-Generated Pull Requests**: Automatically create PRs based on issue descriptions.
-- **GitHub Integration**: Seamless connection with your GitHub repositories.
-- **Template Management**: Create and use templates for consistent code generation.
-- **Instruction System**: Define custom instructions to guide AI-generated code.
-- **Multi-Project Support**: Manage multiple projects within a single workspace.
-- **Simple and Advanced Modes**: Choose between a straightforward setup or a feature-rich environment.
+- **AI-Generated Pull Requests**: Automatically create PRs based on issue descriptions and context.
+- **GitHub Integration**: Seamless connection with your GitHub repositories to manage issues more effectively.
+- **Template Management**: Create and utilize templates for consistent code generation and task automation.
+- **Instruction System**: Define custom instructions to guide AI-generated code outputs tailored to specific needs.
+- **Machine Learning Model Adaptation**: Utilize machine learning models to modify existing code to improve performance and readability.
+- **Multi-Project Support**: Manage multiple projects within a singular advanced workspace.
+- **Simple and Advanced Modes**: Choose between straightforward setups or a feature-rich development environment, enabling customization according to user skill levels.
+- **Real-time Code Improvement**: Use AI to analyze and suggest optimizations for existing code directly from repositories.
 
 ## Demo
 
@@ -39,6 +41,8 @@ Check out the latest demo of Ephemyral in action:
 Ephemyral offers two setup modes: Simple and Advanced. Choose the one that best fits your needs.
 
 ### Simple Mode Setup
+
+Follow these instructions to set up a simple environment that supports AI features.
 
 1. **Clone the Repository**
 
@@ -54,13 +58,13 @@ Ephemyral offers two setup modes: Simple and Advanced. Choose the one that best 
    ```
 
 3. **Set Up Environment Variables**
-   Copy the `.env.example` file to `.env.local` and fill in the required variables:
+   Copy the `.env.example` to `.env.local` and fill in the respective values. Ensure you have:
 
    ```bash
    cp .env.example .env.local
    ```
 
-   Required variables for Simple Mode:
+   Required variables:
 
    - `NEXT_PUBLIC_APP_MODE=simple`
    - `ANTHROPIC_API_KEY=`
@@ -68,69 +72,46 @@ Ephemyral offers two setup modes: Simple and Advanced. Choose the one that best 
    - `DATABASE_URL=`
    - `GITHUB_PAT=`
 
-4. **Set Up the Database**
-   We recommend using [Supabase](https://supabase.com/) or [Neon](https://neon.tech/) for your Postgres database.
-   After setting up your database, run the migrations:
-
-   ```bash
-   npm run db:migrate
-   ```
-
-5. **Set Up GitHub PAT**
-   Follow the instructions in the [GitHub PAT Setup Guide](#github-pat-setup-guide) to create and configure your Personal Access Token.
-
-6. **Run the Application**
+4. **Run the Application**
    ```bash
    npm run dev
    ```
 
 ### Advanced Mode Setup
 
-For the Advanced Mode setup, follow the same steps as Simple Mode, but use these environment variables:
+For a full-fledged development environment, follow the setup instructions for Advanced Mode.
 
-- `NEXT_PUBLIC_APP_MODE=advanced`
-- `CLERK_SECRET_KEY=`
-- `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=`
-- `GITHUB_CLIENT_SECRET=`
-- `GITHUB_PRIVATE_KEY=`
-- `NEXT_PUBLIC_GITHUB_APP_NAME=`
-- `NEXT_PUBLIC_GITHUB_APP_ID=`
-- `NEXT_PUBLIC_GITHUB_CLIENT_ID=`
-- `LINEAR_CLIENT_SECRET=` (optional)
-- `LINEAR_WEBHOOK_SECRET=` (optional)
-- `NEXT_PUBLIC_LINEAR_CLIENT_ID=` (optional)
-
-Additional setup steps for Advanced Mode will be provided in a future update.
+- Additional setup steps specific to enabling more complex AI features will be provided in future updates.
 
 ## Usage
 
-1. **Create a Workspace**: Start by creating a new workspace to organize your projects.
+To maximize productivity with Ephemyral Code, follow these steps to utilize its AI features effectively:
 
+1. **Create a Workspace**: Start by creating a new workspace to organize your projects effectively.
 2. **Add a Project**: Within your workspace, create a new project and connect it to a GitHub repository.
-
-3. **Create an Issue**: Describe the feature or bug fix you want to implement.
-
-4. **Generate PR**: Click the "Run" button on the issue to generate an AI-powered pull request.
-
-5. **Review and Merge**: Review the generated code, make any necessary adjustments, and merge the PR.
-
-For more detailed usage instructions, please refer to our [documentation](https://docs.ephemyral-code.ai).
+3. **Generate AI Suggestions**: After creating an issue in the project, utilize AI to generate code suggestions and improvements. This can be done easily through the application interface.
+4. **Create an Issue**: Describe the feature or bug fix you want to implement, and let the AI generate a corresponding pull request.
+5. **Review and Merge PR**: Use the AI suggestions, make necessary adjustments, and merge the pull request into your main branch.
 
 ## Deployment
 
-To deploy Ephemyral to Vercel:
+To deploy Ephemyral to Vercel and utilize its AI capabilities:
 
 1. Fork the Ephemyral repository to your GitHub account.
 2. Sign up for a [Vercel account](https://vercel.com/signup) if you haven't already.
 3. Click the button below to start the deployment process:
+
    [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fbastosmichael%2Fephemyral-code-code&env=NEXT_PUBLIC_APP_MODE,ANTHROPIC_API_KEY,OPENAI_API_KEY,DATABASE_URL,GITHUB_PAT)
-4. Follow the prompts to configure your deployment, ensuring all required environment variables are set.
-5. Once deployed, configure your database by running the migrations:
+
+4. Follow the prompts to configure your deployment, ensuring all required environment variables are set. 
+5. After deployment, set up your database and run migrations:
+
    ```bash
    npx vercel env pull .env.local
    npm run db:migrate
    ```
-   For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.ephemyral-code.ai/deployment).
+
+For more detailed deployment instructions, including advanced configurations, please refer to our [deployment guide](https://docs.ephemyral-code.ai/deployment).
 
 ## Contributing
 
@@ -163,16 +144,13 @@ Ephemyral is open-source software licensed under the [MIT license](LICENSE).
 
 ## Acknowledgements
 
-Ephemyral is built using various open-source libraries and tools. We'd like to thank the contributors and maintainers of:
+Ephemyral is built using various open-source libraries and tools. A special thanks to all contributors and maintainers, including:
 
 - [Next.js](https://nextjs.org/)
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)
-- [Clerk](https://clerk.dev/)
-- [Anthropic](https://www.anthropic.com/)
-- [OpenAI](https://openai.com/)
-  And all the other dependencies that make this project possible.
+- All contributors who helped enhance the AI capabilities in this project.
 
 ## Contact
 
@@ -182,26 +160,3 @@ For support, feature requests, or general inquiries:
 - Follow [@bastosmichael](https://twitter.com/bastosmichael) on Twitter for updates
 - Join our [Discord community](https://discord.gg/ephemyral-code) for discussions and support
   Built with ❤️ by [Mckay Wrigley](https://twitter.com/bastosmichael) and [Tyler Bruno](https://twitter.com/tylerbruno05) at Takeoff AI.
-
----
-
-### GitHub PAT Setup Guide
-
-To set up your GitHub Personal Access Token (PAT) for Ephemyral:
-
-1. Go to [GitHub's Token Settings](https://github.com/settings/tokens?type=beta).
-2. Click "Generate new token" and choose "Fine-grained token".
-3. Set a name and expiration for your token.
-4. Under "Repository access", select either "All repositories" or specific repositories.
-5. In "Permissions", grant the following:
-   - Repository permissions:
-     - Contents: Read and write
-     - Metadata: Read-only
-     - Pull requests: Read and write
-6. Click "Generate token" and copy your new PAT.
-7. Add the PAT to your `.env.local` file:
-   ```
-   GITHUB_PAT=your_pat_here
-   ```
-
-Remember to keep your PAT secure and never share it publicly.
