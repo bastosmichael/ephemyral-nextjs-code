@@ -7,7 +7,7 @@ describe('Textarea component', () => {
         const { getByRole } = render(<Textarea />);
         expect(getByRole('textbox')).toBeInTheDocument();
     });
-    
+
     it('applies custom className', () => {
         const { getByRole } = render(<Textarea className="custom-class" />);
         expect(getByRole('textbox')).toHaveClass('custom-class');
