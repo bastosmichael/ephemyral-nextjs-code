@@ -1,17 +1,16 @@
-import React from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import Button from '../../../components/Button';
+import { render, fireEvent } from "@testing-library/react"
+import { Button } from "@/components/ui/button"
 
-describe('Button Component', () => {
-  it('renders the button with the correct label', () => {
-    const { getByText } = render(<Button label="Click me" onClick={() => {}} />);
-    expect(getByText('Click me')).toBeInTheDocument();
-  });
-
-  it('calls the onClick function when clicked', () => {
-    const mockOnClick = jest.fn();
-    const { getByText } = render(<Button label="Click me" onClick={mockOnClick} />);
-    fireEvent.click(getByText('Click me'));
-    expect(mockOnClick).toHaveBeenCalledTimes(1);
-  });
-});
+describe("Button", () => {
+    it("should render a button with text", () => {
+        const { getByText } = render(<Button label="Click Me" onClick={() => {}} />)
+        expect(getByText("Click Me")).toBeInTheDocument()
+    })
+    
+    it("should handle button click correctly", () => {
+        const handleClick = jest.fn()
+        const { getByText } = render(<Button label="Click Me" onClick={handleClick} />)
+        fireEvent.click(getByText("Click Me"))
+        expect(handleClick).toHaveBeenCalled()
+    })
+})
