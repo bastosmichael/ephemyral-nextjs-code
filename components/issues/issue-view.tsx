@@ -43,6 +43,7 @@ import { Loader2, Pencil, Play, RefreshCw, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { CRUDPage } from "../dashboard/reusable/crud-page";
+import { parseStringPromise } from "xml2js"; // Import xml2js to parse XML
 
 interface IssueViewProps {
   item: SelectIssue;
@@ -60,6 +61,56 @@ interface IssueViewProps {
 }
 
 let globalSequence = 1;
+
+// Function to sanitize and convert XML to Markdown
+const sanitizeAndConvertXMLToMarkdown = async (xmlContent: string) => {
+  try {
+    const parsedXml = await parseStringPromise(xmlContent, { trim: true });
+
+    // Traverse through the parsed XML and convert to Markdown
+    let markdownContent = "";
+
+    const convertToMarkdown = (obj: any, depth: number = 0) => {
+      for (const [key, value] of Object.entries(obj)) {
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            if (typeof item === "string") {
+              markdownContent += `${"#".repeat(depth + 1)} ${key}\n\n`;
+              markdownContent += `${item}\n\n`;
+            } else {
+              markdownContent += `${"#".repeat(depth + 1)} ${key}\n\n`;
+              convertToMarkdown(item, depth + 1);
+            }
+          });
+        }
+      }
+    };
+
+    convertToMarkdown(parsedXml);
+    return markdownContent;
+  } catch (error) {
+    console.error("Error converting XML to Markdown:", error);
+    return xmlContent; // Return the original content if parsing fails
+  }
+};
+
+// Update message with sanitization and Markdown conversion
+const updateMessageWithSanitization = async (
+  messageId: string,
+  content: string,
+  setMessages: React.Dispatch<React.SetStateAction<SelectIssueMessage[]>>
+) => {
+  // Sanitize and convert to Markdown
+  const sanitizedMarkdownContent = await sanitizeAndConvertXMLToMarkdown(content);
+
+  // Update the message with the sanitized and converted content
+  await updateIssueMessage(messageId, { content: sanitizedMarkdownContent });
+  setMessages((prev) =>
+    prev.map((message) =>
+      message.id === messageId ? { ...message, content: sanitizedMarkdownContent } : message
+    )
+  );
+};
 
 export const IssueView: React.FC<IssueViewProps> = ({
   item,
@@ -267,7 +318,8 @@ export const IssueView: React.FC<IssueViewProps> = ({
         throw new Error("AI response is empty or undefined.");
       }
 
-      await updateMessage(planMessage.id, aiCodePlanResponse);
+      // Use updated message function with sanitization
+      await updateMessageWithSanitization(planMessage.id, aiCodePlanResponse, setMessages);
 
       const codegenPrompt = await buildCodeGenPrompt({
         issue: { title: issue.name, description: issue.content },
