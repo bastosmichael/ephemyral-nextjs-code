@@ -88,7 +88,7 @@
     "remark-gfm": "^4.0.0",
     "remark-math": "^6.0.0",
     "sonner": "^1.4.41",
-    "stripe": "^17.0.0",
+    "stripe": "^17.1.0",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
     "vaul": "^1.0.0",
