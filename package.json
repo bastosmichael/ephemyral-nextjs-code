@@ -29,7 +29,7 @@
     "@clerk/nextjs": "^5.7.1",
     "@clerk/themes": "^2.1.35",
     "@hookform/resolvers": "^3.4.2",
-    "@linear/sdk": "^30.0.0",
+    "@linear/sdk": "^31.0.0",
     "@neondatabase/serverless": "^0.10.1",
     "@octokit/auth-app": "^7.1.1",
     "@octokit/rest": "^21.0.2",
