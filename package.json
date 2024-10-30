@@ -108,7 +108,7 @@
     "babel-jest": "^29.7.0",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.24.2",
-    "eslint": "^8.57.1",
+    "eslint": "^9.13.0",
     "eslint-config-next": "15.0.2",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-tailwindcss": "^3.17.5",
