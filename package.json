@@ -87,7 +87,7 @@
     "react-textarea-autosize": "^8.5.5",
     "remark-gfm": "^4.0.0",
     "remark-math": "^6.0.0",
-    "sonner": "^1.4.41",
+    "sonner": "^1.7.0",
     "stripe": "^17.3.1",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
