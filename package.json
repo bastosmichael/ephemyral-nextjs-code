@@ -107,7 +107,7 @@
     "@typescript-eslint/eslint-plugin": "^8.17.0",
     "babel-jest": "^29.7.0",
     "dotenv": "^16.4.6",
-    "drizzle-kit": "^0.24.2",
+    "drizzle-kit": "^0.28.1",
     "eslint": "^8.57.1",
     "eslint-config-next": "15.0.3",
     "eslint-config-prettier": "^9.1.0",
