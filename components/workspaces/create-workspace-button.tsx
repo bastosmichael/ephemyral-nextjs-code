@@ -1,41 +1,41 @@
-"use client";
+"use client"
 
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { createWorkspace } from "@/db/queries/workspaces-queries";
-import { cn } from "@/lib/utils";
-import { PlusIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { FC, HTMLAttributes, useState } from "react";
+  DialogTrigger
+} from "@/components/ui/dialog"
+import { Input } from "@/components/ui/input"
+import { createWorkspace } from "@/db/queries/workspaces-queries"
+import { cn } from "@/lib/utils"
+import { PlusIcon } from "lucide-react"
+import { useRouter } from "next/navigation"
+import { FC, HTMLAttributes, useState } from "react"
 
-type CreateWorkspaceButtonProps = HTMLAttributes<HTMLDivElement>;
+type CreateWorkspaceButtonProps = HTMLAttributes<HTMLDivElement>
 
 export const CreateWorkspaceButton: FC<CreateWorkspaceButtonProps> = ({
   ...props
 }) => {
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [workspaceName, setWorkspaceName] = useState("");
+  const router = useRouter()
+  const [open, setOpen] = useState(false)
+  const [workspaceName, setWorkspaceName] = useState("")
 
   const handleCreateWorkspace = async () => {
     try {
       const workspace = await createWorkspace({
-        name: workspaceName || "Ephemeral Workspace",
-      });
-      router.push(`/${workspace.id}`);
-      setOpen(false);
+        name: workspaceName || "Ephemeral Workspace"
+      })
+      router.push(`/${workspace.id}`)
+      setOpen(false)
     } catch (error) {
-      console.error(error);
+      console.error(error)
     }
-  };
+  }
 
   return (
     <div className={cn("", props.className)}>
@@ -53,7 +53,7 @@ export const CreateWorkspaceButton: FC<CreateWorkspaceButtonProps> = ({
           <Input
             placeholder="Enter a name for your workspace..."
             value={workspaceName}
-            onChange={(e) => setWorkspaceName(e.target.value)}
+            onChange={e => setWorkspaceName(e.target.value)}
           />
           <DialogFooter>
             <Button onClick={handleCreateWorkspace}>Create</Button>
@@ -61,5 +61,5 @@ export const CreateWorkspaceButton: FC<CreateWorkspaceButtonProps> = ({
         </DialogContent>
       </Dialog>
     </div>
-  );
-};
+  )
+}
