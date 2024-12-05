@@ -1,12 +1,12 @@
-"use client";
+"use client"
 
-import { generateOpenAIResponse } from "@/actions/ai/generate-openai-response"; // Import the OpenAI function
-import { generateAnthropicResponse } from "@/actions/ai/generate-anthropic-response"; // Import the Anthropic function
-import { deleteGitHubPR } from "@/actions/github/delete-pr";
-import { embedTargetBranch } from "@/actions/github/embed-target-branch";
-import { generatePR } from "@/actions/github/generate-pr";
-import { getMostSimilarEmbeddedFiles } from "@/actions/retrieval/get-similar-files";
-import { MessageMarkdown } from "@/components/instructions/message-markdown";
+import { generateOpenAIResponse } from "@/actions/ai/generate-openai-response" // Import the OpenAI function
+import { generateAnthropicResponse } from "@/actions/ai/generate-anthropic-response" // Import the Anthropic function
+import { deleteGitHubPR } from "@/actions/github/delete-pr"
+import { embedTargetBranch } from "@/actions/github/embed-target-branch"
+import { generatePR } from "@/actions/github/generate-pr"
+import { getMostSimilarEmbeddedFiles } from "@/actions/retrieval/get-similar-files"
+import { MessageMarkdown } from "@/components/instructions/message-markdown"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,83 +16,83 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+  AlertDialogTrigger
+} from "@/components/ui/alert-dialog"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
+  DialogTitle
+} from "@/components/ui/dialog"
+import { Separator } from "@/components/ui/separator"
 import {
   createIssueMessageRecord,
   deleteIssue,
   deleteIssueMessagesByIssueId,
   getIssueMessagesByIssueId,
   updateIssue,
-  updateIssueMessage,
-} from "@/db/queries";
-import { SelectIssue, SelectIssueMessage, SelectProject } from "@/db/schema";
-import { buildCodeGenPrompt } from "@/lib/ai/build-codegen-prompt";
-import { buildCodePlanPrompt } from "@/lib/ai/build-plan-prompt";
-import { parseAIResponse } from "@/lib/ai/parse-ai-response";
-import { Loader2, Pencil, Play, RefreshCw, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
-import { CRUDPage } from "../dashboard/reusable/crud-page";
-import { parseStringPromise } from "xml2js"; // Import xml2js to parse XML
+  updateIssueMessage
+} from "@/db/queries"
+import { SelectIssue, SelectIssueMessage, SelectProject } from "@/db/schema"
+import { buildCodeGenPrompt } from "@/lib/ai/build-codegen-prompt"
+import { buildCodePlanPrompt } from "@/lib/ai/build-plan-prompt"
+import { parseAIResponse } from "@/lib/ai/parse-ai-response"
+import { Loader2, Pencil, Play, RefreshCw, Trash2 } from "lucide-react"
+import { useRouter } from "next/navigation"
+import React, { useEffect, useRef, useState } from "react"
+import { CRUDPage } from "../dashboard/reusable/crud-page"
+import { parseStringPromise } from "xml2js" // Import xml2js to parse XML
 
 interface IssueViewProps {
-  item: SelectIssue;
-  project: SelectProject;
+  item: SelectIssue
+  project: SelectProject
   attachedInstructions: {
-    instructionId: string;
-    issueId: string;
+    instructionId: string
+    issueId: string
     instruction: {
-      id: string;
-      content: string;
-      name: string;
-    };
-  }[];
-  workspaceId: string;
+      id: string
+      content: string
+      name: string
+    }
+  }[]
+  workspaceId: string
 }
 
-let globalSequence = 1;
+let globalSequence = 1
 
 // Function to sanitize and convert XML to Markdown
 const sanitizeAndConvertXMLToMarkdown = async (xmlContent: string) => {
   try {
-    const parsedXml = await parseStringPromise(xmlContent, { trim: true });
+    const parsedXml = await parseStringPromise(xmlContent, { trim: true })
 
     // Traverse through the parsed XML and convert to Markdown
-    let markdownContent = "";
+    let markdownContent = ""
 
     const convertToMarkdown = (obj: any, depth: number = 0) => {
       for (const [key, value] of Object.entries(obj)) {
         if (Array.isArray(value)) {
-          value.forEach((item) => {
+          value.forEach(item => {
             if (typeof item === "string") {
-              markdownContent += `${"#".repeat(depth + 1)} ${key}\n\n`;
-              markdownContent += `${item}\n\n`;
+              markdownContent += `${"#".repeat(depth + 1)} ${key}\n\n`
+              markdownContent += `${item}\n\n`
             } else {
-              markdownContent += `${"#".repeat(depth + 1)} ${key}\n\n`;
-              convertToMarkdown(item, depth + 1);
+              markdownContent += `${"#".repeat(depth + 1)} ${key}\n\n`
+              convertToMarkdown(item, depth + 1)
             }
-          });
+          })
         }
       }
-    };
+    }
 
-    convertToMarkdown(parsedXml);
-    return markdownContent;
+    convertToMarkdown(parsedXml)
+    return markdownContent
   } catch (error) {
-    console.error("Error converting XML to Markdown:", error);
-    return xmlContent; // Return the original content if parsing fails
+    console.error("Error converting XML to Markdown:", error)
+    return xmlContent // Return the original content if parsing fails
   }
-};
+}
 
 // Update message with sanitization and Markdown conversion
 const updateMessageWithSanitization = async (
@@ -101,238 +101,245 @@ const updateMessageWithSanitization = async (
   setMessages: React.Dispatch<React.SetStateAction<SelectIssueMessage[]>>
 ) => {
   // Sanitize and convert to Markdown
-  const sanitizedMarkdownContent = await sanitizeAndConvertXMLToMarkdown(content);
+  const sanitizedMarkdownContent =
+    await sanitizeAndConvertXMLToMarkdown(content)
 
   // Update the message with the sanitized and converted content
-  await updateIssueMessage(messageId, { content: sanitizedMarkdownContent });
-  setMessages((prev) =>
-    prev.map((message) =>
-      message.id === messageId ? { ...message, content: sanitizedMarkdownContent } : message
+  await updateIssueMessage(messageId, { content: sanitizedMarkdownContent })
+  setMessages(prev =>
+    prev.map(message =>
+      message.id === messageId
+        ? { ...message, content: sanitizedMarkdownContent }
+        : message
     )
-  );
-};
+  )
+}
 
 export const IssueView: React.FC<IssueViewProps> = ({
   item,
   project,
   attachedInstructions,
-  workspaceId,
+  workspaceId
 }) => {
-  const router = useRouter();
+  const router = useRouter()
 
-  const [isDeleteOpen, setIsDeleteOpen] = React.useState(false);
+  const [isDeleteOpen, setIsDeleteOpen] = React.useState(false)
   const [selectedInstruction, setSelectedInstruction] = React.useState<{
-    id: string;
-    content: string;
-    name: string;
-  } | null>(null);
-  const [isRunningAI, setIsRunningAI] = React.useState(false);
-  const [isRunningAnthropic, setIsRunningAnthropic] = React.useState(false);
-  const [isCreatingPR, setIsCreatingPR] = React.useState(false);
-  const [messages, setMessages] = useState<SelectIssueMessage[]>([]);
+    id: string
+    content: string
+    name: string
+  } | null>(null)
+  const [isRunningAI, setIsRunningAI] = React.useState(false)
+  const [isRunningAnthropic, setIsRunningAnthropic] = React.useState(false)
+  const [isCreatingPR, setIsCreatingPR] = React.useState(false)
+  const [messages, setMessages] = useState<SelectIssueMessage[]>([])
 
-  const sequenceRef = useRef(globalSequence);
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  useEffect(() => {
-    fetchMessages();
-  }, [item.id]);
+  const sequenceRef = useRef(globalSequence)
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages, isCreatingPR, isRunningAI, isRunningAnthropic]);
+    fetchMessages()
+  }, [item.id])
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages, isCreatingPR, isRunningAI, isRunningAnthropic])
 
   const addMessage = async (content: string) => {
     const newMessage = await createIssueMessageRecord({
       issueId: item.id,
       content,
-      sequence: sequenceRef.current++,
-    });
-    setMessages((prev) => [...prev, newMessage]);
-    globalSequence = sequenceRef.current;
-    return newMessage;
-  };
+      sequence: sequenceRef.current++
+    })
+    setMessages(prev => [...prev, newMessage])
+    globalSequence = sequenceRef.current
+    return newMessage
+  }
 
   const updateMessage = async (id: string, content: string) => {
-    await updateIssueMessage(id, { content });
-    setMessages((prev) =>
-      prev.map((message) =>
+    await updateIssueMessage(id, { content })
+    setMessages(prev =>
+      prev.map(message =>
         message.id === id ? { ...message, content } : message
       )
-    );
-  };
+    )
+  }
 
   const fetchMessages = async () => {
-    const fetchedMessages = await getIssueMessagesByIssueId(item.id);
-    setMessages(fetchedMessages.sort((a, b) => a.sequence - b.sequence));
+    const fetchedMessages = await getIssueMessagesByIssueId(item.id)
+    setMessages(fetchedMessages.sort((a, b) => a.sequence - b.sequence))
     sequenceRef.current =
-      Math.max(...fetchedMessages.map((m) => m.sequence), 0) + 1;
-    globalSequence = sequenceRef.current;
-  };
+      Math.max(...fetchedMessages.map(m => m.sequence), 0) + 1
+    globalSequence = sequenceRef.current
+  }
 
   const handleDelete = async () => {
     try {
-      await deleteIssue(item.id);
-      setIsDeleteOpen(false);
-      router.push(`../issues`);
+      await deleteIssue(item.id)
+      setIsDeleteOpen(false)
+      router.push(`../issues`)
     } catch (error) {
-      console.error("Failed to delete issue:", error);
+      console.error("Failed to delete issue:", error)
     }
-  };
+  }
 
   const handlePRCreation = async (issue: SelectIssue) => {
     try {
-      setIsCreatingPR(true);
-      let aiCodeGenResponse = null;
+      setIsCreatingPR(true)
+      let aiCodeGenResponse = null
       if (issue.planResponse !== null) {
         aiCodeGenResponse = await generateOpenAIResponse([
-          { role: "user", content: issue.planResponse },
-        ]);
+          { role: "user", content: issue.planResponse }
+        ])
 
         await updateIssue(issue.id, {
-          codeGenResponse: aiCodeGenResponse,
-        });
+          codeGenResponse: aiCodeGenResponse
+        })
       } else {
-        aiCodeGenResponse = issue.codeGenResponse;
+        aiCodeGenResponse = issue.codeGenResponse
       }
 
-      let parsedAIResponse = null;
+      let parsedAIResponse = null
       if (aiCodeGenResponse !== null) {
-        parsedAIResponse = parseAIResponse(aiCodeGenResponse);
+        parsedAIResponse = parseAIResponse(aiCodeGenResponse)
       } else {
-        throw new Error("No code generation response found.");
+        throw new Error("No code generation response found.")
       }
 
-      const prMessage = await addMessage("Generating GitHub PR...");
+      const prMessage = await addMessage("Generating GitHub PR...")
 
       const { prLink, branchName } = await generatePR(
         issue.name.replace(/\s+/g, "-"),
         project,
         parsedAIResponse
-      );
+      )
 
       if (issue.runner !== null) {
         await updateIssue(issue.id, {
           status: `completed`,
           prLink: prLink || undefined,
-          prBranch: branchName,
-        });
+          prBranch: branchName
+        })
 
         await updateMessage(
           prMessage.id,
           `Generated GitHub PR: [${prLink}](${prLink})`
-        );
-        setIsCreatingPR(false);
+        )
+        setIsCreatingPR(false)
       } else {
-        throw new Error("No runner found.");
+        throw new Error("No runner found.")
       }
     } catch (error) {
-      console.error("Failed to create PR:", error);
-      await addMessage(`Error: Failed to create PR: ${error}`);
-      await updateIssue(issue.id, { status: "failed" });
-      setIsCreatingPR(false);
+      console.error("Failed to create PR:", error)
+      await addMessage(`Error: Failed to create PR: ${error}`)
+      await updateIssue(issue.id, { status: "failed" })
+      setIsCreatingPR(false)
     }
-  };
+  }
 
   const handleRun = async (issue: SelectIssue, runner: string) => {
     if (!project.githubRepoFullName || !project.githubTargetBranch) {
-      alert("Please connect your project to a GitHub repository first.");
-      return;
+      alert("Please connect your project to a GitHub repository first.")
+      return
     }
 
     const setIsRunning = (state: boolean) => {
-      if (runner === "AI") setIsRunningAI(state);
-      else if (runner === "Anthropic") setIsRunningAnthropic(state);
-    };
+      if (runner === "AI") setIsRunningAI(state)
+      else if (runner === "Anthropic") setIsRunningAnthropic(state)
+    }
 
-    setIsRunning(true);
+    setIsRunning(true)
     try {
-      await deleteIssueMessagesByIssueId(issue.id);
-      setMessages([]);
-      sequenceRef.current = 1;
-      globalSequence = 1;
+      await deleteIssueMessagesByIssueId(issue.id)
+      setMessages([])
+      sequenceRef.current = 1
+      globalSequence = 1
 
-      await addMessage("Embedding target branch...");
+      await addMessage("Embedding target branch...")
 
       // Embed the target branch to make sure embeddings are up to date
       await embedTargetBranch({
         projectId: project.id,
         githubRepoFullName: project.githubRepoFullName,
         branchName: project.githubTargetBranch,
-        installationId: project.githubInstallationId,
-      });
+        installationId: project.githubInstallationId
+      })
 
-      await updateIssue(issue.id, { status: "in_progress", runner });
+      await updateIssue(issue.id, { status: "in_progress", runner })
 
-      let planMessageContent = "";
+      let planMessageContent = ""
       if (runner === "AI") {
-        planMessageContent = "Generating plan using OpenAI...";
+        planMessageContent = "Generating plan using OpenAI..."
       } else if (runner === "Anthropic") {
-        planMessageContent = "Generating plan using Anthropic...";
+        planMessageContent = "Generating plan using Anthropic..."
       }
 
-      const planMessage = await addMessage(planMessageContent);
+      const planMessage = await addMessage(planMessageContent)
 
-      const embeddingsQueryText = `${issue.name} ${issue.content}`;
+      const embeddingsQueryText = `${issue.name} ${issue.content}`
 
       const codebaseFiles = await getMostSimilarEmbeddedFiles(
         embeddingsQueryText,
         project.id
-      );
+      )
 
       const instructionsContext = attachedInstructions
         .map(
           ({ instruction }) =>
             `<instruction name="${instruction.name}">\n${instruction.content}\n</instruction>`
         )
-        .join("\n\n");
+        .join("\n\n")
 
       const codeplanPrompt = await buildCodePlanPrompt({
         issue: {
           name: issue.name,
-          description: issue.content,
+          description: issue.content
         },
-        codebaseFiles: codebaseFiles.map((file) => ({
+        codebaseFiles: codebaseFiles.map(file => ({
           path: file.path,
-          content: file.content ?? "",
+          content: file.content ?? ""
         })),
-        instructionsContext,
-      });
+        instructionsContext
+      })
 
       // Assign a default value
-      let aiCodePlanResponse: string = "";
+      let aiCodePlanResponse: string = ""
 
       // Generate response based on runner
       if (runner === "AI") {
         aiCodePlanResponse = await generateOpenAIResponse([
-          { role: "user", content: codeplanPrompt },
-        ]);
+          { role: "user", content: codeplanPrompt }
+        ])
       } else if (runner === "Anthropic") {
         aiCodePlanResponse = await generateAnthropicResponse([
-          { role: "user", content: codeplanPrompt },
-        ]);
+          { role: "user", content: codeplanPrompt }
+        ])
       }
 
       // Ensure aiCodePlanResponse is defined and not an empty string
       if (!aiCodePlanResponse || aiCodePlanResponse.trim() === "") {
-        throw new Error("AI response is empty or undefined.");
+        throw new Error("AI response is empty or undefined.")
       }
 
       // Use updated message function with sanitization
-      await updateMessageWithSanitization(planMessage.id, aiCodePlanResponse, setMessages);
+      await updateMessageWithSanitization(
+        planMessage.id,
+        aiCodePlanResponse,
+        setMessages
+      )
 
       const codegenPrompt = await buildCodeGenPrompt({
         issue: { title: issue.name, description: issue.content },
-        codebaseFiles: codebaseFiles.map((file) => ({
+        codebaseFiles: codebaseFiles.map(file => ({
           path: file.path,
-          content: file.content ?? "",
+          content: file.content ?? ""
         })),
         plan: aiCodePlanResponse, // Ensure this is always defined
-        instructionsContext,
-      });
+        instructionsContext
+      })
 
       if (issue.prLink && issue.prBranch) {
-        await deleteGitHubPR(project, issue.prLink, issue.prBranch);
+        await deleteGitHubPR(project, issue.prLink, issue.prBranch)
       }
 
       await updateIssue(issue.id, {
@@ -341,22 +348,22 @@ export const IssueView: React.FC<IssueViewProps> = ({
         prBranch: null,
         runner,
         planResponse: codegenPrompt,
-        codeGenResponse: null,
-      });
+        codeGenResponse: null
+      })
 
-      await addMessage(`Completed ${runner}. Ready for PR creation.`);
+      await addMessage(`Completed ${runner}. Ready for PR creation.`)
     } catch (error) {
-      console.error("Failed to run issue:", error);
-      await addMessage(`Error: Failed to run issue: ${error}`);
-      await updateIssue(issue.id, { status: "failed" });
+      console.error("Failed to run issue:", error)
+      await addMessage(`Error: Failed to run issue: ${error}`)
+      await updateIssue(issue.id, { status: "failed" })
     } finally {
-      setIsRunning(false);
+      setIsRunning(false)
     }
-  };
+  }
 
   const handleRerun = async (issue: SelectIssue, runner: string) => {
     if (issue.prLink && issue.prBranch) {
-      await deleteGitHubPR(project, issue.prLink, issue.prBranch);
+      await deleteGitHubPR(project, issue.prLink, issue.prBranch)
     }
     await updateIssue(issue.id, {
       prLink: null,
@@ -364,16 +371,16 @@ export const IssueView: React.FC<IssueViewProps> = ({
       status: "ready",
       runner: runner,
       planResponse: null,
-      codeGenResponse: null,
-    });
-    await handleRun(issue, runner);
-  };
+      codeGenResponse: null
+    })
+    await handleRun(issue, runner)
+  }
 
   const scrollToBottom = () => {
     if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" })
     }
-  };
+  }
 
   return (
     <CRUDPage
@@ -444,7 +451,9 @@ export const IssueView: React.FC<IssueViewProps> = ({
           variant="outline"
           size="sm"
           onClick={() =>
-            router.push(`/${workspaceId}/${item.projectId}/issues/${item.id}/edit`)
+            router.push(
+              `/${workspaceId}/${item.projectId}/issues/${item.id}/edit`
+            )
           }
         >
           <Pencil className="mr-2 size-4" />
@@ -463,7 +472,8 @@ export const IssueView: React.FC<IssueViewProps> = ({
             <AlertDialogHeader>
               <AlertDialogTitle>Delete Issue</AlertDialogTitle>
               <AlertDialogDescription>
-                Are you sure you want to delete this issue? This action cannot be undone.
+                Are you sure you want to delete this issue? This action cannot
+                be undone.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
@@ -483,7 +493,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
         <div className="my-6">
           <div className="mb-2 text-lg font-semibold">Attached instruction</div>
           <div className="flex flex-wrap gap-2">
-            {attachedInstructions.map((instruction) => (
+            {attachedInstructions.map(instruction => (
               <Button
                 key={instruction.instructionId}
                 variant="outline"
@@ -507,7 +517,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
 
       <div className="space-y-8">
         <div className="text-lg font-semibold">Messages</div>
-        {messages.map((message) => (
+        {messages.map(message => (
           <React.Fragment key={message.id}>
             <Card>
               <CardContent className="bg-secondary p-4">
@@ -544,11 +554,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
                   </>
                 )}
               </Button>
-              <Button
-                variant="destructive"
-                size="sm"
-                onClick={handleDelete}
-              >
+              <Button variant="destructive" size="sm" onClick={handleDelete}>
                 <Trash2 className="mr-2 size-4" />
                 Delete
               </Button>
@@ -595,5 +601,5 @@ export const IssueView: React.FC<IssueViewProps> = ({
         </DialogContent>
       </Dialog>
     </CRUDPage>
-  );
-};
+  )
+}
