@@ -18,6 +18,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Extract Node.js version from package.json
+        id: node-version
+        run: echo "NODE_VERSION=$(jq -r '.engines.node' package.json)" >> $GITHUB_ENV
+
       - name: Use Node.js cache
         uses: actions/cache@v3
         with:
@@ -29,7 +33,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
         run: npm install
@@ -58,6 +62,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Extract Node.js version from package.json
+        id: node-version
+        run: echo "NODE_VERSION=$(jq -r '.engines.node' package.json)" >> $GITHUB_ENV
+
       - name: Use Node.js cache
         uses: actions/cache@v3
         with:
@@ -69,7 +77,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
         run: npm install
@@ -121,6 +129,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Extract Node.js version from package.json
+        id: node-version
+        run: echo "NODE_VERSION=$(jq -r '.engines.node' package.json)" >> $GITHUB_ENV
+
       - name: Use Node.js cache
         uses: actions/cache@v3
         with:
@@ -132,7 +144,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: ${{ env.NODE_VERSION }}
 
       - name: Install dependencies
         run: npm install

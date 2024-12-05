@@ -9,7 +9,10 @@ import {
   SelectWorkspace,
   workspacesTable
 } from "../schema/workspaces-schema"
-import { fetchGitHubOrganizations, fetchUserGitHubAccount } from "@/app/api/auth/callback/github/api"
+import {
+  fetchGitHubOrganizations,
+  fetchUserGitHubAccount
+} from "@/app/api/auth/callback/github/api"
 
 export async function createWorkspaces(
   data: Omit<

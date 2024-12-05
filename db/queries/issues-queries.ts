@@ -4,11 +4,7 @@ import { getUserId } from "@/actions/auth/auth"
 import { and, desc, eq } from "drizzle-orm"
 import { revalidatePath } from "next/cache"
 import { db } from "../db"
-import {
-  InsertIssue,
-  SelectIssue,
-  issuesTable
-} from "../schema/issues-schema"
+import { InsertIssue, SelectIssue, issuesTable } from "../schema/issues-schema"
 import { projectsTable } from "../schema/projects-schema"
 
 export async function createIssue(
