@@ -132,7 +132,6 @@ export function SiteHeader() {
 
           <div className="ml-auto flex h-full items-center md:ml-0">
             <div className="ml-auto flex h-full items-center md:ml-0">
-
               {process.env.NEXT_PUBLIC_APP_MODE === "simple" ? (
                 <>
                   <Link href="/onboarding">
