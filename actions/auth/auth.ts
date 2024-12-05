@@ -10,7 +10,8 @@ export async function getUserId() {
     return SIMPLE_USER_ID
   }
 
-  const { userId } = auth()
+  const authResult = await auth() // Await the promise
+  const { userId } = authResult // Destructure the userId
 
   if (!userId) {
     throw new Error("User not authenticated")
