@@ -18,7 +18,11 @@ import {
   instructionsTable,
   SelectInstruction
 } from "../schema/instructions-schema"
-import { InsertTemplate, SelectTemplate, templatesTable } from "../schema/templates-schema"
+import {
+  InsertTemplate,
+  SelectTemplate,
+  templatesTable
+} from "../schema/templates-schema"
 import { templatesToInstructionsTable } from "../schema/templates-to-instructions-schema"
 import { issuesToInstructionsTable } from "../schema/issues-to-instructions-schema"
 import { addInstructionToIssue } from "./issues-to-instructions-queries"
