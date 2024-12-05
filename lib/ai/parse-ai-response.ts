@@ -47,7 +47,9 @@ export function parseAIResponse(response: string): AIParsedResponse {
 
   const prTitleMatch = response.match(/<pr_title>([\s\S]*?)<\/pr_title>/)
   const prTitle = prTitleMatch ? prTitleMatch[1].trim() : ""
-  const prDescriptionMatch = response.match(/<pr_description>([\s\S]*?)<\/pr_description>/)
+  const prDescriptionMatch = response.match(
+    /<pr_description>([\s\S]*?)<\/pr_description>/
+  )
   const prDescription = prDescriptionMatch ? prDescriptionMatch[1].trim() : ""
 
   return { fileList, files, prTitle, prDescription }

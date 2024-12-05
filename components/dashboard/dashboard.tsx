@@ -165,7 +165,9 @@ export const Dashboard: FC<DashboardProps> = ({
                 ) : (
                   <>
                     <UserButton />
-                    <div className="truncate font-light">Ephemyral Code Pro</div>
+                    <div className="truncate font-light">
+                      Ephemyral Code Pro
+                    </div>
                   </>
                 )}
               </div>
