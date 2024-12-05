@@ -17,8 +17,8 @@ export async function handleCommentWebhook(
 
   switch (action) {
     case "create":
-      if (checkForAIAtMention(data.body)) {
-        const useCodebase = checkForCodebaseAtMention(data.body)
+      if (await checkForAIAtMention(data.body)) {
+        const useCodebase = await checkForCodebaseAtMention(data.body)
 
         await handleAtAIComment(linearClient, issue, data, useCodebase)
       }
@@ -46,7 +46,7 @@ export async function handleAtAIComment(
 ) {
   await createReaction(linearClient, comment.id, IN_PROGRESS_EMOJI, true)
 
-  // removes @ai and @codebase from the body
+  // Removes @ai and @codebase from the body
   const strippedBody =
     comment.body.replace(/@(codebase|ai)\b/g, "").trim() || "begin task"
 
@@ -159,9 +159,11 @@ export const buildCommentPrompt = async (
   `
 }
 
-export const checkForAIAtMention = (text: string) =>
+export const checkForAIAtMention = async (text: string) =>
   text.trim().toLowerCase().startsWith("@ai")
 
-export const checkForCodebaseAtMention = (text: string): boolean => {
+export const checkForCodebaseAtMention = async (
+  text: string
+): Promise<boolean> => {
   return /@codebase\b/.test(text)
 }
