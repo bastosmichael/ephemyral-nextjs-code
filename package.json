@@ -68,7 +68,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.0.4",
     "date-fns": "^3.6.0",
-    "drizzle-orm": "^0.38.0",
+    "drizzle-orm": "^0.38.1",
     "embla-carousel-react": "^8.5.1",
     "endent": "^2.1.0",
     "framer-motion": "^11.13.5",
