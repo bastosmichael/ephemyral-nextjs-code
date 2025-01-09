@@ -20,13 +20,15 @@ export async function embedBranch(data: {
   branchName: string
   embeddedBranchId: string
   installationId: number | null
+  filteredFiles: string[] // Added new parameter for selected files
 }) {
   const {
     projectId,
     githubRepoFullName,
     branchName,
     embeddedBranchId,
-    installationId
+    installationId,
+    filteredFiles // Added new parameter for selected files
   } = data
 
   try {
@@ -41,8 +43,12 @@ export async function embedBranch(data: {
       installationId
     })
 
+    // fetch file content only for selected files
+    // Adjust the fetch to get contents only for selectedFiles
+    const filteredContents = codebase.filter(file => selectedFiles.includes(file.path));
+
     // fetch file content
-    const files = await fetchFiles(installationId, codebase)
+    const files = await fetchFiles(installationId, filteredContents)
 
     // tokenize files
     const tokenizedFiles = await tokenizeFiles(files)

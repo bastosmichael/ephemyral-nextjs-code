@@ -17,13 +17,15 @@ interface EmbedTargetBranchParams {
   githubRepoFullName: string
   branchName: string
   installationId: number | null
+  selectedFiles: string[] // Added new parameter for selected files
 }
 
 export async function embedTargetBranch({
   projectId,
   githubRepoFullName,
   branchName,
-  installationId
+  installationId,
+  selectedFiles // Added new parameter for selected files
 }: EmbedTargetBranchParams) {
   try {
     const [owner, repo] = githubRepoFullName.split("/")
@@ -64,8 +66,9 @@ export async function embedTargetBranch({
             githubRepoFullName,
             branchName,
             embeddedBranchId: embeddedBranch.id,
-            installationId
-          })
+            installationId,
+            filteredFiles: selectedFiles // Pass the selected files to this function
+          }) // Update this line to include selected files
           break
         } catch (error) {
           console.error(

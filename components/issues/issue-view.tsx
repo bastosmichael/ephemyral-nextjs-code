@@ -134,6 +134,10 @@ export const IssueView: React.FC<IssueViewProps> = ({
   const [isCreatingPR, setIsCreatingPR] = React.useState(false)
   const [messages, setMessages] = useState<SelectIssueMessage[]>([])
 
+  // New state for selected files
+  const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
+  const [repoFiles, setRepoFiles] = useState<GitHubFile[]>([]);
+
   const sequenceRef = useRef(globalSequence)
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
 
@@ -172,6 +176,22 @@ export const IssueView: React.FC<IssueViewProps> = ({
       Math.max(...fetchedMessages.map(m => m.sequence), 0) + 1
     globalSequence = sequenceRef.current
   }
+
+  // Fetch repository files on mount
+  useEffect(() => {
+    const loadRepoContents = async () => {
+      const files = await fetchRepoContents(project.githubRepoFullName, project.githubTargetBranch, project.githubInstallationId);
+      setRepoFiles(files);
+    };
+
+    loadRepoContents();
+  }, [project.githubRepoFullName, project.githubTargetBranch]);
+
+  const handleFileSelect = (filePath: string) => {
+    setSelectedFiles(prev =>
+      prev.includes(filePath) ? prev.filter(path => path !== filePath) : [...prev, filePath]
+    );
+  };
 
   const handleDelete = async () => {
     try {
@@ -262,7 +282,8 @@ export const IssueView: React.FC<IssueViewProps> = ({
         projectId: project.id,
         githubRepoFullName: project.githubRepoFullName,
         branchName: project.githubTargetBranch,
-        installationId: project.githubInstallationId
+        installationId: project.githubInstallationId,
+        selectedFiles // Pass the selected files to this function
       })
 
       await updateIssue(issue.id, { status: "in_progress", runner })
@@ -602,4 +623,30 @@ export const IssueView: React.FC<IssueViewProps> = ({
       </Dialog>
     </CRUDPage>
   )
+}
+
+<file>
+<file_path>actions/github/fetch-repo-contents.ts</file_path>
+<file_content language="typescript">
+"use server"
+
+import { getAuthenticatedOctokit } from "./auth"
+import { GitHubFile } from "@/types/github"
+
+export async function fetchRepoContents(githubRepoFullName: string, branchName: string, installationId: number | null) {
+    const octokit = await getAuthenticatedOctokit(installationId);
+    const [owner, repo] = githubRepoFullName.split("/");
+
+    const { data } = await octokit.repos.getContent({
+        owner,
+        repo,
+        ref: branchName,
+    });
+
+    const filesList: GitHubFile[] = data.map(file => ({
+        type: file.type,
+        ...file,
+    }));
+
+    return filesList;
 }
