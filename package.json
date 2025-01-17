@@ -73,7 +73,7 @@
     "endent": "^2.1.0",
     "framer-motion": "^11.18.0",
     "input-otp": "^1.4.2",
-    "lucide-react": "^0.469.0",
+    "lucide-react": "^0.471.1",
     "next": "14.2.15",
     "next-themes": "^0.3.0",
     "postgres": "^3.4.5",
