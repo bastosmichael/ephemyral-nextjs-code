@@ -7,7 +7,6 @@ Ephemyral Code is an AI-powered code generation tool designed to help developers
 ## Table of Contents
 
 - [Features](#features)
-- [Demo](#demo)
 - [Setup](#setup)
   - [Simple Mode Setup](#simple-mode-setup)
   - [Advanced Mode Setup](#advanced-mode-setup)
@@ -29,12 +28,6 @@ Ephemyral Code is an AI-powered code generation tool designed to help developers
 - **Multi-Project Support**: Manage multiple projects within a singular advanced workspace.
 - **Simple and Advanced Modes**: Choose between straightforward setups or a feature-rich development environment, enabling customization according to user skill levels.
 - **Real-time Code Improvement**: Use AI to analyze and suggest optimizations for existing code directly from repositories.
-
-## Demo
-
-Check out the latest demo of Ephemyral in action:
-
-[![Ephemyral Demo](https://img.youtube.com/vi/VIDEO_ID/0.jpg)](https://x.com/bastosmichael/status/1813695460600844362)
 
 ## Setup
 
