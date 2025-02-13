@@ -150,13 +150,5 @@ Ephemyral is built using various open-source libraries and tools. A special than
 - [React](https://reactjs.org/)
 - [Tailwind CSS](https://tailwindcss.com/)
 - [Drizzle ORM](https://github.com/drizzle-team/drizzle-orm)
+- [Buildware](https://github.com/mckaywrigley/buildware-ai)
 - All contributors who helped enhance the AI capabilities in this project.
-
-## Contact
-
-For support, feature requests, or general inquiries:
-
-- Create an [issue](https://github.com/bastosmichael/ephemyral-code-code/issues) on GitHub
-- Follow [@bastosmichael](https://twitter.com/bastosmichael) on Twitter for updates
-- Join our [Discord community](https://discord.gg/ephemyral-code) for discussions and support
-  Built with ❤️ by [Mckay Wrigley](https://twitter.com/bastosmichael) and [Tyler Bruno](https://twitter.com/tylerbruno05) at Takeoff AI.
