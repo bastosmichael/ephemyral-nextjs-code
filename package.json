@@ -32,7 +32,7 @@
     "@linear/sdk": "^38.0.0",
     "@neondatabase/serverless": "^0.10.4",
     "@octokit/auth-app": "^7.1.5",
-    "@octokit/rest": "^21.1.0",
+    "@octokit/rest": "^21.1.1",
     "@radix-ui/react-accordion": "^1.2.3",
     "@radix-ui/react-alert-dialog": "^1.1.6",
     "@radix-ui/react-aspect-ratio": "^1.1.2",
