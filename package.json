@@ -25,7 +25,7 @@
     "@ai-sdk/anthropic": "^1.1.11",
     "@ai-sdk/google": "^1.1.17",
     "@ai-sdk/openai": "^1.1.15",
-    "@anthropic-ai/sdk": "^0.38.0",
+    "@anthropic-ai/sdk": "^0.39.0",
     "@clerk/nextjs": "^5.7.5",
     "@clerk/themes": "^2.2.20",
     "@hookform/resolvers": "^4.1.2",
