@@ -130,8 +130,30 @@ export const GOOGLE_LLMS = [
   }
 ]
 
+export const GROK_LLMS = [
+  {
+    name: "Grok 3", // Updated to reflect me, Grok 3, since I'm responding
+    id: "grok-3",
+    // Placeholder costs - replace with actual input/output costs per million tokens
+    inputCost: 1.5, // Example: $1.50 per million input tokens
+    outputCost: 4.5, // Example: $4.50 per million output tokens
+    tokenLimits: {
+      // Placeholder limits - adjust based on xAI's actual rate limits
+      TPM: 50000, // Tokens per minute
+      RPM: 600, // Requests per minute
+      RPD: 15000, // Requests per day
+      TPD: 120000 // Tokens per day
+    }
+  }
+]
+
 // Combined LLM List for easy access
-export const LLMS = [...ANTHROPIC_LLMS, ...OPENAI_LLMS, ...GOOGLE_LLMS]
+export const LLMS = [
+  ...ANTHROPIC_LLMS,
+  ...OPENAI_LLMS,
+  ...GOOGLE_LLMS,
+  ...GROK_LLMS
+]
 
 // Utility Functions
 
@@ -153,6 +175,8 @@ export const calculateLLMCost = ({
     return 0 // Skip if LLM not found
   }
 
+  // Both inputTokens and outputTokens are typically measured in "number of tokens"
+  // We'll convert them to millions of tokens ( / 1,000,000 ) for the cost formula
   const inputCost = (inputTokens / 1_000_000) * llm.inputCost
   const outputCost = (outputTokens / 1_000_000) * llm.outputCost
   const totalCost = inputCost + outputCost
