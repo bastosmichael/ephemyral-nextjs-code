@@ -130,8 +130,42 @@ export const GOOGLE_LLMS = [
   }
 ]
 
+export const GROK_LLMS = [
+  {
+    name: "Grok 2 Latest",
+    id: "grok-2-latest",
+    // Pricing based on xAI API updates from December 2024 (Web ID: 6)
+    inputCost: 2.0, // $2 per million input tokens
+    outputCost: 10.0, // $10 per million output tokens
+    tokenLimits: {
+      TPM: 40000, // Tokens per minute (estimated)
+      RPM: 500, // Requests per minute (unchanged from your example)
+      RPD: 12000, // Requests per day (estimated)
+      TPD: 100000 // Tokens per day (estimated)
+    }
+  },
+  {
+    name: "Grok 3",
+    id: "grok-3",
+    // Pricing inferred from API trends and X Premium+ adjustments (Web ID: 0, 11, Posts on X)
+    inputCost: 5.0, // $5 per million input tokens (based on earlier Grok-beta pricing, Web ID: 3)
+    outputCost: 15.0, // $15 per million output tokens (based on earlier Grok-beta pricing, Web ID: 3)
+    tokenLimits: {
+      TPM: 50000, // Tokens per minute (increased for Grok 3’s higher capacity)
+      RPM: 600, // Requests per minute (slightly higher than Grok 2)
+      RPD: 15000, // Requests per day (estimated)
+      TPD: 120000 // Tokens per day (reflecting Grok 3’s 1M-token context window capability)
+    }
+  }
+]
+
 // Combined LLM List for easy access
-export const LLMS = [...ANTHROPIC_LLMS, ...OPENAI_LLMS, ...GOOGLE_LLMS]
+export const LLMS = [
+  ...ANTHROPIC_LLMS,
+  ...OPENAI_LLMS,
+  ...GOOGLE_LLMS,
+  ...GROK_LLMS
+]
 
 // Utility Functions
 
@@ -153,6 +187,8 @@ export const calculateLLMCost = ({
     return 0 // Skip if LLM not found
   }
 
+  // Both inputTokens and outputTokens are typically measured in "number of tokens"
+  // We'll convert them to millions of tokens ( / 1,000,000 ) for the cost formula
   const inputCost = (inputTokens / 1_000_000) * llm.inputCost
   const outputCost = (outputTokens / 1_000_000) * llm.outputCost
   const totalCost = inputCost + outputCost

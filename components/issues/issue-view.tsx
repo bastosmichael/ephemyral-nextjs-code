@@ -1,7 +1,9 @@
 "use client"
 
-import { generateOpenAIResponse } from "@/actions/ai/generate-openai-response" // Import the OpenAI function
-import { generateAnthropicResponse } from "@/actions/ai/generate-anthropic-response" // Import the Anthropic function
+import { generateOpenAIResponse } from "@/actions/ai/generate-openai-response" 
+import { generateAnthropicResponse } from "@/actions/ai/generate-anthropic-response"
+import { generateGrokResponse } from "@/actions/ai/generate-grok-response"
+
 import { deleteGitHubPR } from "@/actions/github/delete-pr"
 import { embedTargetBranch } from "@/actions/github/embed-target-branch"
 import { generatePR } from "@/actions/github/generate-pr"
@@ -43,7 +45,7 @@ import { Loader2, Pencil, Play, RefreshCw, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import React, { useEffect, useRef, useState } from "react"
 import { CRUDPage } from "../dashboard/reusable/crud-page"
-import { parseStringPromise } from "xml2js" // Import xml2js to parse XML
+import { parseStringPromise } from "xml2js"
 
 interface IssueViewProps {
   item: SelectIssue
@@ -67,7 +69,6 @@ const sanitizeAndConvertXMLToMarkdown = async (xmlContent: string) => {
   try {
     const parsedXml = await parseStringPromise(xmlContent, { trim: true })
 
-    // Traverse through the parsed XML and convert to Markdown
     let markdownContent = ""
 
     const convertToMarkdown = (obj: any, depth: number = 0) => {
@@ -131,6 +132,8 @@ export const IssueView: React.FC<IssueViewProps> = ({
   } | null>(null)
   const [isRunningAI, setIsRunningAI] = React.useState(false)
   const [isRunningAnthropic, setIsRunningAnthropic] = React.useState(false)
+  const [isRunningGrok, setIsRunningGrok] = React.useState(false)
+
   const [isCreatingPR, setIsCreatingPR] = React.useState(false)
   const [messages, setMessages] = useState<SelectIssueMessage[]>([])
 
@@ -143,7 +146,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
 
   useEffect(() => {
     scrollToBottom()
-  }, [messages, isCreatingPR, isRunningAI, isRunningAnthropic])
+  }, [messages, isCreatingPR, isRunningAI, isRunningAnthropic, isRunningGrok])
 
   const addMessage = async (content: string) => {
     const newMessage = await createIssueMessageRecord({
@@ -237,6 +240,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
+  // Updated to handle a 'Grok' runner in addition to 'AI' and 'Anthropic'
   const handleRun = async (issue: SelectIssue, runner: string) => {
     if (!project.githubRepoFullName || !project.githubTargetBranch) {
       alert("Please connect your project to a GitHub repository first.")
@@ -246,6 +250,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
     const setIsRunning = (state: boolean) => {
       if (runner === "AI") setIsRunningAI(state)
       else if (runner === "Anthropic") setIsRunningAnthropic(state)
+      else if (runner === "Grok") setIsRunningGrok(state)
     }
 
     setIsRunning(true)
@@ -272,12 +277,13 @@ export const IssueView: React.FC<IssueViewProps> = ({
         planMessageContent = "Generating plan using OpenAI..."
       } else if (runner === "Anthropic") {
         planMessageContent = "Generating plan using Anthropic..."
+      } else if (runner === "Grok") {
+        planMessageContent = "Generating plan using Grok..."
       }
 
       const planMessage = await addMessage(planMessageContent)
 
       const embeddingsQueryText = `${issue.name} ${issue.content}`
-
       const codebaseFiles = await getMostSimilarEmbeddedFiles(
         embeddingsQueryText,
         project.id
@@ -302,10 +308,9 @@ export const IssueView: React.FC<IssueViewProps> = ({
         instructionsContext
       })
 
-      // Assign a default value
       let aiCodePlanResponse: string = ""
 
-      // Generate response based on runner
+      // Generate response based on which runner is selected
       if (runner === "AI") {
         aiCodePlanResponse = await generateOpenAIResponse([
           { role: "user", content: codeplanPrompt }
@@ -314,19 +319,18 @@ export const IssueView: React.FC<IssueViewProps> = ({
         aiCodePlanResponse = await generateAnthropicResponse([
           { role: "user", content: codeplanPrompt }
         ])
+      } else if (runner === "Grok") {
+        aiCodePlanResponse = await generateGrokResponse([
+          { role: "user", content: codeplanPrompt }
+        ])
       }
 
-      // Ensure aiCodePlanResponse is defined and not an empty string
       if (!aiCodePlanResponse || aiCodePlanResponse.trim() === "") {
         throw new Error("AI response is empty or undefined.")
       }
 
       // Use updated message function with sanitization
-      await updateMessageWithSanitization(
-        planMessage.id,
-        aiCodePlanResponse,
-        setMessages
-      )
+      await updateMessageWithSanitization(planMessage.id, aiCodePlanResponse, setMessages)
 
       const codegenPrompt = await buildCodeGenPrompt({
         issue: { title: issue.name, description: issue.content },
@@ -334,7 +338,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
           path: file.path,
           content: file.content ?? ""
         })),
-        plan: aiCodePlanResponse, // Ensure this is always defined
+        plan: aiCodePlanResponse,
         instructionsContext
       })
 
@@ -361,6 +365,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
     }
   }
 
+  // Slightly updated to handle "Grok" as well
   const handleRerun = async (issue: SelectIssue, runner: string) => {
     if (issue.prLink && issue.prBranch) {
       await deleteGitHubPR(project, issue.prLink, issue.prBranch)
@@ -369,7 +374,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       prLink: null,
       prBranch: null,
       status: "ready",
-      runner: runner,
+      runner,
       planResponse: null,
       codeGenResponse: null
     })
@@ -389,6 +394,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
       backLink={`../issues`}
     >
       <div className="mb-4 flex justify-start gap-2">
+        {/* OpenAI button */}
         <Button
           variant="create"
           size="sm"
@@ -398,7 +404,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
               ? handleRerun(item, "AI")
               : handleRun(item, "AI")
           }
-          disabled={isRunningAI || isRunningAnthropic || isCreatingPR}
+          disabled={isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR}
         >
           {isRunningAI ? (
             <>
@@ -418,6 +424,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
           )}
         </Button>
 
+        {/* Anthropic button */}
         <Button
           variant="create"
           size="sm"
@@ -427,7 +434,7 @@ export const IssueView: React.FC<IssueViewProps> = ({
               ? handleRerun(item, "Anthropic")
               : handleRun(item, "Anthropic")
           }
-          disabled={isRunningAI || isRunningAnthropic || isCreatingPR}
+          disabled={isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR}
         >
           {isRunningAnthropic ? (
             <>
@@ -443,6 +450,35 @@ export const IssueView: React.FC<IssueViewProps> = ({
             <>
               <Play className="mr-2 size-4" />
               Run Anthropic
+            </>
+          )}
+        </Button>
+
+        <Button
+          variant="create"
+          size="sm"
+          className="bg-orange-600 hover:bg-orange-700"
+          onClick={() =>
+            item.runner === "Grok" && item.status === "completed"
+              ? handleRerun(item, "Grok")
+              : handleRun(item, "Grok")
+          }
+          disabled={isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR}
+        >
+          {isRunningGrok ? (
+            <>
+              <Loader2 className="mr-2 size-4 animate-spin" />
+              Running Grok...
+            </>
+          ) : item.runner === "Grok" && item.status === "completed" ? (
+            <>
+              <RefreshCw className="mr-2 size-4" />
+              Run Grok Again
+            </>
+          ) : (
+            <>
+              <Play className="mr-2 size-4" />
+              Run Grok
             </>
           )}
         </Button>
