@@ -84,7 +84,7 @@ export const buildCodePlanPrompt = async ({
         Format your response as follows:
     
         1. Present your plan as a numbered list of steps.
-        2. Use markdown formatting.
+        2. Always return it in markdown formatting.
     
         </format>
       `
