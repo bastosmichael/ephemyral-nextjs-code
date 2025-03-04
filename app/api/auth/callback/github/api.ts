@@ -74,3 +74,19 @@ export async function createGitHubRepository(
   })
   return repo
 }
+
+export async function fetchGitHubRepoIssues(
+  repoFullName: string
+): Promise<any[]> {
+  try {
+    const [owner, repo] = repoFullName.split("/")
+    const { data: issues } = await octokit.issues.listForRepo({
+      owner,
+      repo
+    })
+    return issues
+  } catch (error) {
+    console.error("Error fetching GitHub repo issues:", error)
+    throw new Error("Failed to fetch GitHub repo issues")
+  }
+}

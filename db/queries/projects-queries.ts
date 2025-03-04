@@ -23,10 +23,9 @@ import {
   SelectTemplate,
   templatesTable
 } from "../schema/templates-schema"
-import { templatesToInstructionsTable } from "../schema/templates-to-instructions-schema"
-import { issuesToInstructionsTable } from "../schema/issues-to-instructions-schema"
 import { addInstructionToIssue } from "./issues-to-instructions-queries"
 import { addInstructionToTemplate } from "./templates-to-instructions-queries"
+import { fetchGitHubRepoIssues } from "@/app/api/auth/callback/github/api"
 
 export async function createProjects(workspaces: any[]): Promise<any[]> {
   try {
@@ -60,8 +59,12 @@ export async function createProjects(workspaces: any[]): Promise<any[]> {
             const template = await createSampleTemplate(project.id, repo) // Create a sample template for the project
             await addInstructionToTemplate(template.id, instruction.id) // Tie the instruction to the template
 
-            const issue = await createSampleIssue(project.id, repo) // Create a sample issue for the project
-            await addInstructionToIssue(issue.id, instruction.id) // Tie the instruction to the issue
+            const issues = await createSampleIssues(project.id, repo)
+
+            // Now you have an array; attach the instruction to each local issue
+            for (const issue of issues) {
+              await addInstructionToIssue(issue.id, instruction.id)
+            }
 
             return project
           })
@@ -267,27 +270,50 @@ async function createSampleTemplate(
   }
 }
 
-async function createSampleIssue(
+async function createSampleIssues(
   projectId: string,
   repo: any
-): Promise<SelectIssue> {
+): Promise<SelectIssue[]> {
   const userId = await getUserId()
 
-  try {
-    const issueData: InsertIssue = {
+  // 1. Pull down all GitHub issues for the repository
+  const existingGitHubIssues = await fetchGitHubRepoIssues(repo.full_name)
+
+  // 2. If the repo has no GitHub issues, create a single local “sample” issue
+  if (existingGitHubIssues.length === 0) {
+    const sampleIssueData: InsertIssue = {
       projectId,
       userId,
       name: `Sample Issue for ${repo.name}`,
       content: `This is a sample issue created for the repository ${repo.full_name}.`
     }
 
-    const [issue] = await db.insert(issuesTable).values(issueData).returning()
-    return issue
-  } catch (error) {
-    console.error(
-      `Error creating sample issue for project ${projectId}:`,
-      error
-    )
-    throw error
+    const [issue] = await db
+      .insert(issuesTable)
+      .values(sampleIssueData)
+      .returning()
+
+    return [issue] // Return array with one newly created sample issue
   }
+
+  // 3. If there are existing GitHub issues, create local copies for each (OR skip if you don't want duplicates)
+  const createdIssues: SelectIssue[] = []
+
+  for (const ghIssue of existingGitHubIssues) {
+    const issueData: InsertIssue = {
+      projectId,
+      userId,
+      name: ghIssue.title,
+      content: ghIssue.body || "No content provided."
+    }
+
+    const [localIssue] = await db
+      .insert(issuesTable)
+      .values(issueData)
+      .returning()
+
+    createdIssues.push(localIssue)
+  }
+
+  return createdIssues
 }

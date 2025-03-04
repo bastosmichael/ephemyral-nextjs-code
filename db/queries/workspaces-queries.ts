@@ -11,11 +11,10 @@ import {
 } from "../schema/workspaces-schema"
 import {
   fetchGitHubOrganizations,
-  fetchUserGitHubAccount
-} from "@/app/api/auth/callback/github/api"
+  fetchUserGitHubAccount} from "@/app/api/auth/callback/github/api"
 
 export async function createWorkspaces(
-  data: Omit<
+  _data: Omit<
     InsertWorkspace,
     "userId" | "githubOrganizationId" | "githubOrganizationName"
   >
@@ -101,14 +100,6 @@ export async function getWorkspacesByUserId(): Promise<SelectWorkspace[]> {
     console.error("Error getting all workspaces:", error)
     throw error
   }
-}
-
-export async function getWorkspaceByLinearOrganizationId(
-  linearOrganizationId: string
-): Promise<SelectWorkspace | undefined> {
-  return db.query.workspaces.findFirst({
-    where: eq(workspacesTable.linearOrganizationId, linearOrganizationId)
-  })
 }
 
 export async function updateWorkspace(
