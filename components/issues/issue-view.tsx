@@ -1,6 +1,6 @@
 "use client"
 
-import { generateOpenAIResponse } from "@/actions/ai/generate-openai-response" 
+import { generateOpenAIResponse } from "@/actions/ai/generate-openai-response"
 import { generateAnthropicResponse } from "@/actions/ai/generate-anthropic-response"
 import { generateGrokResponse } from "@/actions/ai/generate-grok-response"
 
@@ -330,7 +330,11 @@ export const IssueView: React.FC<IssueViewProps> = ({
       }
 
       // Use updated message function with sanitization
-      await updateMessageWithSanitization(planMessage.id, aiCodePlanResponse, setMessages)
+      await updateMessageWithSanitization(
+        planMessage.id,
+        aiCodePlanResponse,
+        setMessages
+      )
 
       const codegenPrompt = await buildCodeGenPrompt({
         issue: { title: issue.name, description: issue.content },
@@ -404,7 +408,9 @@ export const IssueView: React.FC<IssueViewProps> = ({
               ? handleRerun(item, "AI")
               : handleRun(item, "AI")
           }
-          disabled={isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR}
+          disabled={
+            isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR
+          }
         >
           {isRunningAI ? (
             <>
@@ -434,7 +440,9 @@ export const IssueView: React.FC<IssueViewProps> = ({
               ? handleRerun(item, "Anthropic")
               : handleRun(item, "Anthropic")
           }
-          disabled={isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR}
+          disabled={
+            isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR
+          }
         >
           {isRunningAnthropic ? (
             <>
@@ -463,7 +471,9 @@ export const IssueView: React.FC<IssueViewProps> = ({
               ? handleRerun(item, "Grok")
               : handleRun(item, "Grok")
           }
-          disabled={isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR}
+          disabled={
+            isRunningAI || isRunningAnthropic || isRunningGrok || isCreatingPR
+          }
         >
           {isRunningGrok ? (
             <>

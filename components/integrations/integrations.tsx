@@ -3,17 +3,12 @@
 import { useSearchParams } from "next/navigation"
 import { FC, useEffect, useState } from "react"
 import { ConnectGitHub } from "./connect-github"
-import { ConnectLinear } from "./connect-linear"
 
 interface IntegrationsProps {
   isGitHubConnected: boolean
-  isLinearConnected: boolean
 }
 
-export const Integrations: FC<IntegrationsProps> = ({
-  isGitHubConnected,
-  isLinearConnected
-}) => {
+export const Integrations: FC<IntegrationsProps> = ({ isGitHubConnected }) => {
   const searchParams = useSearchParams()
 
   const [error, setError] = useState("")
@@ -40,8 +35,6 @@ export const Integrations: FC<IntegrationsProps> = ({
 
       <div className="flex max-w-[300px] flex-col gap-4">
         <ConnectGitHub isGitHubConnected={isGitHubConnected} />
-
-        <ConnectLinear isLinearConnected={isLinearConnected} />
       </div>
     </div>
   )

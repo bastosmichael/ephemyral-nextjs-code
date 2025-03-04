@@ -15,8 +15,7 @@ export default async function WorkspaceLayout({
   const projects = await getProjectsByWorkspaceId(params.workspaceId)
 
   const IntegrationStatus = {
-    isGitHubConnected: false,
-    isLinearConnected: false
+    isGitHubConnected: false
   }
 
   return (

@@ -34,7 +34,6 @@ import { WorkspaceSelect } from "../workspaces/workspace-select"
 
 type IntegrationStatus = {
   isGitHubConnected: boolean
-  isLinearConnected: boolean
 }
 
 interface DashboardProps {

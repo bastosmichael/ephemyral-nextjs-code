@@ -19,12 +19,6 @@ export default async function IntegrationsPage({
   }
 
   const isGitHubConnected = !!project.githubInstallationId
-  const isLinearConnected = !!workspace.linearAccessToken
 
-  return (
-    <Integrations
-      isGitHubConnected={isGitHubConnected}
-      isLinearConnected={isLinearConnected}
-    />
-  )
+  return <Integrations isGitHubConnected={isGitHubConnected} />
 }
