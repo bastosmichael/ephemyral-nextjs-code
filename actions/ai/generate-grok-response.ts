@@ -2,11 +2,9 @@
 
 import { calculateLLMCost } from "@/lib/ai/calculate-llm-cost"
 
-// Optionally, pull these from env variables, similar to how you used process.env for OpenAI.
 const GROK_API_URL = "https://api.x.ai/v1"
 const GROK_API_KEY = process.env.GROK_API_KEY
 
-// Structure of our chat messages remains the same
 type ChatCompletionMessage = {
   role: "system" | "user" | "assistant"
   content: string
@@ -16,7 +14,6 @@ export const generateGrokResponse = async (
   messages: ChatCompletionMessage[]
 ) => {
   try {
-    // Body for the Grok API request
     const requestBody = {
       messages,
       model: "grok-2-latest",
@@ -36,14 +33,32 @@ export const generateGrokResponse = async (
     if (!response.ok) {
       const errorBody = await response.text()
       console.error("Grok API error response:", errorBody)
+
+      // Look for the "max prompt length vs. request tokens" pattern
+      const match = errorBody.match(
+        /This model's maximum prompt length is (\d+) but the request contains (\d+) tokens?\./i
+      )
+
+      if (match) {
+        const maxTokens = match[1]
+        const submittedTokens = match[2]
+
+        throw new Error(
+          JSON.stringify({
+            errorType: "EXCEED_CONTEXT",
+            message: "Too many tokens in request.",
+            maxTokens,
+            submittedTokens
+          })
+        )
+      }
+
+      // Fallback if it was some other error
       throw new Error(`Grok API request failed with status ${response.status}`)
     }
 
-    // Parse JSON response from Grok
     const data = await response.json()
-
-    // If usage data is returned, you can still compute cost if you like
-    const usage = data.usage // e.g., { prompt_tokens: number; completion_tokens: number }
+    const usage = data.usage
     if (usage) {
       calculateLLMCost({
         llmId: "grok-2-latest",
@@ -52,10 +67,10 @@ export const generateGrokResponse = async (
       })
     }
 
-    // Return the text response from the Grok assistant
     return data.choices?.[0]?.message?.content || ""
   } catch (error) {
     console.error("Error generating AI response with Grok:", error)
+    // Rethrow or handle the error however you prefer
     throw error
   }
 }
