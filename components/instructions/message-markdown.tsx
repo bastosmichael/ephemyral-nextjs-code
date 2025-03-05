@@ -11,13 +11,12 @@ interface MessageMarkdownProps extends HTMLAttributes<HTMLDivElement> {
 
 export const MessageMarkdown: FC<MessageMarkdownProps> = ({
   content,
-  ...props
-}) => {
+  className}) => {
   return (
     <MessageMarkdownMemoized
       className={cn(
         "prose dark:prose-invert prose-p:leading-relaxed prose-pre:p-0 text-primary min-w-full break-words",
-        props.className
+        className
       )}
       remarkPlugins={[remarkGfm, remarkMath]}
       components={{
