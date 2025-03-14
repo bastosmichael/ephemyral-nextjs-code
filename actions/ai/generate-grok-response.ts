@@ -61,7 +61,7 @@ export const generateGrokResponse = async (
     const usage = data.usage
     if (usage) {
       calculateLLMCost({
-        llmId: "grok-2-latest",
+        llmId: "grok-2-1212",
         inputTokens: usage.prompt_tokens || 0,
         outputTokens: usage.completion_tokens || 0
       })
