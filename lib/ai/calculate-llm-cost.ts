@@ -145,6 +145,19 @@ export const GROK_LLMS = [
     }
   },
   {
+    name: "Grok 2 1212",
+    id: "grok-2-1212",
+    // Pricing inferred as a slight increase from Grok 2 Latest, assuming a December 2024 update
+    inputCost: 2.5, // $2.5 per million input tokens (modest bump for an updated version)
+    outputCost: 12.0, // $12 per million output tokens (reflecting improved capabilities)
+    tokenLimits: {
+      TPM: 45000, // Tokens per minute (slightly higher than Grok 2 Latest)
+      RPM: 550, // Requests per minute (modest increase)
+      RPD: 13000, // Requests per day (estimated)
+      TPD: 110000 // Tokens per day (slightly higher than Grok 2 Latest)
+    }
+  },
+  {
     name: "Grok 3",
     id: "grok-3",
     // Pricing inferred from API trends and X Premium+ adjustments (Web ID: 0, 11, Posts on X)
