@@ -29,51 +29,16 @@ export const ANTHROPIC_LLMS = [
 // OpenAI Models (ordered by total cost: inputCost + outputCost)
 export const OPENAI_LLMS = [
   {
-    name: "GPT-4 Omni Mini",
-    id: "gpt-4o-mini",
-    inputCost: 2.5,
-    outputCost: 7.5,
+    name: "GPT-4 Turbo Preview",
+    id: "gpt-4-turbo-preview",
+    inputCost: 10,
+    outputCost: 30,
+    maxContext: 128000,
     tokenLimits: {
-      TPM: 200000,
+      TPM: 30000,
       RPM: 500,
       RPD: 10000,
-      TPD: 2000000
-    }
-  },
-  {
-    name: "GPT-3.5 Turbo 16k",
-    id: "gpt-3.5-turbo-16k",
-    inputCost: 0.75,
-    outputCost: 2,
-    tokenLimits: {
-      TPM: 200000,
-      RPM: 500,
-      RPD: 10000,
-      TPD: 2000000
-    }
-  },
-  {
-    name: "GPT-3.5 Turbo",
-    id: "gpt-3.5-turbo",
-    inputCost: 0.5,
-    outputCost: 1.5,
-    tokenLimits: {
-      TPM: 200000,
-      RPM: 500,
-      RPD: 10000,
-      TPD: 2000000
-    }
-  },
-  {
-    name: "GPT-3.5 Turbo Instruct",
-    id: "gpt-3.5-turbo-instruct",
-    inputCost: 0.3,
-    outputCost: 1,
-    tokenLimits: {
-      TPM: 90000,
-      RPM: 3500,
-      RPD: 10000,
-      TPD: 200000
+      TPD: 128000
     }
   },
   {
@@ -81,6 +46,7 @@ export const OPENAI_LLMS = [
     id: "gpt-4-turbo",
     inputCost: 10,
     outputCost: 30,
+    maxContext: 128000,
     tokenLimits: {
       TPM: 30000,
       RPM: 500,
@@ -93,6 +59,7 @@ export const OPENAI_LLMS = [
     id: "gpt-4o",
     inputCost: 5,
     outputCost: 15,
+    maxContext: 128000,
     tokenLimits: {
       TPM: 30000,
       RPM: 500,
@@ -101,10 +68,24 @@ export const OPENAI_LLMS = [
     }
   },
   {
+    name: "GPT-4 Omni Mini",
+    id: "gpt-4o-mini",
+    inputCost: 2.5,
+    outputCost: 7.5,
+    maxContext: 16000,
+    tokenLimits: {
+      TPM: 200000,
+      RPM: 500,
+      RPD: 10000,
+      TPD: 2000000
+    }
+  },
+  {
     name: "GPT-4",
     id: "gpt-4",
     inputCost: 5,
     outputCost: 15,
+    maxContext: 8192,
     tokenLimits: {
       TPM: 10000,
       RPM: 500,
