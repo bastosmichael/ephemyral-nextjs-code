@@ -113,45 +113,46 @@ export const GOOGLE_LLMS = [
 
 export const GROK_LLMS = [
   {
-    name: "Grok 2 Latest",
-    id: "grok-2-latest",
-    // Pricing based on xAI API updates from December 2024 (Web ID: 6)
-    inputCost: 2.0, // $2 per million input tokens
-    outputCost: 10.0, // $10 per million output tokens
+    name: "Grok 3",
+    id: "grok-3",
+    inputCost: 5.0,
+    outputCost: 15.0,
+    maxContext: 1000000,
     tokenLimits: {
-      TPM: 40000, // Tokens per minute (estimated)
-      RPM: 500, // Requests per minute (unchanged from your example)
-      RPD: 12000, // Requests per day (estimated)
-      TPD: 100000 // Tokens per day (estimated)
+      TPM: 50000,
+      RPM: 600,
+      RPD: 15000,
+      TPD: 120000
     }
   },
   {
     name: "Grok 2 1212",
     id: "grok-2-1212",
-    // Pricing inferred as a slight increase from Grok 2 Latest, assuming a December 2024 update
-    inputCost: 2.5, // $2.5 per million input tokens (modest bump for an updated version)
-    outputCost: 12.0, // $12 per million output tokens (reflecting improved capabilities)
+    inputCost: 2.5,
+    outputCost: 12.0,
+    maxContext: 80000,
     tokenLimits: {
-      TPM: 45000, // Tokens per minute (slightly higher than Grok 2 Latest)
-      RPM: 550, // Requests per minute (modest increase)
-      RPD: 13000, // Requests per day (estimated)
-      TPD: 110000 // Tokens per day (slightly higher than Grok 2 Latest)
+      TPM: 45000,
+      RPM: 550,
+      RPD: 13000,
+      TPD: 110000
     }
   },
   {
-    name: "Grok 3",
-    id: "grok-3",
-    // Pricing inferred from API trends and X Premium+ adjustments (Web ID: 0, 11, Posts on X)
-    inputCost: 5.0, // $5 per million input tokens (based on earlier Grok-beta pricing, Web ID: 3)
-    outputCost: 15.0, // $15 per million output tokens (based on earlier Grok-beta pricing, Web ID: 3)
+    name: "Grok 2 Latest",
+    id: "grok-2-latest",
+    inputCost: 2.0,
+    outputCost: 10.0,
+    maxContext: 64000,
     tokenLimits: {
-      TPM: 50000, // Tokens per minute (increased for Grok 3’s higher capacity)
-      RPM: 600, // Requests per minute (slightly higher than Grok 2)
-      RPD: 15000, // Requests per day (estimated)
-      TPD: 120000 // Tokens per day (reflecting Grok 3’s 1M-token context window capability)
+      TPM: 40000,
+      RPM: 500,
+      RPD: 12000,
+      TPD: 100000
     }
   }
-]
+];
+``` ​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
 
 // Combined LLM List for easy access
 export const LLMS = [
