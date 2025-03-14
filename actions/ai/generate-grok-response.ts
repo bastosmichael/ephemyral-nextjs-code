@@ -16,7 +16,7 @@ export const generateGrokResponse = async (
   try {
     const requestBody = {
       messages,
-      model: "grok-2-latest",
+      model: "grok-2-1212",
       stream: false,
       temperature: 0
     }
