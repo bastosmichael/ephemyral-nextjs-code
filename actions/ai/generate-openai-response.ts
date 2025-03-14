@@ -14,7 +14,7 @@ type ChatCompletionMessage = {
 export const generateOpenAIResponse = async (
   messages: ChatCompletionMessage[]
 ) => {
-  const modelId = "gpt-4o-mini"
+  const modelId = "gpt-4-turbo-preview"
 
   try {
     const response = await openai.chat.completions.create({
