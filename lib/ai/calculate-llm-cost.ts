@@ -1,10 +1,50 @@
 // Anthropic Models (ordered by total cost: inputCost + outputCost)
 export const ANTHROPIC_LLMS = [
   {
+    name: "Claude 3.7 Sonnet",
+    id: "claude-3-7-sonnet-20250219",
+    inputCost: 5,
+    outputCost: 25,
+    maxContext: 200000,
+    tokenLimits: {
+      TPM: 200000,
+      RPM: 500,
+      RPD: 10000,
+      TPD: 2000000
+    }
+  },
+  {
     name: "Claude 3.5 Sonnet",
     id: "claude-3-5-sonnet-20240620",
     inputCost: 3,
     outputCost: 15,
+    maxContext: 200000,
+    tokenLimits: {
+      TPM: 200000,
+      RPM: 500,
+      RPD: 10000,
+      TPD: 2000000
+    }
+  },
+  {
+    name: "Claude 3 Opus",
+    id: "claude-3-opus-20240229",
+    inputCost: 15,
+    outputCost: 75,
+    maxContext: 200000,
+    tokenLimits: {
+      TPM: 100000,
+      RPM: 240,
+      RPD: 10000,
+      TPD: 2000000
+    }
+  },
+  {
+    name: "Claude 3 Sonnet",
+    id: "claude-3-sonnet-20240229",
+    inputCost: 3,
+    outputCost: 15,
+    maxContext: 200000,
     tokenLimits: {
       TPM: 200000,
       RPM: 500,
@@ -14,9 +54,23 @@ export const ANTHROPIC_LLMS = [
   },
   {
     name: "Claude 3.5 Haiku",
+    id: "claude-3-5-haiku-20240307",
+    inputCost: 0.25,
+    outputCost: 1.25,
+    maxContext: 100000,
+    tokenLimits: {
+      TPM: 200000,
+      RPM: 500,
+      RPD: 10000,
+      TPD: 2000000
+    }
+  },
+  {
+    name: "Claude 3 Haiku",
     id: "claude-3-haiku-20240307",
     inputCost: 0.25,
     outputCost: 1.25,
+    maxContext: 100000,
     tokenLimits: {
       TPM: 200000,
       RPM: 500,
