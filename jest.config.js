@@ -5,7 +5,7 @@ const createJestConfig = nextJest({
 });
 
 const customJestConfig = {
-  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'], // or '<rootDir>/jest.setup.ts' if using TypeScript
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
   collectCoverage: true,
   coverageDirectory: 'coverage',
@@ -22,14 +22,15 @@ const customJestConfig = {
     '!**/__tests__/**/*',
     '!**/*.test.{js,jsx,ts,tsx}',
     '!**/*.spec.{js,jsx,ts,tsx}',
+    'components/instructions/**/*.{js,jsx,ts,tsx}', // Add this line to include the new directory
   ],
   coveragePathIgnorePatterns: [
     '/node_modules/',
     '/public/',
   ],
-  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'], // Ensure TS files are recognized
+  moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'babel-jest', // Use babel-jest for TS files
+    '^.+\\.(ts|tsx)$': 'babel-jest',
   },
 };
 
