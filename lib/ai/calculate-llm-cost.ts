@@ -205,7 +205,7 @@ export const GROK_LLMS = [
       TPD: 100000
     }
   }
-] ​​​​​​​​​​​​​​​​​​​​​​​​
+]
 
 // Combined LLM List for easy access
 export const LLMS = [
